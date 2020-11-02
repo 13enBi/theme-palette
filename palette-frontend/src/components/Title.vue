@@ -1,0 +1,117 @@
+<template>
+	<div class="theme-title dropdown">
+		<div class="dropdown-toggle" @click="toggle">
+			<header>{{ title }}</header>
+		</div>
+		<ul
+			class="theme-list dropdown-menu"
+			:style="{ transform: show ? 'rotate(0)' : '' }"
+		>
+			<li
+				class="dropdown-item"
+				v-for="item in themeList"
+				:key="item.fileName"
+				@click="change(item)"
+			>
+				{{ item.fileName }}
+			</li>
+		</ul>
+	</div>
+</template>
+
+<script lang="ts">
+import { ref, watchEffect, reactive } from 'vue';
+import { lessParse } from '../common/utils';
+import { gsjlTheme, defaultTheme, pctheme } from '../theme';
+import { useState, useMutations, useBoolean } from '@13enbi/vhooks';
+
+export default {
+	setup() {
+		const [show, toggle] = useBoolean(false);
+		const { title } = useState(['title']);
+		const { setParseResult } = useMutations(['setParseResult']);
+
+		const themeList = ref<ColorTheme.FileResult[]>([
+			{ fileName: 'sc', fileData: defaultTheme },
+			{ fileName: 'gsjl', fileData: gsjlTheme },
+			{ fileName: 'pc', fileData: pctheme },
+		]);
+
+		const change = (res: any) => {
+			setParseResult(res);
+		};
+
+		return { title, show, toggle, change, themeList };
+	},
+};
+</script>
+
+<style lang="less">
+.theme-title {
+	position: relative;
+	header {
+		font-size: 20px;
+		width: 200px;
+	}
+}
+.dropdown {
+	--dropdown-item-hover-color: hsl(0, 0%, 96%);
+	--dropdown-item-divider-color: rgba(255, 255, 255, 0.2);
+
+	position: relative;
+
+	.dropdown-toggle {
+		color: #1890ff;
+		cursor: pointer;
+	}
+
+	.dropdown-menu {
+		width: 100%;
+		position: absolute;
+		top: calc(100% + 4px);
+		left: 0;
+		margin: 0;
+		padding: 4px 0;
+		list-style-type: none;
+		transform: perspective(400px) rotateX(-90deg);
+		transform-origin: top;
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+		white-space: nowrap;
+		transition: 0.4s;
+		border-radius: 6px;
+
+		.dropdown-item {
+			cursor: pointer;
+			display: block;
+			padding: 6px 12px;
+			//text-align: center;
+			text-decoration: none;
+			//	color: #000;
+			background-color: #fff;
+			transition: 0.4s;
+			&::selection {
+				background-color: #91d5ff;
+			}
+			&:hover {
+				background-color: var(--dropdown-item-hover-color);
+			}
+		}
+
+		.dropdown-item:not(:last-child) a {
+			border-bottom: 1px solid var(--dropdown-item-divider-color);
+		}
+	}
+
+	&:hover {
+		.dropdown-toggle {
+			&::after {
+				transform: scaleY(-1);
+			}
+		}
+
+		// .dropdown-menu {
+		// 	transform: rotate(0);
+		// }
+	}
+}
+</style>

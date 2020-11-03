@@ -27,7 +27,6 @@ export default {
 		FileUpload,
 		Search,
 		FoundList,
-
 		Title,
 	},
 };

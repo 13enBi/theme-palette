@@ -12,6 +12,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@13enbi/vhooks": "0.0.3",
         "concurrently": "^5.3.0"
     }
 }

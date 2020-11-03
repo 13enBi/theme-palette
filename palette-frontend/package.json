@@ -6,8 +6,8 @@
         "build": "vite build"
     },
     "dependencies": {
-        "@13enbi/vhooks": "0.0.1",
-        "ant-design-vue": "^2.0.0-beta.12",
+        "@13enbi/vhooks": "0.0.2",
+        "ant-design-vue": "^2.0.0-beta.13",
         "vue": "^3.0.0-rc.1"
     },
     "devDependencies": {

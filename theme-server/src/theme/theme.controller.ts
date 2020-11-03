@@ -6,7 +6,10 @@ export class ThemeController {
 	constructor(private readonly themeService: ThemeService) {}
 
 	@Get('/')
-	feachAllTheme() {
-		return this.themeService.feachAllTheme();
+	feachAll() {
+		return this.themeService.feachAll();
 	}
+
+	@Post('/')
+	saveTheme() {}
 }

@@ -1,6 +1,11 @@
 export default {
-    optimizeDeps: {
-        //include: ["less"],
-        //allowNodeBuiltins: ["native-request", "mime", "graceful-fs"],
-    },
+	optimizeDeps: {
+		//include: ["less"],
+		// include: [
+		// 	'lodash.debounce',
+		// 	'lodash.throttle',
+		// 	'ant-design-vue',
+		// 	'axios',
+		// ],
+	},
 };

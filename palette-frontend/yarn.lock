@@ -2,15 +2,16 @@
 # yarn lockfile v1
 
 
-"@13enbi/vhooks@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@13enbi/vhooks/-/vhooks-0.0.1.tgz#fe43fac516e6e0ee8f551196502bec81d1eec9fd"
-  integrity sha512-/NYvgj2oLoEGkMucgl32NMFDQwDr2w6/CoRfwdN8KI77bLTkf70Y01CxqddCnda8y63Mn9eiBv86UE7tyNiXSw==
+"@13enbi/vhooks@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/@13enbi/vhooks/-/vhooks-0.0.2.tgz#7d673ac9aba3f7f89f725acf02d85ddf6a648443"
+  integrity sha512-WMnez+KsqM5DB09JAatPbLNd3lGbpDQfa0v5HYDVU8alFasA8CapYBkh63lKxGL1aY0zD/Bz5hw5in8FJfvcYA==
   dependencies:
     axios "^0.20.0"
     intersection-observer "^0.11.0"
     lodash.debounce "^4.0.8"
     lodash.throttle "^4.1.1"
+    mitt "^2.1.0"
     resize-observer-polyfill "^1.5.1"
 
 "@ant-design-vue/use@^0.0.1-0":
@@ -436,10 +437,10 @@ ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-ant-design-vue@^2.0.0-beta.12:
-  version "2.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/ant-design-vue/-/ant-design-vue-2.0.0-beta.12.tgz#6a14f89f0024ebf10ccca7879464c2178345a3e5"
-  integrity sha512-XSVfXini3ltUnCFR2jDRyko3WHB6Z2jtqHn3oFS08L306DLgLtfPYcdmO9P700LHnISs8v6NLPKGRhXgkxiKdQ==
+ant-design-vue@^2.0.0-beta.13:
+  version "2.0.0-beta.13"
+  resolved "https://registry.npmjs.org/ant-design-vue/-/ant-design-vue-2.0.0-beta.13.tgz#04f925bc5283d0cab1b7c608e055ca6949e49a70"
+  integrity sha512-VOSPqRfe66iR8LNaOM7rbGjttUBPXyv7s6U13rVfVX2f7iw7omokZk+wQMtU0w8so1cNY2gMPvYWkXx3/ghmlA==
   dependencies:
     "@ant-design-vue/use" "^0.0.1-0"
     "@ant-design/icons-vue" "^5.1.5"
@@ -505,7 +506,7 @@ at-least-node@^1.0.0:
 
 axios@^0.20.0:
   version "0.20.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.20.0.tgz#057ba30f04884694993a8cd07fa394cff11c50bd"
+  resolved "https://registry.npmjs.org/axios/-/axios-0.20.0.tgz#057ba30f04884694993a8cd07fa394cff11c50bd"
   integrity sha512-ANA4rr2BDcmmAQLOKft2fufrtuvlqR+cXNNinUmvfeSNCOF98PZL+7M/v1zIdGo7OLjEA9J2gXJL+j4zGsl0bA==
   dependencies:
     follow-redirects "^1.10.0"
@@ -1231,7 +1232,7 @@ inherits@2.0.3:
 
 intersection-observer@^0.11.0:
   version "0.11.0"
-  resolved "https://registry.yarnpkg.com/intersection-observer/-/intersection-observer-0.11.0.tgz#f4ea067070326f68393ee161cc0a2ca4c0040c6f"
+  resolved "https://registry.npmjs.org/intersection-observer/-/intersection-observer-0.11.0.tgz#f4ea067070326f68393ee161cc0a2ca4c0040c6f"
   integrity sha512-KZArj2QVnmdud9zTpKf279m2bbGfG+4/kn16UU0NL3pTVl52ZHiJ9IRNSsnn6jaHrL9EGLFM5eWjTx2fz/+zoQ==
 
 intersperse@^1.0.0:
@@ -1532,12 +1533,12 @@ lodash.camelcase@^4.3.0:
 
 lodash.debounce@^4.0.8:
   version "4.0.8"
-  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
 lodash.throttle@^4.1.1:
   version "4.1.1"
-  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  resolved "https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
   integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
 
 lodash.toarray@^4.4.0:
@@ -1656,6 +1657,11 @@ minimist@^1.2.0, minimist@^1.2.5:
   version "1.2.5"
   resolved "https://registry.npm.taobao.org/minimist/download/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha1-Z9ZgFLZqaoqqDAg8X9WN9OTpdgI=
+
+mitt@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/mitt/-/mitt-2.1.0.tgz#f740577c23176c6205b121b2973514eade1b2230"
+  integrity sha512-ILj2TpLiysu2wkBbWjAmww7TkZb65aiQO+DkVdUTBpBXq+MHYiETENkKFMtsJZX1Lf4pe4QOrTSjIfUwN5lRdg==
 
 moment@^2.27.0:
   version "2.29.1"

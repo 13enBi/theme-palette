@@ -11,7 +11,7 @@ import { message } from 'ant-design-vue';
 import { useKeyPress, useMutationObserver } from '@13enbi/vhooks';
 
 export default {
-	setup() {
+	setup(props, { emit }) {
 		const foundListRef = ref();
 		const foundItem = ref<HTMLElement>();
 
@@ -20,24 +20,16 @@ export default {
 		};
 
 		const mutationCallBack = async (mutationsList: MutationRecord[]) => {
-			foundItem.value =
-				foundListRef.value &&
-				foundListRef.value.querySelector('.color-item-wrap');
+			foundItem.value = foundListRef.value && foundListRef.value.querySelector('.color-item-wrap');
 
 			scrollInView();
 
 			if (foundItem.value) {
-				const {
-						type,
-						class: dataClass,
-						color,
-					} = foundItem.value.dataset,
+				const { type, class: dataClass, color } = foundItem.value.dataset,
 					classList = dataClass && dataClass.split('|');
 
 				if (classList && classList.length === 1) {
-					const str = `${type}-${classList[0]}${
-						color ? `-${color}` : ''
-					}`;
+					const str = `${type}-${classList[0]}${color ? `-${color}` : ''}`;
 					clipboardWrite(str);
 					message.success(`copied : ${str}`);
 				}

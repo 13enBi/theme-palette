@@ -1,5 +1,6 @@
 import { createStore } from '@13enbi/vhooks';
 import { lessParse } from '../common/utils';
+import { requestAllTheme } from '../api';
 
 interface State {
 	searchWord: string;
@@ -12,6 +13,8 @@ const state: State = {
 	lessParseResult: {},
 	title: '',
 };
+
+requestAllTheme();
 
 export default createStore<State>(
 	{
@@ -32,6 +35,6 @@ export default createStore<State>(
 		},
 	},
 	{
-		isReadonly: false,
+		strict: false,
 	},
 );

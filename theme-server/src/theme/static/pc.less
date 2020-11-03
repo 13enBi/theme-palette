@@ -1,0 +1,311 @@
+//red
+@red-1: #ffeae6;
+@red-2: #ffafa3;
+@red-3: #ff887a;
+@red-4: #f2594e;
+@red-5: #e62b25;
+@red-6: #da0000;
+@red-7: #a60006;
+@red-8: #800006;
+@red-9: #590108;
+@red-10: #330007;
+
+@night-red-1: #ffabab;
+@night-red-2: #ff8c8c;
+@night-red-3: #ff6d6d;
+@night-red-4: #ff4d4d;
+@night-red-5: #ff2f2e;
+@night-red-6: #e42920;
+@night-red-7: #ba1c0f;
+@night-red-8: #8c0000;
+@night-red-9: #590000;
+@night-red-10: #240202;
+
+//green
+@green-1: #def2da;
+@green-2: #9ee693;
+@green-3: #73d968;
+@green-4: #4acc41;
+@green-5: #24bf1f;
+@green-6: #00b300;
+@green-7: #008c05;
+@green-8: #006b07;
+@green-9: #004006;
+@green-10: #001a03;
+
+@night-green-1: #b3f2b3;
+@night-green-2: #80ea80;
+@night-green-3: #66e666;
+@night-green-4: #33de33;
+@night-green-5: #00ea00;
+@night-green-6: #48b839;
+@night-green-7: #3d9f27;
+@night-green-8: #068000;
+@night-green-9: #004900;
+@night-green-10: #002e00;
+
+//blue
+@blue-1: #e6f7ff;
+@blue-2: #bae7ff;
+@blue-3: #91d5ff;
+@blue-4: #69c0ff;
+@blue-5: #40a9ff;
+@blue-6: #1790ff;
+@blue-7: #096cd9;
+@blue-8: #0050b3;
+@blue-9: #003a8c;
+@blue-10: #012766;
+
+@night-blue-1: #e6f7ff;
+@night-blue-2: #bae7ff;
+@night-blue-3: #91d5ff;
+@night-blue-4: #69c0ff;
+@night-blue-5: #40a9ff;
+@night-blue-6: #1790ff;
+@night-blue-7: #096cd9;
+@night-blue-8: #0050b3;
+@night-blue-9: #003a8c;
+@night-blue-10: #012766;
+
+//gold
+@gold-1: #fffbe6;
+@gold-2: #ffeea3;
+@gold-3: #ffe27a;
+@gold-4: #ffd452;
+@gold-5: #ffc229;
+@gold-6: #f7a800;
+@gold-7: #d18800;
+@gold-8: #ab6900;
+@gold-9: #854d00;
+@gold-10: #5e3300;
+
+@night-gold-1: #fffbe6;
+@night-gold-2: #ffeea3;
+@night-gold-3: #ffe27a;
+@night-gold-4: #ffd452;
+@night-gold-5: #ffc229;
+@night-gold-6: #f7a800;
+@night-gold-7: #d18800;
+@night-gold-8: #ab6900;
+@night-gold-9: #854d00;
+@night-gold-10: #5e3300;
+
+//grey 颜色
+@grey-1: #fafafa;
+@grey-2: #f0f0f0;
+@grey-3: #d9d9d9;
+@grey-4: #bfbfbf;
+@grey-5: #8c8c8c;
+@grey-6: #666666;
+@grey-7: #4c4c4c;
+@grey-8: #333;
+@grey-9: #191919;
+@grey-10: #000;
+
+@night-grey-1: #000;
+@night-grey-2: #191919;
+@night-grey-3: #333;
+@night-grey-4: #4c4c4c;
+@night-grey-5: #666666;
+@night-grey-6: #8c8c8c;
+@night-grey-7: #bfbfbf;
+@night-grey-8: #d9d9d9;
+@night-grey-9: #f0f0f0;
+@night-grey-10: #fafafa;
+
+// 引入颜色基础变量
+@import './varbasic-color.less';
+// 命名规范：
+// 颜色分类-颜色用途-大致颜色/使用位置
+// exp:
+// primary-text (用于文本的主色红色)
+// mid-text-tip (用于提示的文本色)
+// primary 主色
+// sub 辅助色
+// mid 文本色
+// other 其他颜色
+/*-------------------------@ white style---------------------------*/
+// 主色
+
+.loopprimary(@counter) when (@counter > 0) {
+	.loopprimary((@counter - 1));
+
+	//primary
+	.primary-text-@{counter} {
+		@val: 'red-@{counter}';
+		color: @@val;
+	}
+
+	.primary-bg-@{counter} {
+		@val: 'red-@{counter}';
+		background-color: @@val;
+	}
+
+	.primary-bd-@{counter} {
+		@val: 'red-@{counter}';
+		border-color: @@val;
+	}
+
+	[theme-mode='black'] {
+		.primary-text-@{counter} {
+			@val: 'night-red-@{counter}';
+			color: @@val;
+		}
+
+		.primary-bg-@{counter} {
+			@val: 'night-red-@{counter}';
+			background-color: @@val;
+		}
+
+		.primary-bd-@{counter} {
+			@val: 'night-red-@{counter}';
+			border-color: @@val;
+		}
+	}
+}
+
+.loopprimary(10);
+
+.loopsub(@counter) when (@counter > 0) {
+	.loopsub((@counter - 1));
+
+	// green
+	.sub-text-green-@{counter} {
+		@val: 'green-@{counter}';
+		color: @@val;
+	}
+
+	.sub-bg-green-@{counter} {
+		@val: 'green-@{counter}';
+		background-color: @@val;
+	}
+
+	.sub-bd-green-@{counter} {
+		@val: 'green-@{counter}';
+		border-color: @@val;
+	}
+
+	[theme-mode='black'] {
+		.sub-text-green-@{counter} {
+			@val: 'night-green-@{counter}';
+			color: @@val;
+		}
+
+		.sub-bg-green-@{counter} {
+			@val: 'night-green-@{counter}';
+			background-color: @@val;
+		}
+
+		.sub-bd-green-@{counter} {
+			@val: 'night-green-@{counter}';
+			border-color: @@val;
+		}
+	}
+
+	// gold
+	.sub-text-gold-@{counter} {
+		@val: 'gold-@{counter}';
+		color: @@val;
+	}
+
+	.sub-bg-gold-@{counter} {
+		@val: 'gold-@{counter}';
+		background-color: @@val;
+	}
+
+	.sub-bd-gold-@{counter} {
+		@val: 'gold-@{counter}';
+		border-color: @@val;
+	}
+
+	[theme-mode='black'] {
+		.sub-text-gold-@{counter} {
+			@val: 'night-gold-@{counter}';
+			color: @@val;
+		}
+
+		.sub-bg-gold-@{counter} {
+			@val: 'night-gold-@{counter}';
+			background-color: @@val;
+		}
+
+		.sub-bd-gold-@{counter} {
+			@val: 'night-gold-@{counter}';
+			border-color: @@val;
+		}
+	}
+
+	// blue
+	.sub-text-blue-@{counter} {
+		@val: 'blue-@{counter}';
+		color: @@val;
+	}
+
+	.sub-bg-blue-@{counter} {
+		@val: 'blue-@{counter}';
+		background-color: @@val;
+	}
+
+	.sub-bd-blue-@{counter} {
+		@val: 'blue-@{counter}';
+		border-color: @@val;
+	}
+
+	[theme-mode='black'] {
+		.sub-text-blue-@{counter} {
+			@val: 'night-blue-@{counter}';
+			color: @@val;
+		}
+
+		.sub-bg-blue-@{counter} {
+			@val: 'night-blue-@{counter}';
+			background-color: @@val;
+		}
+
+		.sub-bd-blue-@{counter} {
+			@val: 'night-blue-@{counter}';
+			border-color: @@val;
+		}
+	}
+}
+
+.loopsub(10);
+
+.loopmid(@counter) when (@counter > 0) {
+	.loopmid((@counter - 1));
+
+	// mid
+	.mid-text-@{counter} {
+		@val: 'grey-@{counter}';
+		color: @@val;
+	}
+
+	.mid-bg-@{counter} {
+		@val: 'grey-@{counter}';
+		background-color: @@val;
+	}
+
+	.mid-bd-@{counter} {
+		@val: 'grey-@{counter}';
+		border-color: @@val;
+	}
+
+	[theme-mode='black'] {
+		.mid-text-@{counter} {
+			@val: 'night-grey-@{counter}';
+			color: @@val;
+		}
+
+		.mid-bg-@{counter} {
+			@val: 'night-grey-@{counter}';
+			background-color: @@val;
+		}
+
+		.mid-bd-@{counter} {
+			@val: 'night-grey-@{counter}';
+			border-color: @@val;
+		}
+	}
+}
+
+.loopmid(10);

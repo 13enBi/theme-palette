@@ -6,8 +6,7 @@
     "scripts": {
         "dev:frontend": "cd palette-frontend & yarn dev",
         "dev:server": "cd theme-server & yarn start:dev",
-        "dev": "concurrently  \"yarn dev:server\" \"yarn dev:frontend\"",
-        "init": "concurrently \"cd palette-frontend & yarn\" \"cd theme-server & yarn\" "
+        "dev": "concurrently  \"yarn dev:server\" \"yarn dev:frontend\""
     },
     "keywords": [],
     "author": "",

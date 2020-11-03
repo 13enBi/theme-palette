@@ -23,6 +23,7 @@ export default createStore<State>(
 			},
 
 			async setParseResult(state, res: ColorTheme.FileResult) {
+				state.lessParseResult = {};
 				state.lessParseResult = await lessParse(res.fileData);
 				state.title = res.fileName;
 
@@ -31,6 +32,6 @@ export default createStore<State>(
 		},
 	},
 	{
-		isReadonly: true,
+		isReadonly: false,
 	},
 );

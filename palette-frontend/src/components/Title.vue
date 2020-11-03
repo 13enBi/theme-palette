@@ -37,7 +37,7 @@ export default {
 			{ fileName: 'pc', fileData: pctheme },
 		]);
 
-		const change = (res: any) => {
+		const change = (res: ColorTheme.FileResult) => {
 			setParseResult(res);
 		};
 

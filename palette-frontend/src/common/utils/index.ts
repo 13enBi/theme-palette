@@ -1,3 +1,4 @@
+import { useCache } from '@13enbi/vhooks';
 import { nextTick } from 'vue';
 const less = (window as any).less;
 
@@ -12,7 +13,7 @@ export async function lessRender(input: string): Promise<string> {
 		.then(({ css }: { css: string }) => css.replace(/\n/g, ''));
 }
 
-function getColorName(cssItem: string): string[] {
+function getColorName(cssItem: string): [ColorTheme.ColorType, string, string] {
 	const colorNameReg = /(\.((\w|-)+))+$/;
 	const nameMatch = cssItem.split('{')[0].trim().match(colorNameReg);
 
@@ -26,12 +27,13 @@ function getColorName(cssItem: string): string[] {
 				if (index < 2) {
 					total[index] = cur;
 				} else {
-					total[index] += cur;
+					total[2] += cur;
 				}
 				return total;
 			},
 			['', '', ''],
-		);
+		) as [ColorTheme.ColorType, string, string];
+
 	if (
 		!result.join('') ||
 		!['primary', 'sub', 'mid', 'other'].includes(result[0])
@@ -58,7 +60,7 @@ function isNight(cssItem: string): boolean {
 }
 
 export function cssParse(css: string): ColorTheme.CssParseResult {
-	const cssParseResult: any = {
+	const cssParseResult: Record<ColorTheme.ColorType, any> = {
 		primary: {},
 		sub: {},
 		mid: {},
@@ -84,9 +86,7 @@ export function cssParse(css: string): ColorTheme.CssParseResult {
 
 			result[isNight(cssItem) ? 'nightColor' : 'color'] = colorValue;
 
-			//result['class']?.add(use);
-			result['class'] && result['class'].add(use);
-
+			result.class?.add(use);
 			result.searchstr += cssItem;
 		} catch (e) {
 			continue;
@@ -95,11 +95,14 @@ export function cssParse(css: string): ColorTheme.CssParseResult {
 
 	return cssParseResult;
 }
-
+const parseCache = useCache();
 export async function lessParse(less: string) {
-	const css = await lessRender(less);
+	const cache = parseCache.getCache(less);
+	if (cache) return cache;
 
-	return cssParse(css);
+	const parse = cssParse(await lessRender(less));
+
+	return parseCache.setCache(less, parse, Infinity), parse;
 }
 
 export function isMoreThanDDD(color: string): boolean {
@@ -135,7 +138,7 @@ export function clipboardWrite(text: string): void {
 }
 
 export function clipboardRead(): Promise<string> {
-	return navigator.clipboard && navigator.clipboard.readText();
+	return navigator.clipboard?.readText();
 }
 
 export function downLoadFile(fileName: string, content: any): void {
@@ -192,5 +195,5 @@ export async function fileListReader(
 
 export async function scrollInView(el: HTMLElement | Element | null) {
 	await nextTick();
-	el && el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+	el?.scrollIntoView({ block: 'center', behavior: 'smooth' });
 }

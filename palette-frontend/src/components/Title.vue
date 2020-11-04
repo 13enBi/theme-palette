@@ -3,16 +3,8 @@
 		<div class="dropdown-toggle" @click="toggle">
 			<header>{{ title }}</header>
 		</div>
-		<ul
-			class="theme-list dropdown-menu"
-			:style="{ transform: show ? 'rotate(0)' : '' }"
-		>
-			<li
-				class="dropdown-item"
-				v-for="item in themeList"
-				:key="item.fileName"
-				@click="change(item)"
-			>
+		<ul class="theme-list dropdown-menu" :style="{ transform: show ? 'rotate(0)' : '' }">
+			<li class="dropdown-item" v-for="item in themeList" :key="item.fileName" @click="change(item)">
 				{{ item.fileName }}
 			</li>
 		</ul>

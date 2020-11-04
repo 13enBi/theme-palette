@@ -8,9 +8,7 @@ export function deleteLessImport(input: string): string {
 
 export async function lessRender(input: string): Promise<string> {
 	input = deleteLessImport(input);
-	return await less
-		.render(input, { compress: true })
-		.then(({ css }: { css: string }) => css.replace(/\n/g, ''));
+	return await less.render(input, { compress: true }).then(({ css }: { css: string }) => css.replace(/\n/g, ''));
 }
 
 function getColorName(cssItem: string): [ColorTheme.ColorType, string, string] {
@@ -34,10 +32,7 @@ function getColorName(cssItem: string): [ColorTheme.ColorType, string, string] {
 			['', '', ''],
 		) as [ColorTheme.ColorType, string, string];
 
-	if (
-		!result.join('') ||
-		!['primary', 'sub', 'mid', 'other'].includes(result[0])
-	) {
+	if (!result.join('') || !['primary', 'sub', 'mid', 'other'].includes(result[0])) {
 		throw Error('empty class name');
 	}
 
@@ -95,6 +90,7 @@ export function cssParse(css: string): ColorTheme.CssParseResult {
 
 	return cssParseResult;
 }
+
 const parseCache = useCache();
 export async function lessParse(less: string) {
 	const cache = parseCache.getCache(less);
@@ -102,7 +98,7 @@ export async function lessParse(less: string) {
 
 	const parse = cssParse(await lessRender(less));
 
-	return parseCache.setCache(less, parse, Infinity), parse;
+	return parseCache.setCache(less, parse, 0), parse;
 }
 
 export function isMoreThanDDD(color: string): boolean {
@@ -167,9 +163,7 @@ export function fileReader(file: File): Promise<ColorTheme.FileResult> {
 		reader.onload = () => {
 			const fileData = reader.result as string;
 
-			fileData
-				? resove({ fileData, fileName: file.name })
-				: reject('empty data');
+			fileData ? resove({ fileData, fileName: file.name }) : reject('empty data');
 		};
 
 		reader.onerror = () => {
@@ -178,9 +172,7 @@ export function fileReader(file: File): Promise<ColorTheme.FileResult> {
 	});
 }
 
-export async function fileListReader(
-	fileList: FileList,
-): Promise<ColorTheme.FileResult> {
+export async function fileListReader(fileList: FileList): Promise<ColorTheme.FileResult> {
 	let fileData = '';
 	const fileName = fileList[0].name;
 	for (const file of fileList) {

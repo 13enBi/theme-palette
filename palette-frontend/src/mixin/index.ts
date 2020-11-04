@@ -1,4 +1,4 @@
-import mixin from "./register";
-import "./antd";
+import mixin from './register';
+import './antd';
 
 export default mixin;

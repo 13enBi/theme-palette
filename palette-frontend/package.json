@@ -1,19 +1,21 @@
 {
-    "name": "theme-vue3",
-    "version": "0.0.0",
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build"
-    },
-    "dependencies": {
-        "@13enbi/vhooks": "0.0.2",
-        "ant-design-vue": "^2.0.0-beta.13",
-        "vue": "^3.0.0-rc.1"
-    },
-    "devDependencies": {
-        "@types/less": "^3.0.1",
-        "@vue/compiler-sfc": "^3.0.0-rc.1",
-        "less": "^3.12.2",
-        "vite": "^1.0.0-rc.1"
-    }
+	"name": "theme-vue3",
+	"version": "0.0.0",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"format": "prettier --write \"**/*.(ts|tsx|vue)\"  "
+	},
+	"dependencies": {
+		"@13enbi/vhooks": "^0.0.3",
+		"ant-design-vue": "^2.0.0-beta.13",
+		"vue": "^3.0.0-rc.1"
+	},
+	"devDependencies": {
+		"@types/less": "^3.0.1",
+		"@vue/compiler-sfc": "^3.0.0-rc.1",
+		"less": "^3.12.2",
+		"prettier": "^2.1.2",
+		"vite": "^1.0.0-rc.1"
+	}
 }

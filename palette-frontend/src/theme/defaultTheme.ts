@@ -315,4 +315,4 @@ export default `
 [theme-mode="black"][theme-mode="gphone"] .other-bg-primarycard {
   background-color: #1e1e1e;
 }
-`
+`;

@@ -226,4 +226,4 @@ export default `// Prefix
     color: @night-disabled-text
 }
 }
-`
+`;

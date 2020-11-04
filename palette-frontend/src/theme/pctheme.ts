@@ -323,4 +323,4 @@ export default `
 
 .loopmid(10);
 
-`
+`;

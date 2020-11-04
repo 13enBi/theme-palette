@@ -3,11 +3,7 @@
 		<header>{{ headerText }}</header>
 		<main>
 			<ul>
-				<Item
-					v-for="colorItem in props.colorPalette"
-					:key="colorItem.colorName"
-					:colorItem="colorItem"
-				/>
+				<Item v-for="colorItem in props.colorPalette" :key="colorItem.colorName" :colorItem="colorItem" />
 			</ul>
 		</main>
 	</div>

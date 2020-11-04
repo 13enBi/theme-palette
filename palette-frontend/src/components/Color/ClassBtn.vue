@@ -1,16 +1,13 @@
 <template>
 	<div class="class-btn">
-		<a-button
-			v-for="className in classList"
-			:key="className"
-			@click="handleCopy(className)"
+		<a-button v-for="className in classList" :key="className" @click="handleCopy(className)"
 			>{{ className }}
 		</a-button>
 	</div>
 </template>
 
 <script lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watchEffect } from 'vue';
 import { clipboardWrite } from '../../common/utils';
 import { message } from 'ant-design-vue';
 
@@ -22,11 +19,15 @@ export default {
 	},
 	setup(props) {
 		const handleCopy = (className: string) => {
-			const str = [
-				props.type,
-				className,
-				props.colorName,
-			].reduce((total, curr) => (curr ? (total += `-${curr}`) : total));
+			const str = [props.type, className, props.colorName].reduce((total, curr) =>
+				curr ? (total += `-${curr}`) : total,
+            );
+            
+            watchEffect(() => {
+               
+            })
+
+            
 
 			clipboardWrite(str as string);
 

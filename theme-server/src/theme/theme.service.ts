@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { promises } from 'fs';
 import { asyncMap, combineURLs } from 'src/common/utils';
 const { readdir, readFile } = promises;
-
 const THEME_PATH = './src/theme/static';
 
 @Injectable()

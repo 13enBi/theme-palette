@@ -1,38 +1,14 @@
 import { createStore } from '@13enbi/vhooks';
-import { lessParse } from '../common/utils';
-import { requestAllTheme } from '../api';
 
-interface State {
-	searchWord: string;
-	lessParseResult: ColorTheme.CssParseResult | {};
-	title: string;
-}
+import state from './state';
+import mutations from './mutations';
+import getters from './getter';
 
-const state: State = {
-	searchWord: '',
-	lessParseResult: {},
-	title: '',
-};
-
-requestAllTheme();
-
-export default createStore<State>(
+export default createStore(
 	{
 		state,
-
-		mutations: {
-			setSearchWord(state, word) {
-				state.searchWord = word;
-			},
-
-			async setParseResult(state, res: ColorTheme.FileResult) {
-				state.lessParseResult = {};
-				state.lessParseResult = await lessParse(res.fileData);
-				state.title = res.fileName;
-
-				return state.lessParseResult;
-			},
-		},
+		mutations,
+		getters,
 	},
 	{
 		strict: false,

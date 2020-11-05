@@ -2,7 +2,7 @@
 	<div class="color-warp">
 		<div class="color">
 			<Palette
-				v-for="(colorPalette, type) in lessParseResult"
+				v-for="(colorPalette, type) in nowTheme"
 				:key="type"
 				:type="type"
 				:colorPalette="colorPalette"
@@ -19,7 +19,7 @@ import Palette from './Palette.vue';
 export default {
 	setup() {
 		return {
-			lessParseResult: useState(['lessParseResult']).lessParseResult,
+			nowTheme: useState(['nowTheme']).nowTheme,
 		};
 	},
 	components: { Palette },

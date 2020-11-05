@@ -1,11 +1,11 @@
 <template>
 	<div class="theme-title dropdown">
 		<div class="dropdown-toggle" @click="toggle">
-			<header>{{ title }}</header>
+			<header>{{ removeSuffix(title) }}</header>
 		</div>
 		<ul class="theme-list dropdown-menu" :style="{ transform: show ? 'rotate(0)' : '' }">
-			<li class="dropdown-item" v-for="item in themeList" :key="item.fileName" @click="change(item)">
-				{{ item.fileName }}
+			<li class="dropdown-item" v-for="item in allTheme" :key="item.fileName" @click="change(item)">
+				{{ removeSuffix(item.fileName) }}
 			</li>
 		</ul>
 	</div>
@@ -14,26 +14,23 @@
 <script lang="ts">
 import { ref, watchEffect, reactive } from 'vue';
 import { lessParse } from '../common/utils';
-import { gsjlTheme, defaultTheme, pctheme } from '../theme';
 import { useState, useMutations, useBoolean } from '@13enbi/vhooks';
 
 export default {
 	setup() {
 		const [show, toggle] = useBoolean(false);
-		const { title } = useState(['title']);
+		const { title, allTheme } = useState(['title', 'allTheme']);
 		const { setParseResult } = useMutations(['setParseResult']);
-
-		const themeList = ref<ColorTheme.FileResult[]>([
-			{ fileName: 'sc', fileData: defaultTheme },
-			{ fileName: 'gsjl', fileData: gsjlTheme },
-			{ fileName: 'pc', fileData: pctheme },
-		]);
 
 		const change = (res: ColorTheme.FileResult) => {
 			setParseResult(res);
 		};
 
-		return { title, show, toggle, change, themeList };
+		const removeSuffix = (fileName: string) => {
+			return fileName?.replace?.(/\.\w+$/, '') ?? '';
+		};
+
+		return { title, show, toggle, change, allTheme, removeSuffix };
 	},
 };
 </script>

@@ -5,6 +5,7 @@ import {
 } from 'src/common/enums/error-code.enum';
 import { ApiException } from 'src/common/exception/api.exception';
 import { ThemeService } from './theme.service';
+import { UpfileDto } from './dto/upfile.dto';
 
 @Controller('theme')
 export class ThemeController {
@@ -16,7 +17,7 @@ export class ThemeController {
 	}
 
 	@Post('/')
-	saveTheme(@Body() body) {
-		throw new ApiException(ApiErrorMessage.SUCCESS, ApiErrorCode.SUCCESS);
+	saveTheme(@Body() upfileDto: UpfileDto) {
+		upfileDto.fileData;
 	}
 }

@@ -50,7 +50,7 @@ function getColorValue(cssItem: string): string {
 }
 
 function isNight(cssItem: string): boolean {
-	const reg = /^(\.black |\.night |\[theme-mode="black"\])/;
+	const reg = /^(\.black |\.night |\[theme-mode=("|')(black|night)("|')\])/;
 	return cssItem.match(reg) !== null;
 }
 

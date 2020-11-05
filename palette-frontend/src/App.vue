@@ -22,12 +22,9 @@ export default {
 
 	setup() {
 		onMounted(async () => {
-			const { setParseResult } = useMutations(['setParseResult']);
+			const { setAllTheme } = useMutations(['setAllTheme']);
 
-			setParseResult({
-				fileName: 'sc',
-				fileData: defaultTheme,
-			});
+			(setAllTheme as any)();
 		});
 	},
 };

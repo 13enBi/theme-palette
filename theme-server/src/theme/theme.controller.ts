@@ -1,9 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import {
-	ApiErrorCode,
-	ApiErrorMessage,
-} from 'src/common/enums/error-code.enum';
-import { ApiException } from 'src/common/exception/api.exception';
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { ThemeService } from './theme.service';
 import { UpfileDto } from './dto/upfile.dto';
 
@@ -18,6 +13,11 @@ export class ThemeController {
 
 	@Post('/')
 	saveTheme(@Body() upfileDto: UpfileDto) {
-		upfileDto.fileData;
+		return this.themeService.saveTheme(upfileDto);
+	}
+
+	@Patch('/')
+	updateTheme(@Body() upfileDto: UpfileDto) {
+		return this.themeService.updateTheme(upfileDto);
 	}
 }

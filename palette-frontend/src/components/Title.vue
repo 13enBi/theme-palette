@@ -20,10 +20,10 @@ export default {
 	setup() {
 		const [show, toggle] = useBoolean(false);
 		const { title, allTheme } = useState(['title', 'allTheme']);
-		const { setParseResult } = useMutations(['setParseResult']);
+		const { setNowTheme } = useMutations(['setNowTheme']);
 
 		const change = (res: ColorTheme.FileResult) => {
-			setParseResult(res);
+			setNowTheme(res);
 		};
 
 		const removeSuffix = (fileName: string) => {

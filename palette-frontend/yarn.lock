@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@13enbi/vhooks@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@13enbi/vhooks/-/vhooks-0.0.3.tgz#0ec9c53fb31e9f1131775af4f821c0307a4de482"
-  integrity sha512-UrZ1RX3tfS8aewbMltXiLSIkRo75jekyoWXIF7FPuLJ4SnCdNpWWnlgV0/O9lcSO7U+/PZE6lq5bLHhme8xrXA==
+"@13enbi/vhooks@^0.0.3-beta.1":
+  version "0.0.3-beta.1"
+  resolved "https://registry.yarnpkg.com/@13enbi/vhooks/-/vhooks-0.0.3-beta.1.tgz#ac208679af473c340ddb30a6a796cc91a60a150d"
+  integrity sha512-R/IrUMWQ5K28uFyKpfYH5FYgB87CWD5Y3AWkwaH+TvkwHoSmoyNzaU5dzB/UUDStSrvcOFG4TFYiJoKH4QSADg==
   dependencies:
     axios "^0.20.0"
     intersection-observer "^0.11.0"

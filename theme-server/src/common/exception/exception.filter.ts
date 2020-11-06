@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ExecException } from 'child_process';
 
-@Catch(HttpException)
+@Catch()
 export class ExceptionsFilter implements ExceptionFilter {
 	async catch(exception: ExecException, host: ArgumentsHost) {
 		const ctx = host.switchToHttp();

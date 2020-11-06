@@ -26,3 +26,5 @@ export const uploadTheme = (file: ColorTheme.FileResult) =>
 		method: 'post',
 		data: file,
 	});
+
+export const updateTheme = (file: ColorTheme.FileResult) => request({ url: '/theme', method: 'patch', data: file });

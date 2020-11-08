@@ -6,10 +6,8 @@ export class ApiExceptionsFilter implements ExceptionFilter {
 	async catch(exception: ApiException, host: ArgumentsHost) {
 		const ctx = host.switchToHttp();
 		const response = ctx.getResponse();
-
-		response.status(200);
-
-		response.send({
+		
+		response.status(200).json({
 			errorCode: exception.getErrorCode(),
 			errorMsg: exception.geterrorMsg(),
 		});

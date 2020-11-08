@@ -1,53 +1,49 @@
 import { Injectable } from '@nestjs/common';
-import { asyncMap, combineURLs } from 'src/common/utils';
-import { UpfileDto } from './dto/upfile.dto';
+import { combineURLs } from 'src/common/utils';
 import { THEME_PATH } from './const';
-import { promises, constants } from 'fs';
-import { ApiException } from 'src/common/exception/api.exception';
-import {
-	ApiErrorCode,
-	ApiErrorMessage,
-} from 'src/common/enums/error-code.enum';
-const { readdir, readFile, writeFile, access } = promises;
+import { promises } from 'fs';
+import { basename } from 'path';
+
+const { readdir, readFile, writeFile, unlink } = promises;
 
 @Injectable()
 export class ThemeService {
-	async isFileExists(fileUrl: string) {
-		return await access(fileUrl, constants.F_OK)
-			.then(() => true)
-			.catch(() => false);
+	private themes: Map<string, string>;
+
+	constructor() {
+		this.initThemes();
 	}
 
-	async feachAll() {
-		return await asyncMap(await readdir(THEME_PATH), async (fileName) => ({
-			fileName,
-			fileData: await readFile(combineURLs(THEME_PATH, fileName), 'utf8'),
+	private async initThemes() {
+		this.themes = new Map();
+
+		for (const fileName of await readdir(THEME_PATH)) {
+			const fileUrl = combineURLs(THEME_PATH, fileName);
+
+			this.themes.set(fileUrl, await readFile(fileUrl, 'utf-8'));
+		}
+	}
+
+	readTheme(fileName: string) {
+		return this.themes.get(fileName);
+	}
+
+	async writeTheme(fileName: string, fileData: string) {
+		await writeFile(fileName, fileData);
+
+		this.themes.set(fileName, fileData);
+	}
+
+	feachAll() {
+		return [...this.themes.entries()].map(([fileName, fileData]) => ({
+			fileName: basename(fileName),
+			fileData,
 		}));
 	}
 
-	async saveTheme({ fileData, fileName }: UpfileDto) {
-		const fileUrl = combineURLs(THEME_PATH, fileName);
+	async deleteTheme(fileName: string) {
+		await unlink(fileName);
 
-		if (await this.isFileExists(fileUrl)) {
-			throw new ApiException(
-				ApiErrorMessage.FILE_EXISTSED,
-				ApiErrorCode.VALIDATE_FAIL,
-			);
-		}
-
-		return await writeFile(fileUrl, fileData);
-	}
-
-	async updateTheme({ fileData, fileName }: UpfileDto) {
-		const fileUrl = combineURLs(THEME_PATH, fileName);
-
-		if (!(await this.isFileExists(fileUrl))) {
-			throw new ApiException(
-				ApiErrorMessage.FILE_NOT_EXISTS,
-				ApiErrorCode.VALIDATE_FAIL,
-			);
-		}
-
-		return await writeFile(fileUrl, fileData);
+		this.themes.delete(fileName);
 	}
 }

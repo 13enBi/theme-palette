@@ -1,13 +1,13 @@
 import {
 	Catch,
 	ArgumentsHost,
-	HttpException,
 	ExceptionFilter,
+	HttpException,
 	HttpStatus,
 } from '@nestjs/common';
 import { ExecException } from 'child_process';
 
-@Catch()
+@Catch(HttpException)
 export class ExceptionsFilter implements ExceptionFilter {
 	async catch(exception: ExecException, host: ArgumentsHost) {
 		const ctx = host.switchToHttp();
@@ -18,12 +18,12 @@ export class ExceptionsFilter implements ExceptionFilter {
 				? exception.getStatus()
 				: HttpStatus.INTERNAL_SERVER_ERROR;
 
-		response.status(status);
-		response.header('Content-Type', 'application/json; charset=utf-8');
-
-		response.send({
-			errorCode: status,
-			errorMsg: message,
-		});
+		response
+			.status(status)
+			.header('Content-Type', 'application/json; charset=utf-8')
+			.json({
+				errorCode: status,
+				errorMsg: message,
+			});
 	}
 }

@@ -1,1 +1,1 @@
-export const THEME_PATH = './src/theme/static';
+export const THEME_PATH = './src/statics/theme';

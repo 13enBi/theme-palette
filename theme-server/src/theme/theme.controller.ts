@@ -1,8 +1,18 @@
-import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Patch,
+	Post,
+	UsePipes,
+} from '@nestjs/common';
 import { ThemeService } from './theme.service';
 import { UpfileDto } from './dto/upfile.dto';
+import { ThemePathCombine, ThemeExistsValidate } from './theme.pipe';
 
 @Controller('theme')
+@UsePipes(new ThemePathCombine())
 export class ThemeController {
 	constructor(private readonly themeService: ThemeService) {}
 
@@ -12,12 +22,24 @@ export class ThemeController {
 	}
 
 	@Post('/')
-	saveTheme(@Body() upfileDto: UpfileDto) {
-		return this.themeService.saveTheme(upfileDto);
+	async saveTheme(
+		@Body(new ThemeExistsValidate(false)) { fileData, fileName }: UpfileDto,
+	) {
+		this.themeService.writeTheme(fileName, fileData);
 	}
 
 	@Patch('/')
-	updateTheme(@Body() upfileDto: UpfileDto) {
-		return this.themeService.updateTheme(upfileDto);
+	async updateTheme(
+		@Body(new ThemeExistsValidate(true)) { fileData, fileName }: UpfileDto,
+	) {
+		this.themeService.writeTheme(fileName, fileData);
+	}
+
+	@Delete('/')
+	async deleteTheme(
+		@Body(new ThemeExistsValidate(true))
+		{ fileName }: Pick<UpfileDto, 'fileName'>,
+	) {
+		return this.themeService.deleteTheme(fileName);
 	}
 }

@@ -6,6 +6,7 @@ import { ThemeModule } from './theme/theme.module';
 import { ResponseInterceptor } from './common/interceptor/response';
 import { ApiExceptionsFilter } from './common/exception/api.exception.filter';
 import { DTOValidationPipe } from './common/pipe/validation.pipe';
+import { ExceptionsFilter } from './common/exception/exception.filter';
 
 @Module({
 	imports: [ThemeModule],
@@ -19,6 +20,10 @@ import { DTOValidationPipe } from './common/pipe/validation.pipe';
 		{
 			provide: APP_FILTER,
 			useClass: ApiExceptionsFilter,
+		},
+		{
+			provide: APP_FILTER,
+			useClass: ExceptionsFilter,
 		},
 		{
 			provide: APP_PIPE,

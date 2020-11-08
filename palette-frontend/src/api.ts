@@ -10,7 +10,12 @@ const request = useRequest.create((axios) => {
 		onError(err) {
 			message.error(err?.toString?.() ?? '服务器拉跨了');
 		},
-		formatData({ errorCode, errorMsg, result }: { errorCode: number; errorMsg: string; result: any }) {
+		formatData(res: { errorCode: number; errorMsg: string; result: any } | undefined) {
+			if (!res) {
+				return void 0;
+			}
+
+			const { errorCode, errorMsg, result } = res;
 			if (errorCode === 0) return result;
 			else throw errorMsg;
 		},

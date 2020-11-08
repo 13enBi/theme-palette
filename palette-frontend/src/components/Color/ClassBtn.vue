@@ -21,13 +21,9 @@ export default {
 		const handleCopy = (className: string) => {
 			const str = [props.type, className, props.colorName].reduce((total, curr) =>
 				curr ? (total += `-${curr}`) : total,
-            );
-            
-            watchEffect(() => {
-               
-            })
+			);
 
-            
+			watchEffect(() => {});
 
 			clipboardWrite(str as string);
 

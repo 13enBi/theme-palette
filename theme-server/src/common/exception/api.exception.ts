@@ -1,17 +1,10 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
 import { ApiErrorCode } from '../enums/error-code.enum';
 
-export class ApiException extends HttpException {
+export class ApiException {
 	private errorMsg: string;
 	private errCode: ApiErrorCode;
 
-	constructor(
-		errorMsg: string,
-		errCode: ApiErrorCode,
-		statusCode: HttpStatus = 500,
-	) {
-		super(errorMsg, statusCode);
-
+	constructor(errorMsg: string, errCode: ApiErrorCode) {
 		this.errorMsg = errorMsg;
 		this.errCode = errCode;
 	}

@@ -44,19 +44,13 @@
 
 			const { nowTheme } = useState(['nowTheme']);
 
-			window.a = nowTheme;
-
-			watchEffect(() => {
-				console.log(nowTheme.value[props.type]);
-			});
-
 			return {
 				headerText,
 				props,
 			};
 		},
 
-		components: { Item, PlusOutlined },`
+		components: { Item, PlusOutlined },
 	};
 </script>
 

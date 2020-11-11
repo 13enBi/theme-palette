@@ -1,14 +1,14 @@
-import { MutationsTree } from '@13enbi/vhooks/lib/useStore';
+import { MutationsTree } from '@13enbi/vhooks';
 import { lessParse } from '../common/utils';
 import { State } from './state';
 import * as api from '../api';
 
 const mutations: MutationsTree<State> = {
-	setSearchWord(state, word) {
+	setSearchWord({ state }, word) {
 		state.searchWord = word;
 	},
 
-	async setNowTheme(state, file: ColorTheme.FileResult) {
+	async setNowTheme({ state }, file: ColorTheme.FileResult) {
 		state.nowTheme = {};
 		state.nowTheme = await lessParse(file.fileData);
 		state.title = file.fileName;
@@ -16,20 +16,20 @@ const mutations: MutationsTree<State> = {
 		return state.nowTheme;
 	},
 
-	async setAllTheme(state) {
+	async setAllTheme({ state, dispatch }) {
 		const allTheme = await api.requestAllTheme();
 		state.allTheme = allTheme;
 
 		if (!state.nowTheme && allTheme.length) {
-			mutations.setNowTheme(state, allTheme[0]);
+			dispatch('setNowTheme', allTheme[0]);
 		}
 	},
 
-	async uploadTheme(state, file: ColorTheme.FileResult) {
+	async uploadTheme({ state, dispatch }, file: ColorTheme.FileResult) {
 		await api.uploadTheme(file);
 
 		state.allTheme.push(file);
-		mutations.setNowTheme(state, file);
+		dispatch('setNowTheme', file);
 	},
 };
 

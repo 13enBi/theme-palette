@@ -17,20 +17,9 @@ function getColorName(cssItem: string): [ColorTheme.ColorType, string, string] {
 
 	if (nameMatch === null) throw Error('empty class name');
 
-	const result = nameMatch[0]
-		.replace(/^\./, '')
-		.split('-')
-		.reduce(
-			(total: string[], cur, index) => {
-				if (index < 2) {
-					total[index] = cur;
-				} else {
-					total[2] += cur;
-				}
-				return total;
-			},
-			['', '', ''],
-		) as [ColorTheme.ColorType, string, string];
+	const split = nameMatch[0].replace(/^\./, '').split('-');
+
+	const result = split.slice(0, 2).concat(split.slice(2).join('-')) as [ColorTheme.ColorType, string, string];
 
 	if (!result.join('') || !['primary', 'sub', 'mid', 'other'].includes(result[0])) {
 		throw Error('empty class name');
@@ -50,7 +39,7 @@ function getColorValue(cssItem: string): string {
 }
 
 function isNight(cssItem: string): boolean {
-	const reg = /^(\.black |\.night |\[theme-mode=("|')(black|night)("|')\])/;
+	const reg = /(\.black |\.night |\[theme-mode=("|')(black|night)("|')\])/;
 	return cssItem.match(reg) !== null;
 }
 

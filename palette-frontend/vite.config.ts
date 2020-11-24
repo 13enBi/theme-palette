@@ -1,11 +1,5 @@
 export default {
 	optimizeDeps: {
-		//include: ["less"],
-		// include: [
-		// 	'lodash.debounce',
-		// 	'lodash.throttle',
-		// 	'ant-design-vue',
-		// 	'axios',
-		// ],
+		include: ['tinycolor2/tinycolor', '@ant-design/icons-vue/PlusOutlined'],
 	},
 };

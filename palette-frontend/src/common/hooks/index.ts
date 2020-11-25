@@ -1,3 +1,2 @@
-import useClipboard from './useClipboard';
-
-export { useClipboard };
+export { default as useHash } from './useHash';
+export { default as useClipboard } from './useClipboard';

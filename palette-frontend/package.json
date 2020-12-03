@@ -7,6 +7,8 @@
 		"format": "prettier --write \"**/*.(ts|tsx|vue)\"  "
 	},
 	"dependencies": {
+		"@13enbi/css-parse": "^0.0.1-beta.2",
+		"@13enbi/vhooks": "^0.0.3-beta.1",
 		"ant-design-vue": "^2.0.0-beta.13",
 		"vue": "^3.0.0-rc.1"
 	},

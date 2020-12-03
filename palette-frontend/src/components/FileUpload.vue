@@ -12,7 +12,7 @@ import { useMutations } from '@13enbi/vhooks';
 import { message } from 'ant-design-vue';
 
 export default {
-	setup(_, { emit }) {
+	setup() {
 		const fileRef = ref<null | HTMLInputElement>(null);
 		const { setNowTheme, uploadTheme } = useMutations(['setNowTheme', 'uploadTheme']);
 

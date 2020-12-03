@@ -1,13 +1,14 @@
 import { useEventListener } from '@13enbi/vhooks';
+
 import { customRef } from 'vue';
 
-const useHash = (defaultVal: string) => {
-	let hash = location.hash || ((location.hash = defaultVal), defaultVal);
+const useHash = () => {
+	let hash = location.hash.slice(1);
 
 	return customRef((track, trigger) => {
 		useEventListener('hashchange', () => {
 			trigger();
-			hash = location.hash;
+			hash = location.hash.slice(1);
 		});
 
 		return {
@@ -17,7 +18,7 @@ const useHash = (defaultVal: string) => {
 			},
 			set(newval: string) {
 				trigger();
-				location.hash = hash = newval || defaultVal;
+				location.hash = hash = newval;
 			},
 		};
 	});

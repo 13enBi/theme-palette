@@ -12,7 +12,6 @@ import AppHeader from './components/Header.vue';
 import { onMounted } from 'vue';
 import { useMutations } from '@13enbi/vhooks';
 import { lessParse } from './common/utils';
-import { defaultTheme } from './theme';
 
 export default {
 	components: {

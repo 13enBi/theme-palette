@@ -11,7 +11,7 @@ import { message } from 'ant-design-vue';
 import { useKeyPress, useMutationObserver, useDebounceFn } from '@13enbi/vhooks';
 
 export default {
-	setup(props, { emit }) {
+	setup(props) {
 		const foundListRef = ref();
 		const foundItem = ref<HTMLElement>();
 

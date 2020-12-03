@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@13enbi/css-parse@^0.0.1-beta.2":
+  version "0.0.1-beta.2"
+  resolved "https://registry.yarnpkg.com/@13enbi/css-parse/-/css-parse-0.0.1-beta.2.tgz#efbb2e9f0e7359f3d5e9f7fe9fb2967cd60f9004"
+  integrity sha512-RhqI6JTikCT338vdHbaw1dbUV4DGvMJr9exBG0D7cN0o0gbXlO8l9JPUSogK2nSuFsXAqjCRo9ymRwvxwUHpSQ==
+
 "@13enbi/vhooks@^0.0.3-beta.1":
   version "0.0.3-beta.1"
   resolved "https://registry.yarnpkg.com/@13enbi/vhooks/-/vhooks-0.0.3-beta.1.tgz#ac208679af473c340ddb30a6a796cc91a60a150d"

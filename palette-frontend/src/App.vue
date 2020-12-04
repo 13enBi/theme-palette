@@ -11,7 +11,6 @@ import Color from './components/Color/Color.vue';
 import AppHeader from './components/Header.vue';
 import { onMounted } from 'vue';
 import { useMutations } from '@13enbi/vhooks';
-import { lessParse } from './common/utils';
 
 export default {
 	components: {

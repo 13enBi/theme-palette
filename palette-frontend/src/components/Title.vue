@@ -12,108 +12,106 @@
 </template>
 
 <script lang="ts">
-	import { ref, watchEffect, reactive, computed, watch } from 'vue';
-	import { lessParse } from '../common/utils';
-	import { useState, useMutations, useBoolean } from '@13enbi/vhooks';
-	import { useHash } from '../common/hooks';
+import { ref, watchEffect, reactive, computed, watch } from 'vue';
 
-	export default {
-		setup() {
-			const [show, toggle] = useBoolean(false);
-			const { title, allTheme } = useState(['title', 'allTheme']);
-			const { setNowTheme } = useMutations(['setNowTheme']);
+import { useState, useMutations, useBoolean } from '@13enbi/vhooks';
+import { useHash } from '../common/hooks';
 
-			const themeMap = computed(() => {
-				return allTheme.value.reduce((map, res) => {
-					return (map[res.fileName] = res), map;
-				}, {});
-			});
+export default {
+	setup() {
+		const [show, toggle] = useBoolean(false);
+		const { title, allTheme } = useState(['title', 'allTheme']);
+		const { setNowTheme } = useMutations(['setNowTheme']);
 
-			const change = (res: ColorTheme.FileResult) => {
-				setNowTheme(res);
+		const themeMap = computed(() => {
+			return allTheme.value.reduce((map, res) => {
+				return (map[res.fileName] = res), map;
+			}, {});
+		});
 
-				hash.value = res.fileName;
-			};
+		const change = (res: ColorTheme.FileResult) => {
+			hash.value = res.fileName;
+		};
 
-			const hash = useHash();
+		const hash = useHash();
 
-			watchEffect(() => {
-				const now = themeMap.value[hash.value];
+		watchEffect(() => {
+			const now = themeMap.value[hash.value];
 
-				now && setNowTheme(now);
-			});
+			now && requestAnimationFrame(() => setNowTheme(now));
+		});
 
-			return { title, show, toggle, change, allTheme };
-		},
-	};
+		return { title, show, toggle, change, allTheme };
+	},
+};
 </script>
 
 <style lang="less">
-	.theme-title {
-		position: relative;
-		header {
-			font-size: 20px;
-			width: 200px;
-		}
+.theme-title {
+	position: relative;
+	header {
+		font-size: 20px;
+		width: 200px;
 	}
-	.dropdown {
-		--dropdown-item-hover-color: hsl(0, 0%, 96%);
-		--dropdown-item-divider-color: rgba(255, 255, 255, 0.2);
+}
+.dropdown {
+	--dropdown-item-hover-color: hsl(0, 0%, 96%);
+	--dropdown-item-divider-color: rgba(255, 255, 255, 0.2);
 
-		position: relative;
+	position: relative;
 
-		.dropdown-toggle {
-			color: #1890ff;
+	.dropdown-toggle {
+		color: #1890ff;
+		cursor: pointer;
+	}
+
+	.dropdown-menu {
+		width: 100%;
+		position: absolute;
+		top: calc(100% + 4px);
+		left: 0;
+		margin: 0;
+		padding: 4px 0;
+		list-style-type: none;
+		transform: perspective(400px) rotateX(-90deg);
+		transform-origin: top;
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+		white-space: nowrap;
+		transition: 0.4s;
+		border-radius: 6px;
+
+		.dropdown-item {
 			cursor: pointer;
-		}
-
-		.dropdown-menu {
-			width: 100%;
-			position: absolute;
-			top: calc(100% + 4px);
-			left: 0;
-			margin: 0;
-			padding: 4px 0;
-			list-style-type: none;
-			transform: perspective(400px) rotateX(-90deg);
-			transform-origin: top;
-			box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-			white-space: nowrap;
+			display: block;
+			padding: 6px 12px;
+			//text-align: center;
+			text-decoration: none;
+			//	color: #000;
+			background-color: #fff;
 			transition: 0.4s;
-			border-radius: 6px;
-
-			.dropdown-item {
-				cursor: pointer;
-				display: block;
-				padding: 6px 12px;
-				//text-align: center;
-				text-decoration: none;
-				//	color: #000;
-				background-color: #fff;
-				transition: 0.4s;
-				&::selection {
-					background-color: #91d5ff;
-				}
-				&:hover {
-					background-color: var(--dropdown-item-hover-color);
-				}
+			&::selection {
+				background-color: #91d5ff;
 			}
-
-			.dropdown-item:not(:last-child) a {
-				border-bottom: 1px solid var(--dropdown-item-divider-color);
+			&:hover {
+				background-color: var(--dropdown-item-hover-color);
 			}
 		}
 
-		&:hover {
-			.dropdown-toggle {
-				&::after {
-					transform: scaleY(-1);
-				}
-			}
-
-			// .dropdown-menu {
-			// 	transform: rotate(0);
-			// }
+		.dropdown-item:not(:last-child) a {
+			border-bottom: 1px solid var(--dropdown-item-divider-color);
 		}
 	}
+
+	&:hover {
+		.dropdown-toggle {
+			&::after {
+				transform: scaleY(-1);
+			}
+		}
+
+		// .dropdown-menu {
+		// 	transform: rotate(0);
+		// }
+	}
+}
 </style>

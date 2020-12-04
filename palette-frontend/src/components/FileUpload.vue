@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { ref, onMounted, watchEffect, DefineComponent, defineComponent } from 'vue';
-import { fileListReader, lessParse } from '../common/utils';
+import { fileListReader } from '../common/utils';
 import { useMutations } from '@13enbi/vhooks';
 import { message } from 'ant-design-vue';
 

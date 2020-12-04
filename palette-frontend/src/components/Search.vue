@@ -1,7 +1,5 @@
 <template>
 	<a-input-search v-model:value="searchWord" placeholder="输入类名/颜色值" enter-button />
-
-	<!-- @search="handleSearch" -->
 </template>
 
 <script lang="ts">

@@ -22,6 +22,7 @@ export default {
 </script>
 <style lang="less">
 .color-warp {
+	margin-top: 60px;
 	display: grid;
 	grid-template-columns: 1fr minmax(750px, 2fr) 1fr;
 	justify-items: center;

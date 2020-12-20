@@ -1,6 +1,8 @@
 import { nextTick } from 'vue';
 export * from './css-parse';
 
+export const isDev = process.env.NODE_ENV === 'development';
+
 export function isMoreThanDDD(color: string): boolean {
 	const colorArr = Array.from(color);
 	const first = colorArr.shift();

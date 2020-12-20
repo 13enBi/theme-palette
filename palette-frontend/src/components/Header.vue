@@ -5,6 +5,10 @@
 			<Search />
 		</div>
 
+		<div class="grid-new">
+			<New></New>
+		</div>
+
 		<div class="grid-title">
 			<Title />
 		</div>
@@ -21,6 +25,7 @@ import FileUpload from './FileUpload.vue';
 import Search from './Search.vue';
 import FoundList from './FoundList.vue';
 import Title from './Title.vue';
+import New from './New.vue';
 
 export default {
 	components: {
@@ -28,6 +33,7 @@ export default {
 		Search,
 		FoundList,
 		Title,
+		New,
 	},
 };
 </script>
@@ -46,6 +52,7 @@ export default {
 	margin: 0 10px;
 	position: fixed;
 	top: 10px;
+	//	z-index: 10086;
 }
 .grid {
 	display: grid;
@@ -60,6 +67,9 @@ export default {
 	// 	.loop(@i+1);
 	// }
 	// .loop(1);
+	&-new {
+		grid-column-start: 3;
+	}
 
 	&-file-search {
 		padding: 0 10px;
@@ -79,5 +89,7 @@ export default {
 	&-title {
 		grid-column-start: 3;
 	}
+
+
 }
 </style>

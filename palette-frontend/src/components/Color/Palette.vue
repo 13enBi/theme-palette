@@ -4,10 +4,6 @@
 		<main>
 			<ul>
 				<Item v-for="colorItem in props.colorPalette" :key="colorItem.colorName" :colorItem="colorItem" />
-
-				<li class="color-palette-add">
-					<span> 新增 <PlusOutlined /></span>
-				</li>
 			</ul>
 		</main>
 	</div>
@@ -70,44 +66,6 @@ export default {
 		background-color: #fff;
 		padding: 0;
 		margin: auto;
-	}
-
-	&-add {
-		margin-top: 25px;
-		cursor: pointer;
-		user-select: none;
-		height: 40px;
-		width: 50%;
-		background-color: transparent;
-		border: 1px dashed #1b87ed;
-		outline: transparent;
-		border-radius: 8px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transform: translateX(50%);
-		position: relative;
-		overflow: hidden;
-		&::before {
-			position: absolute;
-			content: '';
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: linear-gradient(120deg, transparent, hsla(190, 77%, 83%, 0.5), transparent);
-			transform: translateX(-100%);
-			transition: 0.6s;
-		}
-		span {
-			font-size: 18px;
-			color: #1b87ed;
-		}
-		&:hover {
-			&::before {
-				transform: translateX(100%);
-			}
-		}
 	}
 }
 </style>

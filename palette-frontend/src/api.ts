@@ -1,10 +1,9 @@
 import { useRequest } from '@13enbi/vhooks';
 import { message } from 'ant-design-vue';
+import { isDev } from './common/utils';
 
 const request = useRequest.create((axios) => {
-	const isDevelopment = process.env.NODE_ENV === 'development';
-
-	axios!.defaults.baseURL = isDevelopment ? '//localhost:3001/' : '/';
+	axios!.defaults.baseURL = isDev ? '//localhost:3001/' : '/';
 
 	return {
 		onError(err) {

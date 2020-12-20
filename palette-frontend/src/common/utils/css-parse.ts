@@ -1,4 +1,11 @@
-import { parse as __parse, ParseFlag, RootNode, RuleNode, stringify as __stringify } from '@13enbi/css-parse';
+import {
+	parse as __parse,
+	ParseFlag,
+	ParseNode,
+	RootNode,
+	RuleNode,
+	stringify as __stringify,
+} from '@13enbi/css-parse';
 import { useCache } from '@13enbi/vhooks';
 
 const less = (window as any).less;
@@ -11,6 +18,10 @@ export enum ThemeType {
 }
 
 export type UseType = 'text' | 'bg' | 'bd';
+const useType = ['bg', 'bd', 'text'];
+
+type ColorType = 'primary' | 'sub' | 'mid' | 'other';
+const colorType = ['primary', 'sub', 'mid', 'other'];
 
 export enum ColorProp {
 	text = 'color',
@@ -18,7 +29,7 @@ export enum ColorProp {
 	bg = 'background-color',
 }
 
-const removeImport = (input: string): string => input.replace(/@import \S+(?=;);/g, '');
+const removeImport = (input: string): string => input.replace(/(@import)/g, '//$1');
 
 const less2css = (input: string): Promise<string> => {
 	input = removeImport(input);
@@ -79,6 +90,42 @@ export type ParseType = Record<string, ParseItme>;
 
 export type ParseResult = Record<string, ParseType> & { root: RootNode };
 
+const cssParseItem = (node: ParseNode, ctx: ParseResult = {} as any) => {
+	if (node.type !== ParseFlag.RULES) return;
+
+	const [type, use, name] = parseName(node);
+	const value = parseColorProp(node, use);
+
+	if (!ctx[type]) {
+		ctx[type] = Object.create(null);
+	}
+
+	const parent = ctx[type];
+
+	if (!parent[name]) {
+		parent[name] = {
+			color: '',
+			class: new Set([]),
+			searchstr: node.loc.source,
+			type,
+			colorName: name,
+			parent,
+			node,
+		};
+	}
+
+	const result = ctx[type][name];
+
+	const night = isNight(node);
+
+	result[night ? 'nightColor' : 'color'] = value;
+	result[night ? 'nightNode' : 'node'] = node;
+	result.class?.add(use);
+	result.searchstr += name;
+
+	return result;
+};
+
 const cssParse = (css: string): ParseResult => {
 	const root = __parse(css, { comment: false, source: false });
 
@@ -91,35 +138,12 @@ const cssParse = (css: string): ParseResult => {
 	for (const node of root.rules) {
 		try {
 			if (node.type !== ParseFlag.RULES) continue;
-
 			const [type, use, name] = parseName(node);
 			const value = parseColorProp(node, use);
 
-			if (!cssParseResult[type]) {
-				cssParseResult[type] = Object.create(null);
-			}
+			
 
-			const parent = cssParseResult[type];
-
-			if (!parent[name]) {
-				parent[name] = {
-					color: '',
-					class: new Set([]),
-					searchstr: node.loc.source,
-					type,
-					colorName: name,
-					parent,
-				};
-			}
-
-			const result = cssParseResult[type][name];
-
-			const night = isNight(node);
-
-			result[night ? 'nightColor' : 'color'] = value;
-			result[night ? 'nightNode' : 'node'] = node;
-			result.class?.add(use);
-			result.searchstr += name;
+			cssParseItem(node, cssParseResult);
 		} catch (error) {
 			continue;
 		}
@@ -129,7 +153,7 @@ const cssParse = (css: string): ParseResult => {
 };
 
 const parseCache = useCache();
-export const lessParse = async (input: string) => {
+export const parse = async (input: string) => {
 	const cache = parseCache.getCache(input);
 	if (cache) return cache;
 
@@ -138,7 +162,6 @@ export const lessParse = async (input: string) => {
 	console.timeEnd('parse');
 
 	parseCache.setCache(input, parse, 'infinity');
-	console.log(parse);
 
 	return parse;
 };
@@ -159,6 +182,36 @@ export const lessParse = async (input: string) => {
 // 			throw new Error('');
 // 	}
 // };
+
+interface ThemeItem {
+	color: string;
+	nightColor: string;
+	name: string;
+	type: string;
+}
+
+export const create = ({ color, nightColor, name, type }: ThemeItem): ParseItme => {
+	const css = useType.reduce((str, use) => {
+		const selc = `${type}-${use}-${name}`,
+			prop = `${useType[use as any]}`;
+
+		return (
+			str +
+			`${selc} {
+		${prop}: ${color}
+	}
+	
+	[theme-mode='black'] ${selc} {
+		${prop}: ${nightColor}
+	}
+	`
+		);
+	}, '');
+
+	const node = __parse(css).rules[0];
+
+	return cssParseItem(node) as ParseItme;
+};
 
 const patchName = (item: ParseItme, name: string) => {
 	const node = item.node,

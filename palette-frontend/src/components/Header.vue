@@ -89,7 +89,5 @@ export default {
 	&-title {
 		grid-column-start: 3;
 	}
-
-
 }
 </style>

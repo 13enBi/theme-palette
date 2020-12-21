@@ -1,8 +1,6 @@
 <template>
 	<div class="class-btn">
-		<a-button v-for="className in classList" :key="className" @click="handleCopy(className)"
-			>{{ className }}
-		</a-button>
+		<a-button v-for="className in use" :key="className" @click="handleCopy(className)">{{ className }} </a-button>
 	</div>
 </template>
 
@@ -13,7 +11,7 @@ import { message } from 'ant-design-vue';
 
 export default {
 	props: {
-		classList: Set,
+		use: Set,
 		type: { type: String, default: 'other' },
 		colorName: { type: String, default: '' },
 	},
@@ -28,7 +26,7 @@ export default {
 			message.success(`copied： ${str} !`);
 		};
 
-		return { handleCopy, classList: props.classList };
+		return { handleCopy, use: props.use };
 	},
 };
 </script>

@@ -6,8 +6,8 @@
 	<a-modal title="新建颜色" :visible="visible" @ok="handleOk" @cancel="visible = false">
 		<a-form :form="form">
 			<a-form-item label="主题类型">
-				<a-radio-group name="ThemeType" v-model:value="form.type">
-					<a-radio v-for="i in 4" :value="ThemeType[i]"> {{ ThemeType[i] }} </a-radio>
+				<a-radio-group name="THEME_TYPES" v-model:value="form.type">
+					<a-radio v-for="i in 4" :value="THEME_TYPES[i]"> {{ THEME_TYPES[i] }} </a-radio>
 				</a-radio-group>
 			</a-form-item>
 			<a-form-item label="颜色名">
@@ -25,9 +25,9 @@
 
 <script lang="ts">
 import { reactive, ref } from 'vue';
-import { ThemeType } from '../common/utils/css-parse';
 import PlusOutlined from '@ant-design/icons-vue/PlusOutlined';
 import { message } from 'ant-design-vue';
+import { THEME_TYPES } from '../config';
 
 interface Form {
 	type: string;
@@ -51,9 +51,7 @@ const useForm = () => {
 	return { form, check };
 };
 
-const useNewTheme = (form: Form) => {
-	
-};
+const useNewTheme = (form: Form) => {};
 
 export default {
 	setup() {
@@ -68,7 +66,7 @@ export default {
 
 		return {
 			visible,
-			ThemeType,
+			THEME_TYPES,
 			form,
 			handleOk,
 		};

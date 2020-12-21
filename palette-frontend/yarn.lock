@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@13enbi/css-parse/-/css-parse-0.0.1-beta.3.tgz#25b6363c5006dee27fc70ce3d1b5fdbe3fa52394"
   integrity sha512-BXF5v0YVhp/HnRz0yIlqvAv7Grxenq96V1QeiWz5GxBy6xFsBA4kqDErXc9fVSKv1i6rzmt1jMWxMCiCDdIAXg==
 
-"@13enbi/vhooks@^0.0.3-beta.1":
-  version "0.0.3-beta.1"
-  resolved "https://registry.yarnpkg.com/@13enbi/vhooks/-/vhooks-0.0.3-beta.1.tgz#ac208679af473c340ddb30a6a796cc91a60a150d"
-  integrity sha512-R/IrUMWQ5K28uFyKpfYH5FYgB87CWD5Y3AWkwaH+TvkwHoSmoyNzaU5dzB/UUDStSrvcOFG4TFYiJoKH4QSADg==
+"@13enbi/vhooks@^0.0.3-beta.3":
+  version "0.0.3-beta.3"
+  resolved "https://registry.yarnpkg.com/@13enbi/vhooks/-/vhooks-0.0.3-beta.3.tgz#5fa240a3552d9413adbc9e8a6b1b9d2831399009"
+  integrity sha512-mFKpDoZvN+fEzy8xGExwxs0bVolwd1TS9qi8r+v8whmbYQXlNkA3Bg0mWbGLNnzN+RgGT+pT+Ou+wg10iMc6Lw==
   dependencies:
     axios "^0.20.0"
     intersection-observer "^0.11.0"
@@ -511,7 +511,7 @@ at-least-node@^1.0.0:
 
 axios@^0.20.0:
   version "0.20.0"
-  resolved "https://registry.npmjs.org/axios/-/axios-0.20.0.tgz#057ba30f04884694993a8cd07fa394cff11c50bd"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.20.0.tgz#057ba30f04884694993a8cd07fa394cff11c50bd"
   integrity sha512-ANA4rr2BDcmmAQLOKft2fufrtuvlqR+cXNNinUmvfeSNCOF98PZL+7M/v1zIdGo7OLjEA9J2gXJL+j4zGsl0bA==
   dependencies:
     follow-redirects "^1.10.0"
@@ -994,10 +994,15 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
-follow-redirects@^1.0.0, follow-redirects@^1.10.0:
+follow-redirects@^1.0.0:
   version "1.13.0"
   resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
   integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
+
+follow-redirects@^1.10.0:
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.1.tgz#5f69b813376cee4fd0474a3aba835df04ab763b7"
+  integrity sha512-SSG5xmZh1mkPGyKzjZP8zLjltIfpW32Y5QpdNJyjcfGxK3qo3NDDkZOZSFiGn1A6SclQxY9GzEwAHQ3dmYRWpg==
 
 fresh@~0.5.2:
   version "0.5.2"
@@ -1237,7 +1242,7 @@ inherits@2.0.3:
 
 intersection-observer@^0.11.0:
   version "0.11.0"
-  resolved "https://registry.npmjs.org/intersection-observer/-/intersection-observer-0.11.0.tgz#f4ea067070326f68393ee161cc0a2ca4c0040c6f"
+  resolved "https://registry.yarnpkg.com/intersection-observer/-/intersection-observer-0.11.0.tgz#f4ea067070326f68393ee161cc0a2ca4c0040c6f"
   integrity sha512-KZArj2QVnmdud9zTpKf279m2bbGfG+4/kn16UU0NL3pTVl52ZHiJ9IRNSsnn6jaHrL9EGLFM5eWjTx2fz/+zoQ==
 
 intersperse@^1.0.0:
@@ -1538,12 +1543,12 @@ lodash.camelcase@^4.3.0:
 
 lodash.debounce@^4.0.8:
   version "4.0.8"
-  resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
 lodash.throttle@^4.1.1:
   version "4.1.1"
-  resolved "https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
   integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
 
 lodash.toarray@^4.4.0:
@@ -1665,7 +1670,7 @@ minimist@^1.2.0, minimist@^1.2.5:
 
 mitt@^2.1.0:
   version "2.1.0"
-  resolved "https://registry.npmjs.org/mitt/-/mitt-2.1.0.tgz#f740577c23176c6205b121b2973514eade1b2230"
+  resolved "https://registry.yarnpkg.com/mitt/-/mitt-2.1.0.tgz#f740577c23176c6205b121b2973514eade1b2230"
   integrity sha512-ILj2TpLiysu2wkBbWjAmww7TkZb65aiQO+DkVdUTBpBXq+MHYiETENkKFMtsJZX1Lf4pe4QOrTSjIfUwN5lRdg==
 
 moment@^2.27.0:

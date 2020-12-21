@@ -10,7 +10,7 @@ declare namespace ColorTheme {
 		color: string;
 		nightColor?: string;
 		class?: Set<string>;
-		searchstr: string;
+		source: string;
 		type: ColorType;
 		colorName: string;
 	}

@@ -31,10 +31,8 @@ const mutations: MutationsTree<State> = {
 		state.allTheme.push(file);
 		dispatch('setNowTheme', file);
 	},
-	
-	async addTheme({state},theme:any) {
-		
-	}
+
+	async addTheme({ state }, theme: any) {},
 };
 
 export default mutations;

@@ -5,7 +5,7 @@
 			<span class="color-item-value">{{ color.color }}</span>
 		</div>
 
-		<ClassBtn :classList="color.class" :type="color.type" :colorName="color.colorName" />
+		<ClassBtn :classList="color.uses" :type="color.type" :colorName="color.colorName" />
 
 		<div v-if="color.nightColor" class="color-item-wrap two" :style="colorStyle(color.nightColor)">
 			<span class="color-item-name">{{ color.colorName }}(黑板)</span>
@@ -19,7 +19,7 @@
 			class="color-item-wrap found"
 			:style="colorStyle(color.color)"
 			@click="handleInView"
-			:data-class="[...color.class].join('|')"
+			:data-uses="[...color.uses].join('|')"
 			:data-type="color.type"
 			:data-color="color.colorName"
 		>
@@ -49,14 +49,14 @@ export default {
 		};
 
 		const isFound = computed(() => {
-			const { searchstr } = props.colorItem,
+			const { source } = props.colorItem,
 				{
 					searchWord: { value: searchWord },
 				} = useState(['searchWord']);
 
 			if (searchWord === '') return false;
 
-			return searchstr?.toLowerCase().includes(searchWord?.toLowerCase());
+			return source?.toLowerCase().includes(searchWord?.toLowerCase());
 		});
 
 		const handleInView = () => {

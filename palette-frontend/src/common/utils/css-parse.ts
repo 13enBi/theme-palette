@@ -1,3 +1,4 @@
+import { THEME_TYPES, UseTypes, USE_TYPES, USE_TYPE_PROP } from '../../config';
 import {
 	parse as __parse,
 	ParseFlag,
@@ -9,25 +10,6 @@ import {
 import { useCache } from '@13enbi/vhooks';
 
 const less = (window as any).less;
-
-export enum ThemeType {
-	primary = 1,
-	sub,
-	mid,
-	other,
-}
-
-export type UseType = 'text' | 'bg' | 'bd';
-const useType = ['bg', 'bd', 'text'];
-
-type ColorType = 'primary' | 'sub' | 'mid' | 'other';
-const colorType = ['primary', 'sub', 'mid', 'other'];
-
-export enum ColorProp {
-	text = 'color',
-	bd = 'border-color',
-	bg = 'background-color',
-}
 
 const removeImport = (input: string): string => input.replace(/(@import)/g, '//$1');
 
@@ -45,15 +27,15 @@ const parseName = (node: RuleNode) => {
 
 	if (!split) throw new Error('empty class');
 
-	const result = split.slice(0, 2).concat(split.slice(2).join('-')) as [ColorTheme.ColorType, UseType, string];
+	const result = split.slice(0, 2).concat(split.slice(2).join('-')) as [ColorTheme.ColorType, UseTypes, string];
 
-	if (!ThemeType[result[0]]) throw new Error('');
+	if (!THEME_TYPES[result[0]]) throw new Error('');
 
 	return result;
 };
 
-const parseColorProp = (node: RuleNode, use: UseType) => {
-	const prop = ColorProp[use];
+const parseColorProp = (node: RuleNode, uses: UseTypes) => {
+	const prop = USE_TYPE_PROP[uses];
 
 	for (const { property, value } of node.declarations) {
 		if (property === prop) {
@@ -76,8 +58,8 @@ export interface ParseItme {
 	color: string;
 	nightColor?: string;
 
-	class: Set<string>;
-	searchstr: string;
+	uses: Set<string>;
+	source: string;
 	type: string;
 	colorName: string;
 
@@ -93,8 +75,8 @@ export type ParseResult = Record<string, ParseType> & { root: RootNode };
 const cssParseItem = (node: ParseNode, ctx: ParseResult = {} as any) => {
 	if (node.type !== ParseFlag.RULES) return;
 
-	const [type, use, name] = parseName(node);
-	const value = parseColorProp(node, use);
+	const [type, uses, name] = parseName(node);
+	const value = parseColorProp(node, uses);
 
 	if (!ctx[type]) {
 		ctx[type] = Object.create(null);
@@ -105,8 +87,8 @@ const cssParseItem = (node: ParseNode, ctx: ParseResult = {} as any) => {
 	if (!parent[name]) {
 		parent[name] = {
 			color: '',
-			class: new Set([]),
-			searchstr: node.loc.source,
+			uses: new Set([]),
+			source: node.loc.source,
 			type,
 			colorName: name,
 			parent,
@@ -120,8 +102,8 @@ const cssParseItem = (node: ParseNode, ctx: ParseResult = {} as any) => {
 
 	result[night ? 'nightColor' : 'color'] = value;
 	result[night ? 'nightNode' : 'node'] = node;
-	result.class?.add(use);
-	result.searchstr += name;
+	result.uses?.add(uses);
+	result.source += name;
 
 	return result;
 };
@@ -138,10 +120,8 @@ const cssParse = (css: string): ParseResult => {
 	for (const node of root.rules) {
 		try {
 			if (node.type !== ParseFlag.RULES) continue;
-			const [type, use, name] = parseName(node);
-			const value = parseColorProp(node, use);
-
-			
+			const [type, uses, name] = parseName(node);
+			const value = parseColorProp(node, uses);
 
 			cssParseItem(node, cssParseResult);
 		} catch (error) {
@@ -166,23 +146,6 @@ export const parse = async (input: string) => {
 	return parse;
 };
 
-// export type PatchType = 'name' | 'color' | 'nightColor';
-// const patch = (node: ParseItme, type: PatchType, value: string) => {
-// 	switch (type) {
-// 		case 'name':
-// 			return patchName(node, value);
-
-// 		case 'color':
-// 			return patchColor(node, value);
-
-// 		case 'nightColor':
-// 			return patchColor(node, value, true);
-
-// 		default:
-// 			throw new Error('');
-// 	}
-// };
-
 interface ThemeItem {
 	color: string;
 	nightColor: string;
@@ -190,36 +153,25 @@ interface ThemeItem {
 	type: string;
 }
 
-export const create = ({ color, nightColor, name, type }: ThemeItem): ParseItme => {
-	const css = useType.reduce((str, use) => {
-		const selc = `${type}-${use}-${name}`,
-			prop = `${useType[use as any]}`;
+// export const create = ({ color, nightColor, name, type }: ThemeItem): ParseItme => {
+// 	const css = Array.from(USE_TYPES).reduce((str, uses) => {
+// 		const selc = `${type}-${uses}-${name}`,
+// 			prop = `${useType[uses as any]}`;
 
-		return (
-			str +
-			`${selc} {
-		${prop}: ${color}
-	}
+// 		return (
+// 			str +
+// 			`${selc} {
+// 		${prop}: ${color}
+// 	}
 	
-	[theme-mode='black'] ${selc} {
-		${prop}: ${nightColor}
-	}
-	`
-		);
-	}, '');
+// 	[theme-mode='black'] ${selc} {
+// 		${prop}: ${nightColor}
+// 	}
+// 	`
+// 		);
+// 	}, '');
 
-	const node = __parse(css).rules[0];
+// 	const node = __parse(css).rules[0];
 
-	return cssParseItem(node) as ParseItme;
-};
-
-const patchName = (item: ParseItme, name: string) => {
-	const node = item.node,
-		nitghtNode = item.nightNode;
-
-	item.colorName = name;
-};
-
-const patchColor = (node: ParseItme, value: string, night = false) => {};
-
-const stringify = (result: ParseResult) => __stringify(result.root);
+// 	return cssParseItem(node) as ParseItme;
+// };

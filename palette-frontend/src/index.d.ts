@@ -12,7 +12,7 @@ declare namespace ColorTheme {
 		class?: Set<string>;
 		source: string;
 		type: ColorType;
-		colorName: string;
+		name: string;
 	}
 
 	type ColorPalette = Record<string, ColorItem>;

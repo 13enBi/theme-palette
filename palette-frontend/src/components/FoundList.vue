@@ -25,11 +25,11 @@ export default {
 			scrollInView();
 
 			if (foundItem.value) {
-				const { type, uses, color } = foundItem.value.dataset,
+				const { type, uses, name } = foundItem.value.dataset,
 					usesList = uses?.split('|');
 
 				if (usesList && usesList.length === 1) {
-					const str = `${type}-${usesList[0]}${color ? `-${color}` : ''}`;
+					const str = `${type}-${usesList[0]}${name ? `-${name}` : ''}`;
 					clipboardWrite(str);
 					message.success(`copied : ${str}`);
 				}

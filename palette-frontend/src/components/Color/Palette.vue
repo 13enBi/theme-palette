@@ -3,7 +3,7 @@
 		<header>{{ headerText }}</header>
 		<main>
 			<ul>
-				<Item v-for="colorItem in props.colorPalette" :key="colorItem.colorName" :colorItem="colorItem" />
+				<Item v-for="colorItem in props.colorPalette" :key="colorItem.name" :colorItem="colorItem" />
 			</ul>
 		</main>
 	</div>
@@ -20,6 +20,7 @@ import { computed, watchEffect } from 'vue';
 import Item from './Itme.vue';
 import PlusOutlined from '@ant-design/icons-vue/PlusOutlined';
 import { useState } from '@13enbi/vhooks';
+import { THEME_TYPES_TEXT } from '../../config';
 
 export default {
 	props: {
@@ -28,14 +29,7 @@ export default {
 	},
 	setup(props) {
 		const headerText = computed(() => {
-			const headMap: any = {
-				primary: '品牌色',
-				sub: '辅助色',
-				mid: '中性色',
-				other: '其他',
-			};
-
-			return `${props.type}/${headMap[props.type || 'other']}`;
+			return `${props.type}/${THEME_TYPES_TEXT[props.type || 'other']}`;
 		});
 
 		const { nowTheme } = useState(['nowTheme']);

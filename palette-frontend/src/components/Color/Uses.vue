@@ -1,6 +1,6 @@
 <template>
 	<div class="class-btn">
-		<a-button v-for="className in use" :key="className" @click="handleCopy(className)">{{ className }} </a-button>
+		<a-button v-for="use in uses" :key="use" @click="handleCopy(use)">{{ use }} </a-button>
 	</div>
 </template>
 
@@ -11,13 +11,13 @@ import { message } from 'ant-design-vue';
 
 export default {
 	props: {
-		use: Set,
+		uses: Set,
 		type: { type: String, default: 'other' },
-		colorName: { type: String, default: '' },
+		name: { type: String, default: '' },
 	},
 	setup(props) {
-		const handleCopy = (className: string) => {
-			const str = [props.type, className, props.colorName].reduce((total, curr) =>
+		const handleCopy = (use: string) => {
+			const str = [props.type, use, props.name].reduce((total, curr) =>
 				curr ? (total += `-${curr}`) : total,
 			);
 

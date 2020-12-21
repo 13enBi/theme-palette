@@ -1,14 +1,14 @@
 <template>
 	<li class="color-item" :class="{ 'found-color-item': isFound }" ref="colorItemRef">
 		<div class="color-item-wrap" :style="colorStyle(color.color)">
-			<span class="color-item-name">{{ color.colorName }}</span>
+			<span class="color-item-name">{{ color.name }}</span>
 			<span class="color-item-value">{{ color.color }}</span>
 		</div>
 
-		<ClassBtn :classList="color.uses" :type="color.type" :colorName="color.colorName" />
+		<Uses :uses="color.uses" :type="color.type" :name="color.name" />
 
 		<div v-if="color.nightColor" class="color-item-wrap two" :style="colorStyle(color.nightColor)">
-			<span class="color-item-name">{{ color.colorName }}(黑板)</span>
+			<span class="color-item-name">{{ color.name }}(黑板)</span>
 			<span class="color-item-value">{{ color.nightColor }}</span>
 		</div>
 		<div class="color-item-wrap" v-else></div>
@@ -21,9 +21,9 @@
 			@click="handleInView"
 			:data-uses="[...color.uses].join('|')"
 			:data-type="color.type"
-			:data-color="color.colorName"
+			:data-name="color.name"
 		>
-			<span class="color-item-name">{{ color.colorName }}</span>
+			<span class="color-item-name">{{ color.name }}</span>
 			<span class="color-item-value">{{ color.color }}</span>
 		</div>
 	</teleport>
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import { isMoreThanDDD, scrollInView } from '../../common/utils';
-import ClassBtn from './ClassBtn.vue';
+import Uses from './Uses.vue';
 import { ref, computed } from 'vue';
 import { useState } from '@13enbi/vhooks';
 
@@ -71,7 +71,7 @@ export default {
 			colorItemRef,
 		};
 	},
-	components: { ClassBtn },
+	components: { Uses },
 };
 </script>
 

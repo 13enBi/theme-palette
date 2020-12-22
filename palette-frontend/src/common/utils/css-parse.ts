@@ -141,27 +141,11 @@ const ruleParse = (node: RuleNode, ctx: ParseResult = {} as any): ParseItem => {
 };
 
 export const createNode = () => {};
-export const create = () => {};
 
-// export const create = ({ color, nightColor, name, type }: ThemeItem): ParseItme => {
-// 	const css = Array.from(USES_TYPES).reduce((str, uses) => {
-// 		const selc = `${type}-${uses}-${name}`,
-// 			prop = `${useType[uses as any]}`;
-
-// 		return (
-// 			str +
-// 			`${selc} {
-// 		${prop}: ${color}
-// 	}
-
-// 	[theme-mode='black'] ${selc} {
-// 		${prop}: ${nightColor}
-// 	}
-// 	`
-// 		);
-// 	}, '');
-
-// 	const node = __parse(css).rules[0];
-
-// 	return cssParseItem(node) as ParseItme;
-// };
+export interface ThemeForm {
+	type: string;
+	name: string;
+	color: string;
+	nightColor: string;
+}
+export const create = (form: ThemeForm) => {};

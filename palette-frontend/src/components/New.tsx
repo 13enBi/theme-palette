@@ -4,15 +4,16 @@ import { Form as AntdForm, Input, Modal as AntdModal, Radio } from 'ant-design-v
 import { useForm as useAntdForm } from '@ant-design-vue/use';
 import { THEME_TYPES } from '../config';
 import { validateColor } from '../common/utils';
+import { create, ThemeForm } from '../common/utils/css-parse';
 
-const initForm = {
+const initForm: ThemeForm = {
 	type: THEME_TYPES[0],
 	name: '',
 	color: '',
 	nightColor: '',
 };
 
-type FormKey = keyof typeof initForm;
+type FormKey = keyof ThemeForm;
 
 const formLabel: Record<FormKey, string> = {
 	type: '主题类型',
@@ -69,8 +70,8 @@ const useForm = () => {
 
 	const { validate, validateInfos, resetFields: reset } = useAntdForm(form, reactive(rules));
 
-	const submit = () => {
-		return validate().then(() => toRaw(form));
+	const submit = async () => {
+		return await validate(), toRaw(form);
 	};
 
 	const Form = defineComponent(() => {
@@ -139,13 +140,12 @@ const useModal = () => {
 };
 
 export default defineComponent(() => {
-	const { Modal, visible } = useModal();
-	const { Form, submit, reset } = useForm();
+	const { Modal } = useModal();
+	const { Form, submit } = useForm();
 
-	const handleOk = () => {
-		submit().then((a) => {
-			console.log(a);
-		});
+	const handleOk = async () => {
+		const form = await submit();
+		create(form);
 	};
 
 	return () => (

@@ -51,6 +51,7 @@ const cssParse = (css: string): ParseResult => {
 
 			ruleParse(node, ctx);
 		} catch (error) {
+			console.error('parse error:', error);
 			continue;
 		}
 	}
@@ -58,7 +59,7 @@ const cssParse = (css: string): ParseResult => {
 	return ctx as ParseResult;
 };
 
-const removeImport = (input: string): string => input.replace(/(@import)/g, '//$1');
+const removeImport = (input: string) => input.replace(/(@import)/g, '//$1');
 
 const less2css = (input: string): Promise<string> => {
 	input = removeImport(input);
@@ -72,11 +73,11 @@ const parseName = (node: RuleNode): Pick<ParseItem, 'type' | 'name'> & { uses: U
 		.replace(/^(\.|#)/, '')
 		.split('-');
 
-	if (!split) throw new Error('empty');
+	if (!split) throw new Error(`empty name: ${node.selectors}`);
 
 	const [type, uses, name] = split.slice(0, 2).concat(split.slice(2).join('-')) as any[];
 
-	if (!THEME_TYPES[type]) throw new Error('empty');
+	if (THEME_TYPES[type] === void 0) throw new Error(`THEME_TYPES err: ${node.selectors}`);
 
 	return {
 		type,
@@ -94,7 +95,7 @@ const parseColorProp = (node: RuleNode, uses: UsesTypes) => {
 		}
 	}
 
-	throw new Error('empty');
+	throw new Error(`empty prop: ${node.selectors}`);
 };
 
 const nightReg = /(\.black |\.night |\[theme-mode=("|')(black|night)("|')\])/g;

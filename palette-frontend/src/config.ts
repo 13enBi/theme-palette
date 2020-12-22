@@ -1,5 +1,5 @@
 export enum THEME_TYPES {
-	primary = 1,
+	primary ,
 	sub,
 	mid,
 	other,

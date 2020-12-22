@@ -11,19 +11,34 @@
         "allowSyntheticDefaultImports": true,
         "sourceMap": true,
         "baseUrl": ".",
-        "types": ["webpack-env", "jest","node"],
+        "types": [
+            "webpack-env",
+            "node"
+        ],
         "paths": {
-            "@/*": ["src/*"],
-            "*": ["types/*"]
+            "@/*": [
+                "src/*"
+            ],
+            "*": [
+                "types/*"
+            ]
         },
-        "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+        "lib": [
+            "esnext",
+            "dom",
+            "dom.iterable",
+            "scripthost"
+        ]
     },
     "include": [
         "src/**/*.ts",
         "src/**/*.tsx",
         "src/**/*.vue",
         "tests/**/*.ts",
-        "tests/**/*.tsx", "src/main.ts"
+        "tests/**/*.tsx",
+        "src/main.ts"
     ],
-    "exclude": ["node_modules"]
+    "exclude": [
+        "node_modules"
+    ]
 }

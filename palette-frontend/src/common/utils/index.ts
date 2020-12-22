@@ -91,3 +91,7 @@ export async function scrollInView(el: HTMLElement | Element | null) {
 	await nextTick();
 	el?.scrollIntoView({ block: 'center', behavior: 'smooth' });
 }
+
+export const validateColor = (color: string) => {
+	return !!color.match(/(^#\d{3,6})|(^rgba?\(\d{1,3},\d{1,3},\d{1,3}(,\d{1,3})?\))/);
+};

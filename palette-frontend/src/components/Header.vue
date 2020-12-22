@@ -25,7 +25,7 @@ import FileUpload from './FileUpload.vue';
 import Search from './Search.vue';
 import FoundList from './FoundList.vue';
 import Title from './Title.vue';
-import New from './New.vue';
+import New from './New';
 
 export default {
 	components: {
@@ -89,5 +89,47 @@ export default {
 	&-title {
 		grid-column-start: 3;
 	}
+}
+
+.color-palette-add {
+	margin: 0 auto;
+	margin-top: 25px;
+	cursor: pointer;
+	user-select: none;
+	height: 40px;
+	width: 50%;
+	background-color: transparent;
+	border: 1px dashed #1b87ed;
+	outline: transparent;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	position: relative;
+	overflow: hidden;
+	&::before {
+		position: absolute;
+		content: '';
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(120deg, transparent, hsla(190, 77%, 83%, 0.5), transparent);
+		transform: translateX(-100%);
+		transition: 0.6s;
+	}
+	span {
+		font-size: 18px;
+		color: #1b87ed;
+	}
+	&:hover {
+		&::before {
+			transform: translateX(100%);
+		}
+	}
+}
+.color-new-input {
+	margin-top: 20px;
 }
 </style>

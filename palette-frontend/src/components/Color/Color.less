@@ -1,0 +1,26 @@
+.color-warp {
+	margin-top: 60px;
+	display: grid;
+	grid-template-columns: 1fr minmax(750px, 2fr) 1fr;
+	justify-items: center;
+	.color {
+		grid-column-start: 2;
+	}
+}
+.color-palette {
+	color: #fff;
+	z-index: 10;
+	header {
+		color: #000;
+		text-align: center;
+		font-size: 22px;
+		margin: 20px 0;
+	}
+	ul {
+		width: 750px;
+		list-style: none;
+		background-color: #fff;
+		padding: 0;
+		margin: auto;
+	}
+}

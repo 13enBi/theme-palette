@@ -1,6 +1,6 @@
-import { defineComponent, ref, reactive, toRaw, provide, inject, getCurrentInstance } from 'vue';
+import { defineComponent, ref, reactive, toRaw } from 'vue';
 import PlusOutlined from '@ant-design/icons-vue/PlusOutlined';
-import { Form as AntdForm, Input, Modal as AntdModal, Radio } from 'ant-design-vue';
+import { Form as AntdForm, Input, Modal as AntdModal, Radio, Tag } from 'ant-design-vue';
 import { useForm as useAntdForm } from '@ant-design-vue/use';
 import { THEME_TYPES } from '../config';
 import { validateColor } from '../common/utils';
@@ -32,7 +32,7 @@ const rules = {
 			message: 'Please input color name',
 		},
 		{
-			pattern: /(\w|-)+/,
+			pattern: /^(\w|-)+$/,
 			message: 'illegal name, 字母数字中划线',
 		},
 	],
@@ -59,11 +59,20 @@ const rules = {
 	],
 };
 
+const flexStyle = {
+	display: 'inline-flex',
+	alignItems: 'center',
+	gap: '10px',
+};
+
 const useForm = () => {
 	const form = reactive<ThemeForm>({ type: THEME_TYPES[0], name: '', color: '', nightColor: '' });
 
-	const handleInput = (key: FormKey) => (e: Event) => {
-		form[key] = (e.target as HTMLInputElement)?.value || '';
+	const handleInput = (key: FormKey, rAF = false) => (e: Event) => {
+		const change = () => (form[key] = (e.target as HTMLInputElement)?.value || '');
+
+		//rAF 防止input：color 卡顿
+		rAF ? requestAnimationFrame(change) : change();
 	};
 
 	const { validate, validateInfos, resetFields: reset } = useAntdForm(form, reactive(rules));
@@ -86,15 +95,23 @@ const useForm = () => {
 						</Radio.Group>
 					</AntdForm.Item>
 
-					{Object.entries(form).map(([k]) => {
-						const key = k as FormKey;
-						if (key === 'type') return <></>;
-						return (
-							<AntdForm.Item label={formLabel[key]} {...validateInfos[key]}>
-								<Input value={form[key]} onInput={handleInput(key)} placeholder={formLabel[key]} />
-							</AntdForm.Item>
-						);
-					})}
+					<AntdForm.Item label={formLabel.name} {...validateInfos.name}>
+						<Input value={form.name} onInput={handleInput('name')} placeholder={formLabel.name} />
+					</AntdForm.Item>
+
+					<AntdForm.Item label={formLabel.color} {...validateInfos.color}>
+						<div style={flexStyle}>
+							<input type="color" value={form.color} onInput={handleInput('color', true)} />
+							<Tag color={form.color}>{form.color}</Tag>
+						</div>
+					</AntdForm.Item>
+
+					<AntdForm.Item label={formLabel.nightColor} {...validateInfos.nightColor}>
+						<div style={flexStyle}>
+							<input type="color" value={form.nightColor} onInput={handleInput('nightColor', true)} />
+							<Tag color={form.nightColor}>{form.nightColor}</Tag>
+						</div>
+					</AntdForm.Item>
 				</AntdForm>
 			</>
 		);
@@ -145,11 +162,9 @@ export default defineComponent(() => {
 	const { setNowTheme } = useMutations(['setNowTheme']);
 
 	const handleOk = async () => {
-		//inject只能用在setup中
-		//const { theme } = useState({ theme: 'nowTheme' });
 		const form = await submit();
-		hide();
 		const result = merge(form, theme.value);
+		hide();
 		setNowTheme(result);
 	};
 

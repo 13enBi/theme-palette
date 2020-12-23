@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import Color from './components/Color/Color.vue';
+import Color from './components/Color/Color';
 import AppHeader from './components/Header.vue';
 import { onMounted } from 'vue';
 import { useMutations } from '@13enbi/vhooks';
@@ -22,7 +22,7 @@ export default {
 		onMounted(async () => {
 			const { setAllTheme } = useMutations(['setAllTheme']);
 
-			(setAllTheme as any)();
+			setAllTheme();
 		});
 	},
 };

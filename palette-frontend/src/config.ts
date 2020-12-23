@@ -26,3 +26,4 @@ export type UsesTypes = 'text' | 'bg' | 'bd';
 export const USES: UsesTypes[] = ['text', 'bg', 'bd'];
 
 export const NIGHT_PREFIX = `[theme-mode='black']`;
+export const NIGHT_REGEXP = /(\.black |\.night |\[theme-mode=("|')(black|night)("|')\])/g;

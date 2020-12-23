@@ -14,7 +14,7 @@ import { message } from 'ant-design-vue';
 export default {
 	setup() {
 		const fileRef = ref<null | HTMLInputElement>(null);
-		const { setNowTheme, uploadTheme } = useMutations(['setNowTheme', 'uploadTheme']);
+		const { setNowThemeByFile, uploadTheme } = useMutations(['setNowThemeByFile', 'uploadTheme']);
 
 		const handleUpload = () => {
 			fileRef.value?.click();

@@ -2,6 +2,8 @@ import { nextTick } from 'vue';
 export * from './css-parse';
 
 export const isDev = process.env.NODE_ENV === 'development';
+export const isArray = Array.isArray;
+export const isObject = (val: unknown): val is object => val !== null && !isArray(val) && typeof val === 'object';
 
 export function isMoreThanDDD(color: string): boolean {
 	const colorArr = Array.from(color);
@@ -93,5 +95,5 @@ export async function scrollInView(el: HTMLElement | Element | null) {
 }
 
 export const validateColor = (color: string) => {
-	return !!color.match(/(^#\d{3,6})|(^rgba?\(\d{1,3},\d{1,3},\d{1,3}(,\d{1,3})?\))/);
+	return !!color.match(/(^#(\d|[A-z]){3,6}$)|(^rgba?\(\d{1,3},\d{1,3},\d{1,3}(,\d{1,3})?\)$)/);
 };

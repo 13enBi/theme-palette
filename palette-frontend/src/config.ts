@@ -1,5 +1,5 @@
 export enum THEME_TYPES {
-	primary ,
+	primary,
 	sub,
 	mid,
 	other,
@@ -23,4 +23,6 @@ export enum USES_TYPE_PROP {
 	bg = 'background-color',
 }
 export type UsesTypes = 'text' | 'bg' | 'bd';
-export const USES = ['text', 'bg', 'bd'];
+export const USES: UsesTypes[] = ['text', 'bg', 'bd'];
+
+export const NIGHT_PREFIX = `[theme-mode='black']`;

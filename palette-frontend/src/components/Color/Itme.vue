@@ -50,13 +50,11 @@ export default {
 
 		const isFound = computed(() => {
 			const { source } = props.colorItem,
-				{
-					searchWord: { value: searchWord },
-				} = useState(['searchWord']);
+				word = useState(['searchWord']).searchWord.value;
 
-			if (searchWord === '') return false;
+			if (word === '') return false;
 
-			return source?.toLowerCase().includes(searchWord?.toLowerCase());
+			return source?.toLowerCase().includes(word?.toLowerCase());
 		});
 
 		const handleInView = () => {

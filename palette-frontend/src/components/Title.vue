@@ -21,7 +21,7 @@ export default {
 	setup() {
 		const [show, toggle] = useBoolean(false);
 		const { title, allTheme } = useState(['title', 'allTheme']);
-		const { setNowTheme } = useMutations(['setNowTheme']);
+		const { setNowThemeByFile } = useMutations(['setNowThemeByFile']);
 
 		const themeMap = computed(() => {
 			return allTheme.value.reduce((map, res) => {
@@ -38,7 +38,7 @@ export default {
 		watchEffect(() => {
 			const now = themeMap.value[hash.value];
 
-			now && requestAnimationFrame(() => setNowTheme(now));
+			now && requestAnimationFrame(() => setNowThemeByFile(now));
 		});
 
 		return { title, show, toggle, change, allTheme };

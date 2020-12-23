@@ -1,4 +1,4 @@
-import { ThemeTypes, THEME_TYPES, UsesTypes, USES_TYPES, USES_TYPE_PROP } from '../../config';
+import { NIGHT_PREFIX, ThemeTypes, THEME_TYPES, USES, UsesTypes, USES_TYPES, USES_TYPE_PROP } from '../../config';
 import { parse as __parse, ParseFlag, RootNode, RuleNode, stringify as __stringify } from '@13enbi/css-parse';
 import { useCache } from '@13enbi/vhooks';
 
@@ -23,7 +23,7 @@ export type ParseType = Record<string, ParseItem>;
 export type ParseResult = Record<string, ParseType> & { root: RootNode };
 
 const parseCache = useCache();
-export const parse = async (input: string) => {
+export const parse = async (input: string): Promise<ParseResult> => {
 	const cache = parseCache.getCache(input);
 	if (cache) return cache;
 
@@ -31,7 +31,7 @@ export const parse = async (input: string) => {
 	const parsed = cssParse(await less2css(input));
 	console.timeEnd('parse');
 
-	parseCache.setCache(input, parsed, 'infinity');
+	parseCache.setCache(input, parsed, 1e3 * 60 * 5);
 
 	return parsed;
 };
@@ -43,7 +43,7 @@ const cssParse = (css: string): ParseResult => {
 		root,
 	};
 
-	notEnumerable(ctx, 'root');
+	nonEnumerable(ctx, 'root');
 
 	for (const node of root.rules) {
 		try {
@@ -57,6 +57,40 @@ const cssParse = (css: string): ParseResult => {
 	}
 
 	return ctx as ParseResult;
+};
+
+const ruleParse = (node: RuleNode, ctx: ParseResult = {} as any): ParseItem => {
+	const { type, uses, name } = parseName(node);
+	const value = parseColorProp(node, uses);
+
+	if (!ctx[type]) {
+		ctx[type] = Object.create(null);
+	}
+
+	const parent = ctx[type];
+
+	if (!parent[name]) {
+		parent[name] = {
+			color: '',
+			uses: new Set([]),
+			source: node.loc.source,
+			type,
+			name,
+			parent,
+			node,
+		};
+	}
+
+	const result = ctx[type][name];
+
+	const night = isNight(node);
+
+	result[night ? 'nightColor' : 'color'] = value;
+	result[night ? 'nightNode' : 'node'] = node;
+	result.uses?.add(uses);
+	result.source += name;
+
+	return result;
 };
 
 const removeImport = (input: string) => input.replace(/(@import)/g, '//$1');
@@ -101,46 +135,10 @@ const parseColorProp = (node: RuleNode, uses: UsesTypes) => {
 const nightReg = /(\.black |\.night |\[theme-mode=("|')(black|night)("|')\])/g;
 const isNight = (node: RuleNode) => !!node.selectors.join(',').match(nightReg);
 
-const notEnumerable = (obj: object, key: string | symbol | number) =>
+const nonEnumerable = (obj: object, key: string | symbol | number) =>
 	Object.defineProperty(obj, key, {
 		enumerable: false,
 	});
-
-const ruleParse = (node: RuleNode, ctx: ParseResult = {} as any): ParseItem => {
-	const { type, uses, name } = parseName(node);
-	const value = parseColorProp(node, uses);
-
-	if (!ctx[type]) {
-		ctx[type] = Object.create(null);
-	}
-
-	const parent = ctx[type];
-
-	if (!parent[name]) {
-		parent[name] = {
-			color: '',
-			uses: new Set([]),
-			source: node.loc.source,
-			type,
-			name,
-			parent,
-			node,
-		};
-	}
-
-	const result = ctx[type][name];
-
-	const night = isNight(node);
-
-	result[night ? 'nightColor' : 'color'] = value;
-	result[night ? 'nightNode' : 'node'] = node;
-	result.uses?.add(uses);
-	result.source += name;
-
-	return result;
-};
-
-export const createNode = () => {};
 
 export interface ThemeForm {
 	type: string;
@@ -148,4 +146,40 @@ export interface ThemeForm {
 	color: string;
 	nightColor: string;
 }
-export const create = (form: ThemeForm) => {};
+
+const createCss = (
+	params: Omit<ThemeForm, 'nightColor'> & { uses: UsesTypes; night?: boolean },
+	prefix = NIGHT_PREFIX,
+) => {
+	const { type, name, color, uses, night = false } = params;
+
+	return `${night ? `${prefix} ` : ''}.${type}-${uses}-${name} {
+        ${USES_TYPE_PROP[uses]}: ${color}
+    }`;
+};
+
+export const createNode = ({ type, name, color, nightColor }: ThemeForm) => {
+	const css = USES.map((uses: UsesTypes) => {
+		return (
+			createCss({ type, name, color, uses }) +
+			'\n' +
+			createCss({ type, name, color: nightColor, uses, night: true })
+		);
+	}).join('');
+
+	return cssParse(css);
+};
+
+export const merge = (form: ThemeForm, parsed: ParseResult): ParseResult => {
+	const node = createNode(form);
+
+	const res = {} as any;
+
+	Object.entries(parsed).forEach(([k, v]) => {
+		res[k] = { ...v, ...node[k] };
+	});
+
+	res.root = { ...parsed.root, ...node.root };
+
+	return res;
+};

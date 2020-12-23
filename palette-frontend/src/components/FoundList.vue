@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { ref, watchEffect, nextTick, onMounted } from 'vue';
+import { ref, watchEffect, nextTick, onMounted, getCurrentInstance } from 'vue';
 import { scrollInView as _scrollInView, clipboardWrite } from '../common/utils';
 import { message } from 'ant-design-vue';
 import { useKeyPress, useMutationObserver, useDebounceFn } from '@13enbi/vhooks';

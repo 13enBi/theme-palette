@@ -1,17 +1,11 @@
-import { defineComponent, ref, reactive, toRaw } from 'vue';
+import { defineComponent, ref, reactive, toRaw, provide, inject, getCurrentInstance } from 'vue';
 import PlusOutlined from '@ant-design/icons-vue/PlusOutlined';
 import { Form as AntdForm, Input, Modal as AntdModal, Radio } from 'ant-design-vue';
 import { useForm as useAntdForm } from '@ant-design-vue/use';
 import { THEME_TYPES } from '../config';
 import { validateColor } from '../common/utils';
-import { create, ThemeForm } from '../common/utils/css-parse';
-
-const initForm: ThemeForm = {
-	type: THEME_TYPES[0],
-	name: '',
-	color: '',
-	nightColor: '',
-};
+import { merge, ThemeForm } from '../common/utils/css-parse';
+import { useMutations, useState } from '@13enbi/vhooks';
 
 type FormKey = keyof ThemeForm;
 
@@ -36,6 +30,10 @@ const rules = {
 		{
 			required: true,
 			message: 'Please input color name',
+		},
+		{
+			pattern: /(\w|-)+/,
+			message: 'illegal name, 字母数字中划线',
 		},
 	],
 	color: [
@@ -62,7 +60,7 @@ const rules = {
 };
 
 const useForm = () => {
-	const form = reactive(initForm);
+	const form = reactive<ThemeForm>({ type: THEME_TYPES[0], name: '', color: '', nightColor: '' });
 
 	const handleInput = (key: FormKey) => (e: Event) => {
 		form[key] = (e.target as HTMLInputElement)?.value || '';
@@ -111,22 +109,22 @@ const useForm = () => {
 
 const useModal = () => {
 	const visible = ref(false);
-	const handleShow = () => {
+	const show = () => {
 			visible.value = true;
 		},
-		handleHide = () => {
+		hide = () => {
 			visible.value = false;
 		};
 
 	const Modal = defineComponent((_, { slots, emit }) => {
 		return () => (
 			<>
-				<div class="color-palette-add" onClick={handleShow}>
+				<div class="color-palette-add" onClick={show}>
 					<span>
 						新增 <PlusOutlined />
 					</span>
 				</div>
-				<AntdModal title="新建颜色" visible={visible.value} onOk={() => emit('ok')} onCancel={handleHide}>
+				<AntdModal title="新建颜色" visible={visible.value} onOk={() => emit('ok')} onCancel={hide}>
 					{slots.default?.()}
 				</AntdModal>
 			</>
@@ -135,17 +133,24 @@ const useModal = () => {
 
 	return {
 		Modal,
-		visible,
+		show,
+		hide,
 	};
 };
 
 export default defineComponent(() => {
-	const { Modal } = useModal();
+	const { Modal, hide } = useModal();
 	const { Form, submit } = useForm();
+	const { theme } = useState({ theme: 'nowTheme' });
+	const { setNowTheme } = useMutations(['setNowTheme']);
 
 	const handleOk = async () => {
+		//inject只能用在setup中
+		//const { theme } = useState({ theme: 'nowTheme' });
 		const form = await submit();
-		create(form);
+		hide();
+		const result = merge(form, theme.value);
+		setNowTheme(result);
 	};
 
 	return () => (

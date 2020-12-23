@@ -8,7 +8,11 @@ const mutations: MutationsTree<State> = {
 		state.searchWord = word;
 	},
 
-	async setNowTheme({ state }, file: ColorTheme.FileResult) {
+	setNowTheme({ state }, theme) {
+		state.nowTheme = theme;
+	},
+
+	async setNowThemeByFile({ state }, file: ColorTheme.FileResult) {
 		state.nowTheme = {};
 		state.nowTheme = await parse(file.fileData);
 		state.title = file.fileName;
@@ -21,7 +25,7 @@ const mutations: MutationsTree<State> = {
 		state.allTheme = allTheme;
 
 		if (!state.nowTheme && allTheme.length) {
-			dispatch('setNowTheme', allTheme[0]);
+			dispatch('setNowThemeByFile', allTheme[0]);
 		}
 	},
 
@@ -29,7 +33,7 @@ const mutations: MutationsTree<State> = {
 		await api.uploadTheme(file);
 
 		state.allTheme.push(file);
-		dispatch('setNowTheme', file);
+		dispatch('setNowThemeByFile', file);
 	},
 
 	async addTheme({ state }, theme: any) {},

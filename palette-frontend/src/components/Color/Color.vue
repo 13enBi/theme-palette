@@ -14,7 +14,7 @@ import Palette from './Palette.vue';
 export default {
 	setup() {
 		return {
-			nowTheme: useState(['nowTheme']).nowTheme,
+			...useState(['nowTheme']),
 		};
 	},
 	components: { Palette },

@@ -1,5 +1,4 @@
-import { defineComponent } from 'vue';
-import { watchEffect, computed } from 'vue';
+import { defineComponent, watch, computed } from 'vue';
 import { useState, useMutations, useBoolean } from '@13enbi/vhooks';
 import { useHash } from '../../common/hooks';
 import { FileResult } from '../../common/utils';
@@ -24,7 +23,7 @@ export default defineComponent(() => {
 
 	const hash = useHash();
 
-	watchEffect(() => {
+	watch(hash, () => {
 		const now = themeMap.value[hash.value];
 
 		now && requestAnimationFrame(() => setNowThemeByFile(now));

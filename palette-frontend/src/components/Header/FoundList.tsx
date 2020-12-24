@@ -1,9 +1,9 @@
-import { ref, onMounted, defineComponent, Ref } from 'vue';
-import { scrollInView as _scrollInView, clipboardWrite, ParseItem } from '../../common/utils';
-import { message } from 'ant-design-vue';
-import { useKeyPress, useMutationObserver, useDebounceFn, useEventHub } from '@13enbi/vhooks';
+import { ref, defineComponent, Ref, PropType, computed, unref } from 'vue';
+import { scrollInView, ParseItem } from '../../common/utils';
+import { useEventHub } from '@13enbi/vhooks';
+import { THEMES, ThemeTypes, THEME_TYPES_TEXT } from '../../config';
+import { useColorStyle } from '../../common/hooks';
 import './style/FoundList.less';
-import { THEMES, ThemeTypes } from '../../config';
 
 const initFound = (): Record<ThemeTypes, Set<FoundPayLoad>> => {
 	return THEMES.reduce((map, type) => {
@@ -14,10 +14,13 @@ const initFound = (): Record<ThemeTypes, Set<FoundPayLoad>> => {
 
 export enum FOUND_EVENT {
 	ADD = 'found:add',
-	DELETE = 'found:remove',
+	DELETE = 'found:delete',
 }
 
-export type FoundPayLoad = Pick<ParseItem, 'uses' | 'name' | 'type'> & { el: Ref<HTMLElement> };
+export interface FoundPayLoad extends Pick<ParseItem, 'uses' | 'name' | 'type' | 'color'> {
+	el: Ref<HTMLElement>;
+	isFind: boolean;
+}
 
 const useFoundMap = () => {
 	const foundMap = ref(initFound());
@@ -26,26 +29,76 @@ const useFoundMap = () => {
 		if (!payload) return;
 
 		const set = foundMap.value[payload.type];
-		const act = ev === FOUND_EVENT.DELETE ? 'add' : 'delete';
-
-		console.log(payload);
+		const act = ev === FOUND_EVENT.ADD ? 'add' : 'delete';
 		set?.[act](payload);
 	};
 
-	const eventHub = useEventHub();
-	eventHub.on(FOUND_EVENT.ADD, handler(FOUND_EVENT.ADD));
-	eventHub.on(FOUND_EVENT.DELETE, handler(FOUND_EVENT.DELETE));
+	const { on } = useEventHub();
+	on(FOUND_EVENT.ADD, handler(FOUND_EVENT.ADD));
+	on(FOUND_EVENT.DELETE, handler(FOUND_EVENT.DELETE));
 
 	return foundMap;
 };
 
+const FoudItem = defineComponent({
+	props: {
+		payload: {
+			type: Object as PropType<FoundPayLoad>,
+			required: true,
+		},
+	},
+	setup(props) {
+		const bgStyle = useColorStyle(computed(() => props.payload.color));
+
+		const handleInView = () => {
+			// props ref自动解包 但是ts类型又报错。。
+			const el = unref(props.payload.el);
+
+			scrollInView(el);
+		};
+
+		return () => {
+			const payload = props.payload;
+
+			return (
+				<>
+					<div
+						style={{ ...bgStyle.value, display: payload.isFind ? 'block' : 'none' }}
+						class="color-item-wrap found"
+						onClick={handleInView}
+					>
+						<span class="color-item-name">{payload.name}</span>
+						<span class="color-item-value">{payload.color}</span>
+					</div>
+				</>
+			);
+		};
+	},
+});
+
 export default defineComponent(() => {
 	const foundMap = useFoundMap();
+
+	const headerText = (type: ThemeTypes) => {
+		return `${type}/${THEME_TYPES_TEXT[type || 'other']}`;
+	};
 
 	return () => (
 		<>
 			<div class="found-color-list">
-				<ul></ul>
+				<ul>
+					{Object.entries(foundMap.value).map(([type, list]) => {
+						return (
+							<nav class={type}>
+								<div>{headerText(type as ThemeTypes)}</div>
+
+								{[...list].map((payload) => (
+									<FoudItem payload={payload} key={payload.name}></FoudItem>
+								))}
+							</nav>
+						);
+					})}
+				</ul>
 			</div>
 		</>
 	);

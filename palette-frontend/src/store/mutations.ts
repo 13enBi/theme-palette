@@ -29,14 +29,15 @@ const mutations: MutationsTree<State> = {
 		}
 	},
 
-	async uploadTheme({ state, dispatch }, file: FileResult) {
+	async uploadTheme({ dispatch }, file: FileResult) {
 		await api.uploadTheme(file);
-
-		state.allTheme.push(file);
+		dispatch('addThemeByFile', file);
 		dispatch('setNowThemeByFile', file);
 	},
 
-	async addTheme({ state }, theme: any) {},
+	async addThemeByFile({ state }, file: FileResult) {
+		state.allTheme.push(file);
+	},
 };
 
 export default mutations;

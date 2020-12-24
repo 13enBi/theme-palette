@@ -6,6 +6,7 @@ import { THEME_TYPES } from '../../config';
 import { validateColor } from '../../common/utils';
 import { merge, ThemeForm } from '../../common/utils/css-parse';
 import { useMutations, useState } from '@13enbi/vhooks';
+import './style/New.less';
 
 type FormKey = keyof ThemeForm;
 
@@ -59,14 +60,9 @@ const rules = {
 	],
 };
 
-const flexStyle = {
-	display: 'inline-flex',
-	alignItems: 'center',
-	gap: '10px',
-};
-
-const useForm = () => {
-	const form = reactive<ThemeForm>({ type: THEME_TYPES[0], name: '', color: '', nightColor: '' });
+const useForm = (param?: ThemeForm) => {
+	const initForm = { type: THEME_TYPES[0], name: '', color: '', nightColor: '' };
+	const form = reactive<ThemeForm>(param || initForm);
 
 	const handleInput = (key: FormKey, rAF = false) => (e: Event) => {
 		const change = () => (form[key] = (e.target as HTMLInputElement)?.value || '');
@@ -100,14 +96,14 @@ const useForm = () => {
 					</AntdForm.Item>
 
 					<AntdForm.Item label={formLabel.color} {...validateInfos.color}>
-						<div style={flexStyle}>
+						<div class="flex-style">
 							<input type="color" value={form.color} onInput={handleInput('color', true)} />
 							<Tag color={form.color}>{form.color}</Tag>
 						</div>
 					</AntdForm.Item>
 
 					<AntdForm.Item label={formLabel.nightColor} {...validateInfos.nightColor}>
-						<div style={flexStyle}>
+						<div class="flex-style">
 							<input type="color" value={form.nightColor} onInput={handleInput('nightColor', true)} />
 							<Tag color={form.nightColor}>{form.nightColor}</Tag>
 						</div>

@@ -1,12 +1,7 @@
 import { THEME_TYPES_TEXT, ThemeTypes } from '../../config';
-import { defineComponent, computed, Teleport, PropType } from 'vue';
+import { defineComponent, computed, PropType } from 'vue';
 import { ParsePalette } from '../../common/utils/css-parse';
 import Item from './Item';
-
-const props = {
-	type: { type: String as PropType<ThemeTypes>, default: 'other' },
-	palette: { type: Object as PropType<ParsePalette>, requied: true, default: () => ({}) },
-};
 
 export default defineComponent({
 	props: {
@@ -34,12 +29,6 @@ export default defineComponent({
 						</ul>
 					</main>
 				</div>
-
-				<Teleport to=".found-color-list ul">
-					<nav class={props.type}>
-						<div>{headerText.value}</div>
-					</nav>
-				</Teleport>
 			</>
 		);
 	},

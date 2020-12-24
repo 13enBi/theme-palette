@@ -1,6 +1,7 @@
 import { NIGHT_PREFIX, NIGHT_REGEXP, ThemeTypes, THEME_TYPES, USES, UsesTypes, USES_TYPE_PROP } from '../../config';
 import { parse as __parse, ParseFlag, RootNode, RuleNode, stringify as __stringify } from '@13enbi/css-parse';
 import { useCache } from '@13enbi/vhooks';
+import { message } from 'ant-design-vue';
 
 const less = (window as any).less;
 
@@ -24,16 +25,22 @@ export type ParseResult = Record<string, ParsePalette> & { root: RootNode };
 
 const parseCache = useCache();
 export const parse = async (input: string): Promise<ParseResult> => {
-	const cache = parseCache.getCache(input);
-	if (cache) return cache;
+	try {
+		const cache = parseCache.getCache(input);
+		if (cache) return cache;
 
-	console.time('parse');
-	const parsed = cssParse(await less2css(input));
-	console.timeEnd('parse');
+		console.time('parse');
+		const parsed = cssParse(await less2css(input));
+		console.timeEnd('parse');
 
-	parseCache.setCache(input, parsed, 1e3 * 60 * 5);
+		parseCache.setCache(input, parsed, 1e3 * 60 * 5);
 
-	return parsed;
+		return parsed;
+	} catch (error) {
+		message.error(`样式解析报错,详情见控制台： ${error}, `);
+		console.error(error);
+		return {} as any;
+	}
 };
 
 const cssParse = (css: string): ParseResult => {

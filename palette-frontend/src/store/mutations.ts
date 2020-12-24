@@ -1,5 +1,5 @@
 import { MutationsTree } from '@13enbi/vhooks';
-import { parse } from '../common/utils';
+import { FileResult, parse } from '../common/utils';
 import { State } from './state';
 import * as api from '../api';
 
@@ -12,7 +12,7 @@ const mutations: MutationsTree<State> = {
 		state.nowTheme = theme;
 	},
 
-	async setNowThemeByFile({ state }, file: ColorTheme.FileResult) {
+	async setNowThemeByFile({ state }, file: FileResult) {
 		state.nowTheme = {};
 		state.nowTheme = await parse(file.fileData);
 		state.title = file.fileName;
@@ -29,7 +29,7 @@ const mutations: MutationsTree<State> = {
 		}
 	},
 
-	async uploadTheme({ state, dispatch }, file: ColorTheme.FileResult) {
+	async uploadTheme({ state, dispatch }, file: FileResult) {
 		await api.uploadTheme(file);
 
 		state.allTheme.push(file);

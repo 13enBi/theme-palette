@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import Color from './components/Color/Color';
-import AppHeader from './components/Header.vue';
+import AppHeader from './components/Header/Header';
 import { onMounted } from 'vue';
 import { useMutations } from '@13enbi/vhooks';
 

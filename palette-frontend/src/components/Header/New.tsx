@@ -2,9 +2,9 @@ import { defineComponent, ref, reactive, toRaw } from 'vue';
 import PlusOutlined from '@ant-design/icons-vue/PlusOutlined';
 import { Form as AntdForm, Input, Modal as AntdModal, Radio, Tag } from 'ant-design-vue';
 import { useForm as useAntdForm } from '@ant-design-vue/use';
-import { THEME_TYPES } from '../config';
-import { validateColor } from '../common/utils';
-import { merge, ThemeForm } from '../common/utils/css-parse';
+import { THEME_TYPES } from '../../config';
+import { validateColor } from '../../common/utils';
+import { merge, ThemeForm } from '../../common/utils/css-parse';
 import { useMutations, useState } from '@13enbi/vhooks';
 
 type FormKey = keyof ThemeForm;

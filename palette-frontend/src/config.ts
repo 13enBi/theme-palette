@@ -11,6 +11,7 @@ export enum THEME_TYPES_TEXT {
 	mid = '中性色',
 	other = '其他色',
 }
+export const THEMES = ['primary', 'sub', 'mid', 'other'];
 
 export enum USES_TYPES {
 	text,

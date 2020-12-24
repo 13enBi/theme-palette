@@ -1,0 +1,43 @@
+.found-color-list {
+	// position: fixed;
+	// top: 50px;
+	// left: 10px;
+	width: 220px;
+	text-align: center;
+
+	ul {
+		overflow-y: auto;
+		overflow-x: hidden;
+		max-height: calc(100vh - 60px);
+		padding: 0;
+		margin: 0;
+		//	margin-bottom: 30px;
+
+		&::-webkit-scrollbar {
+			width: 6px;
+			height: 6px;
+			background-color: transparent;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background-color: transparent;
+			border-radius: 6px;
+		}
+
+		&:hover {
+			&::-webkit-scrollbar-thumb {
+				background-color: rgba(69, 90, 100, 0.2);
+			}
+		}
+	}
+	header {
+		font-size: 22px;
+		margin-top: 20px;
+	}
+	nav {
+		margin: 20px;
+		div {
+			font-size: 18px;
+		}
+	}
+}

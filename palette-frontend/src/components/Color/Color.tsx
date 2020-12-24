@@ -3,7 +3,7 @@ import Palette from './Palette';
 import { defineComponent } from 'vue';
 import { ThemeTypes } from '../../config';
 import { ParsePalette } from '../../common/utils/css-parse';
-import './Color.less';
+import './style/Color.less';
 
 export default defineComponent(() => {
 	const { nowTheme } = useState(['nowTheme']);

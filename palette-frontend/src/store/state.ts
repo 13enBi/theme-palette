@@ -1,8 +1,10 @@
+import { FileResult, ParseResult } from '@/common/utils';
+
 export interface State {
 	searchWord: string;
-	nowTheme: ColorTheme.CssParseResult | null | {};
+	nowTheme: ParseResult | null | {};
 	title: string;
-	allTheme: ColorTheme.FileResult[];
+	allTheme: FileResult[];
 }
 
 const state: State = {

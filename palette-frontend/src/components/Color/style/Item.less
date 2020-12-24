@@ -1,0 +1,93 @@
+.gradient-border {
+	padding: 4px;
+	position: relative;
+	background: #fff;
+	z-index: 100;
+
+	&::after {
+		position: absolute;
+		content: '';
+		top: 0;
+		left: 0;
+		z-index: -20;
+		width: 100%;
+		height: 100%;
+
+		background: linear-gradient(
+			60deg,
+			hsl(224, 85%, 66%),
+			hsl(269, 85%, 66%),
+			hsl(314, 85%, 66%),
+			hsl(359, 85%, 66%),
+			hsl(44, 85%, 66%),
+			hsl(89, 85%, 66%),
+			hsl(134, 85%, 66%),
+			hsl(179, 85%, 66%)
+		);
+		background-size: 300% 300%;
+		background-position: 0 50%;
+		border-radius: 4px;
+		animation: moveGradient 4s alternate infinite;
+	}
+}
+
+@keyframes moveGradient {
+	50% {
+		background-position: 100% 50%;
+	}
+}
+
+.found-color-item {
+	.gradient-border();
+}
+.color-item {
+	margin: auto;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	z-index: 100;
+
+	.class-btn {
+		display: none;
+	}
+	&:hover,
+	&.found-color-item {
+		.class-btn {
+			display: flex;
+		}
+	}
+	&-wrap {
+		display: flex;
+		justify-content: space-between;
+		min-height: 50px;
+		padding: 0 12px;
+		line-height: 50px;
+		transition: all 0.3s ease-in-out;
+		cursor: pointer;
+		position: relative;
+		&:nth-last-child(1) {
+			grid-column-start: 3;
+		}
+		&:hover {
+			transform: scale(1.05);
+			z-index: 10;
+		}
+		&.found {
+			font-size: 16px;
+			width: 180px;
+			height: 45px;
+		}
+	}
+}
+
+.class-btn {
+	display: flex;
+	gap: 5px;
+	justify-content: center;
+	align-items: center;
+	padding: 0 5px;
+	z-index: 249;
+	button {
+		width: 31%;
+		margin: 0 5px;
+	}
+}

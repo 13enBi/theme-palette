@@ -16,6 +16,7 @@ import { ref, watchEffect, reactive, computed, watch } from 'vue';
 
 import { useState, useMutations, useBoolean } from '@13enbi/vhooks';
 import { useHash } from '../common/hooks';
+import { State } from '../store/state';
 
 export default {
 	setup() {

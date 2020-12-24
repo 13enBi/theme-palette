@@ -58,7 +58,11 @@ export function downLoadFile(fileName: string, content: any): void {
 	});
 }
 
-export function fileReader(file: File): Promise<ColorTheme.FileResult> {
+export interface FileResult {
+	fileName: string;
+	fileData: string;
+}
+export function fileReader(file: File): Promise<FileResult> {
 	return new Promise((resove, reject) => {
 		const reader = new FileReader();
 
@@ -76,7 +80,7 @@ export function fileReader(file: File): Promise<ColorTheme.FileResult> {
 	});
 }
 
-export async function fileListReader(fileList: FileList): Promise<ColorTheme.FileResult> {
+export async function fileListReader(fileList: FileList): Promise<FileResult> {
 	let fileData = '';
 	const fileName = fileList[0].name;
 	for (const file of fileList) {

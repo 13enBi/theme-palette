@@ -1,4 +1,4 @@
-import { defineComponent, PropType, toRef, watch, Ref, onMounted, toRefs } from 'vue';
+import { defineComponent, PropType, toRef, watch, Ref, onMounted, toRefs, reactive } from 'vue';
 import { ParseItem } from '../../common/utils';
 import { ref, computed } from 'vue';
 import { useEventHub, useState } from '@13enbi/vhooks';
@@ -11,23 +11,29 @@ const useFoundAction = (item: Ref<ParseItem>, { el, isFind }: { el: Ref<HTMLElem
 	const payload = computed<FoundPayLoad>(() => {
 		const { uses, name, type, color } = item.value;
 
-		return {
+		//use reactive to unwrap ref
+		return reactive({
 			uses,
 			name,
 			type,
 			color,
-			isFind: isFind.value,
+
+			isFind,
 			el,
-		};
+		});
 	});
 
 	const { emit } = useEventHub();
 
 	onMounted(() => {
-		watch(payload, (val, oldVal) => {
-			emit(FOUND_EVENT.DELETE, oldVal);
-			emit(FOUND_EVENT.ADD, val);
-		});
+		watch(
+			payload,
+			(val, oldVal) => {
+				emit(FOUND_EVENT.DELETE, oldVal);
+				emit(FOUND_EVENT.ADD, val);
+			},
+			{ immediate: true },
+		);
 	});
 };
 

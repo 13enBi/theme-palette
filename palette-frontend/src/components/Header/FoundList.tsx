@@ -5,25 +5,23 @@ import { THEMES, ThemeTypes, THEME_TYPES_TEXT } from '../../config';
 import { useColorStyle } from '../../common/hooks';
 import './style/FoundList.less';
 
-const initFound = (): Record<ThemeTypes, Set<FoundPayLoad>> => {
-	return THEMES.reduce((map, type) => {
-		map[type] = new Set([]);
-		return map;
-	}, {} as any);
-};
-
 export enum FOUND_EVENT {
 	ADD = 'found:add',
 	DELETE = 'found:delete',
 }
 
 export interface FoundPayLoad extends Pick<ParseItem, 'uses' | 'name' | 'type' | 'color'> {
-	el: Ref<HTMLElement>;
+	el: HTMLElement;
 	isFind: boolean;
 }
 
 const useFoundMap = () => {
-	const foundMap = ref(initFound());
+	const initMap = THEMES.reduce((map, type) => {
+		map[type] = new Set([]);
+		return map;
+	}, {} as any) as Record<ThemeTypes, Set<FoundPayLoad>>;
+
+	const foundMap = ref(initMap);
 
 	const handler = (ev: FOUND_EVENT) => (payload?: FoundPayLoad) => {
 		if (!payload) return;
@@ -51,8 +49,7 @@ const FoudItem = defineComponent({
 		const bgStyle = useColorStyle(computed(() => props.payload.color));
 
 		const handleInView = () => {
-			// props ref自动解包 但是ts类型又报错。。
-			const el = unref(props.payload.el);
+			const el = props.payload.el;
 
 			scrollInView(el);
 		};

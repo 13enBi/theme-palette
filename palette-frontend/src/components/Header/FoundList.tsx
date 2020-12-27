@@ -1,4 +1,4 @@
-import { ref, defineComponent, Ref, PropType, computed, unref } from 'vue';
+import { ref, defineComponent, PropType, computed, UnwrapRef, reactive } from 'vue';
 import { scrollInView, ParseItem } from '../../common/utils';
 import { useEventHub } from '@13enbi/vhooks';
 import { THEMES, ThemeTypes, THEME_TYPES_TEXT } from '../../config';
@@ -21,12 +21,12 @@ const useFoundMap = () => {
 		return map;
 	}, {} as any) as Record<ThemeTypes, Set<FoundPayLoad>>;
 
-	const foundMap = ref(initMap);
+	const foundMap = reactive(initMap);
 
 	const handler = (ev: FOUND_EVENT) => (payload?: FoundPayLoad) => {
 		if (!payload) return;
 
-		const set = foundMap.value[payload.type];
+		const set = foundMap[payload.type];
 		const act = ev === FOUND_EVENT.ADD ? 'add' : 'delete';
 		set?.[act](payload);
 	};
@@ -84,7 +84,7 @@ export default defineComponent(() => {
 		<>
 			<div class="found-color-list">
 				<ul>
-					{Object.entries(foundMap.value).map(([type, list]) => {
+					{Object.entries(foundMap).map(([type, list]) => {
 						return (
 							<nav class={type}>
 								<div>{headerText(type as ThemeTypes)}</div>

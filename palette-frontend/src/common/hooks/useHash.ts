@@ -2,13 +2,15 @@ import { useEventListener } from '@13enbi/vhooks';
 
 import { customRef } from 'vue';
 
+const getHash = () => location.hash.slice(1);
+
 const useHash = () => {
-	let hash = location.hash.slice(1);
+	let hash = getHash();
 
 	return customRef((track, trigger) => {
 		useEventListener('hashchange', () => {
 			trigger();
-			hash = location.hash.slice(1);
+			hash = getHash();
 		});
 
 		return {

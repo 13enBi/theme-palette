@@ -23,19 +23,19 @@ const useThemeAction = () => {
 		'addThemeByFile',
 	]);
 
-	return {
-		setAndUpload: uploadTheme,
-		setNonUpload(file: FileResult) {
+	return (file: FileResult, upload = false) => {
+		if (upload) uploadTheme(file);
+		else {
 			setNowThemeByFile(file);
 			addThemeByFile(file);
-		},
+		}
 	};
 };
 
 export default defineComponent(() => {
 	const fileRef = ref<null | HTMLInputElement>(null);
 
-	const { setAndUpload, setNonUpload } = useThemeAction();
+	const setTheme = useThemeAction();
 
 	const handleUpload = () => {
 		fileRef.value?.click();
@@ -49,7 +49,7 @@ export default defineComponent(() => {
 
 		const upload = await useConfirm();
 
-		upload ? setAndUpload(file) : setNonUpload(file);
+		setTheme(file, upload);
 	};
 
 	return () => (

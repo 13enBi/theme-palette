@@ -1,10 +1,10 @@
 import { defineComponent, PropType, toRef, watch, Ref, onMounted, toRefs, reactive } from 'vue';
 import { ParseItem } from '../../common/utils';
 import { ref, computed } from 'vue';
-import { useEventHub, useState } from '@13enbi/vhooks';
+import { useState } from '@13enbi/vhooks';
 import './style/Item.less';
-import { useColorStyle } from '../../common/hooks';
-import { FoundPayLoad, FOUND_EVENT } from '../Header/FoundList';
+import useColorStyle from '../../common/hooks/useColorStyle';
+import { FoundPayLoad, useFoundUpdate } from '../../common/hooks/useFoundMap';
 import Uses from './Uses';
 
 const useFoundAction = (item: Ref<ParseItem>, { el, isFind }: { el: Ref<HTMLElement>; isFind: Ref<boolean> }) => {
@@ -23,18 +23,7 @@ const useFoundAction = (item: Ref<ParseItem>, { el, isFind }: { el: Ref<HTMLElem
 		});
 	});
 
-	const { emit } = useEventHub();
-
-	onMounted(() => {
-		watch(
-			payload,
-			(val, oldVal) => {
-				emit(FOUND_EVENT.DELETE, oldVal);
-				emit(FOUND_EVENT.ADD, val);
-			},
-			{ immediate: true },
-		);
-	});
+	useFoundUpdate(payload);
 };
 
 const useIsFind = (item: Ref<ParseItem>) => {

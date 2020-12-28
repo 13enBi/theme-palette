@@ -1,4 +1,4 @@
-import { createApp, reactive, ref } from 'vue';
+import { createApp } from 'vue';
 import App from './App.vue';
 import mixin from './mixin';
 import store from './store';
@@ -11,4 +11,3 @@ app.config.warnHandler = () => null;
 mixin(app).use(store);
 
 app.mount('#app');
-

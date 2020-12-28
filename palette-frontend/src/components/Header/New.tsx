@@ -15,7 +15,7 @@ export default defineComponent(() => {
 		const form = await submit();
 		const result = merge(form, theme.value);
 		hide();
-		setNowTheme(result);
+	//	setNowTheme(result);
 	};
 
 	return () => (

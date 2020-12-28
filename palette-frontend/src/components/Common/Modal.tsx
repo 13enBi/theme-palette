@@ -1,8 +1,8 @@
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import PlusOutlined from '@ant-design/icons-vue/PlusOutlined';
 import { Modal as AntdModal } from 'ant-design-vue';
-import './style/New.less';
 import { useBoolean } from '@13enbi/vhooks';
+
 export default () => {
 	const [visible, toggle] = useBoolean(false);
 	const show = () => toggle(true),

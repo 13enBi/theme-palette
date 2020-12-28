@@ -5,8 +5,6 @@ import { THEME_TYPES } from '../../config';
 import { validateColor } from '../../common/utils';
 import { ThemeForm } from '../../common/utils/css-parse';
 
-import './style/New.less';
-
 type FormKey = keyof ThemeForm;
 
 enum formLabel {

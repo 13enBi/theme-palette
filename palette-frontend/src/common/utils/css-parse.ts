@@ -160,9 +160,9 @@ const createNode = ({ type, name, color, nightColor }: ThemeForm) => {
 		}`;
 	};
 
-	const css = USES.map((uses: UsesTypes) => {
-		return createCss(uses) + '\n' + createCss(uses, true);
-	}).join('');
+	const css = USES.reduce((str, uses: UsesTypes) => {
+		return str + createCss(uses) + '\n' + createCss(uses, true);
+	}, '');
 
 	return cssParse(css);
 };
@@ -170,11 +170,11 @@ const createNode = ({ type, name, color, nightColor }: ThemeForm) => {
 export const merge = (form: ThemeForm, parsed: ParseResult): ParseResult => {
 	const node = createNode(form);
 
-	Object.entries(parsed).forEach(([k, v]) => {
-		node[k] = { ...v, ...node[k] };
+	Object.entries(node).forEach(([k, v]) => {
+		parsed[k] = { ...parsed[k], ...v };
 	});
 
-	node.root = { ...parsed.root, ...node.root };
+	parsed.root = { ...parsed.root, ...node.root };
 
-	return node;
+	return parsed;
 };

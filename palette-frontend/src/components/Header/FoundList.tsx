@@ -1,42 +1,9 @@
-import { ref, defineComponent, PropType, computed, UnwrapRef, reactive } from 'vue';
-import { scrollInView, ParseItem } from '../../common/utils';
-import { useEventHub } from '@13enbi/vhooks';
-import { THEMES, ThemeTypes, THEME_TYPES_TEXT } from '../../config';
-import { useColorStyle } from '../../common/hooks';
+import { defineComponent, PropType, computed } from 'vue';
+import { scrollInView } from '../../common/utils';
+import { ThemeTypes, THEME_TYPES_TEXT } from '../../config';
+import useColorStyle from '../../common/hooks/useColorStyle';
 import './style/FoundList.less';
-
-export enum FOUND_EVENT {
-	ADD = 'found:add',
-	DELETE = 'found:delete',
-}
-
-export interface FoundPayLoad extends Pick<ParseItem, 'uses' | 'name' | 'type' | 'color'> {
-	el: HTMLElement;
-	isFind: boolean;
-}
-
-const useFoundMap = () => {
-	const initMap = THEMES.reduce((map, type) => {
-		map[type] = new Set([]);
-		return map;
-	}, {} as any) as Record<ThemeTypes, Set<FoundPayLoad>>;
-
-	const foundMap = reactive(initMap);
-
-	const handler = (ev: FOUND_EVENT) => (payload?: FoundPayLoad) => {
-		if (!payload) return;
-
-		const set = foundMap[payload.type];
-		const act = ev === FOUND_EVENT.ADD ? 'add' : 'delete';
-		set?.[act](payload);
-	};
-
-	const { on } = useEventHub();
-	on(FOUND_EVENT.ADD, handler(FOUND_EVENT.ADD));
-	on(FOUND_EVENT.DELETE, handler(FOUND_EVENT.DELETE));
-
-	return foundMap;
-};
+import useFoundMap, { FoundPayLoad } from '../../common/hooks/useFoundMap';
 
 const FoudItem = defineComponent({
 	props: {

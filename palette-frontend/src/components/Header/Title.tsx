@@ -1,8 +1,9 @@
 import { defineComponent, watch, computed } from 'vue';
 import { useState, useMutations, useBoolean } from '@13enbi/vhooks';
-import { useHash } from '../../common/hooks';
+import useHash from '../../common/hooks/useHash';
 import { FileResult } from '../../common/utils';
 import './style/Title.less';
+import { useFoundReset } from '../../common/hooks/useFoundMap';
 
 export default defineComponent(() => {
 	const [show, toggle] = useBoolean(false);
@@ -18,6 +19,7 @@ export default defineComponent(() => {
 	});
 
 	const change = (res: FileResult) => {
+		useFoundReset();
 		hash.value = res.fileName;
 	};
 

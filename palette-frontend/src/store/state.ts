@@ -1,4 +1,4 @@
-import { FileResult, ParseResult } from '@/common/utils';
+import { FileResult, ParseResult } from '../common/utils';
 
 export interface State {
 	searchWord: string;

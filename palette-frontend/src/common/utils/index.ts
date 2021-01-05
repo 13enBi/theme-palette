@@ -1,4 +1,5 @@
 import { nextTick } from 'vue';
+import { ThemeTypes, THEME_TYPES_TEXT } from '../../config';
 export * from './css-parse';
 
 export const isDev = process.env.NODE_ENV === 'development';
@@ -100,4 +101,8 @@ export async function scrollInView(el: HTMLElement | Element | null) {
 
 export const validateColor = (color: string) => {
 	return !!color.match(/(^#(\d|[A-z]){3,6}$)|(^rgba?\(\d{1,3},\d{1,3},\d{1,3}(,\d{1,3})?\)$)/);
+};
+
+export const headerText = (type: ThemeTypes) => {
+	return `${type}/${THEME_TYPES_TEXT[type || 'other']}`;
 };

@@ -11,6 +11,6 @@ export default createStore(
 		getters,
 	},
 	{
-		strict: false,
+		strict: true,
 	},
 );

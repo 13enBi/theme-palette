@@ -1,6 +1,7 @@
-import { THEME_TYPES_TEXT, ThemeTypes } from '../../config';
+import { ThemeTypes } from '../../config';
 import { defineComponent, computed, PropType } from 'vue';
 import { ParsePalette } from '../../common/utils/css-parse';
+import { headerText } from '../../common/utils';
 import Item from './Item';
 
 export default defineComponent({
@@ -9,14 +10,12 @@ export default defineComponent({
 		palette: { type: Object as PropType<ParsePalette>, requied: true, default: () => ({}) },
 	},
 	setup: (props) => {
-		const headerText = computed(() => {
-			return `${props.type}/${THEME_TYPES_TEXT[props.type || 'other']}`;
-		});
+		const header = computed(() => headerText(props.type));
 
 		return () => (
 			<>
 				<div class="color-palette">
-					<header>{headerText.value}</header>
+					<header>{header.value}</header>
 					<main>
 						<ul>
 							{Object.values(props.palette || {}).map((item) => {

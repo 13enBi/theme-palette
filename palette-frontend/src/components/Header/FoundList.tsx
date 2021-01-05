@@ -1,5 +1,5 @@
 import { defineComponent, PropType, computed } from 'vue';
-import { scrollInView } from '../../common/utils';
+import { scrollInView, headerText } from '../../common/utils';
 import { ThemeTypes, THEME_TYPES_TEXT } from '../../config';
 import useColorStyle from '../../common/hooks/useColorStyle';
 import './style/FoundList.less';
@@ -43,25 +43,19 @@ const FoudItem = defineComponent({
 export default defineComponent(() => {
 	const foundMap = useFoundMap();
 
-	const headerText = (type: ThemeTypes) => {
-		return `${type}/${THEME_TYPES_TEXT[type || 'other']}`;
-	};
-
 	return () => (
 		<>
 			<div class="found-color-list">
 				<ul>
-					{Object.entries(foundMap).map(([type, list]) => {
-						return (
-							<nav class={type}>
-								<div>{headerText(type as ThemeTypes)}</div>
+					{Object.entries(foundMap).map(([type, list]) => (
+						<nav class={type}>
+							<div>{headerText(type as ThemeTypes)}</div>
 
-								{[...list].map((payload) => (
-									<FoudItem payload={payload} key={payload.name}></FoudItem>
-								))}
-							</nav>
-						);
-					})}
+							{[...list].map((payload) => (
+								<FoudItem payload={payload} key={payload.name}></FoudItem>
+							))}
+						</nav>
+					))}
 				</ul>
 			</div>
 		</>

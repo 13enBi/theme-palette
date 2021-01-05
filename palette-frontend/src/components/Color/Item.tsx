@@ -54,12 +54,11 @@ export default defineComponent({
 	},
 
 	setup(props) {
+		const el = ref();
 		const { item } = toRefs(props);
 
 		const isFind = useIsFind(item);
 		const { bgStyle, nightBgStyle } = useBgStyle(item);
-
-		const el = ref();
 
 		useFoundAction(item, { isFind, el });
 

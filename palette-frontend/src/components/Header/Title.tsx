@@ -18,7 +18,7 @@ export default defineComponent(() => {
 		}, {});
 	});
 
-	const change = (res: FileResult) => {
+	const handleChange = (res: FileResult) => {
 		useFoundReset();
 		hash.value = res.fileName;
 	};
@@ -44,15 +44,11 @@ export default defineComponent(() => {
 					<header>{title.value}</header>
 				</div>
 				<ul class="theme-list dropdown-menu" style={showStyle.value}>
-					{(allTheme.value as FileResult[]).map((item) => {
-						return (
-							<>
-								<li class="dropdown-item" key={item.fileName} onClick={() => change(item)}>
-									{item.fileName}
-								</li>
-							</>
-						);
-					})}
+					{(allTheme.value as FileResult[]).map((item) => (
+						<li class="dropdown-item" key={item.fileName} onClick={() => handleChange(item)}>
+							{item.fileName}
+						</li>
+					))}
 				</ul>
 			</div>
 		</>

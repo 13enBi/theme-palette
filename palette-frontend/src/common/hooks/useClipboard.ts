@@ -1,4 +1,5 @@
-import { onUnmounted, Ref, ref, unref } from 'vue';
+import { useEventListener } from '@13enbi/vhooks';
+import { Ref, ref, unref } from 'vue';
 import { clipboardRead } from '../utils';
 
 export default (defaultVal: string | Ref<string> = '') => {
@@ -9,11 +10,7 @@ export default (defaultVal: string | Ref<string> = '') => {
 	};
 
 	handleClipRead();
-	window.addEventListener('focus', handleClipRead);
-
-	onUnmounted(() => {
-		window.removeEventListener('focus', handleClipRead);
-	});
+	useEventListener('focus', handleClipRead, { target: window });
 
 	return copyValue;
 };

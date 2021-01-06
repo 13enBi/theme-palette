@@ -19,10 +19,7 @@ const useConfirm = (): Promise<boolean> => {
 const useThemeAction = () => {
 	const { setNowTheme, uploadTheme } = useMutations(['setNowTheme', 'uploadTheme']);
 
-	return (file: FileResult, upload = false) => {
-		if (upload) uploadTheme(file);
-		else setNowTheme(file);
-	};
+	return (file: FileResult, upload = false) => (upload ? uploadTheme(file) : setNowTheme(file));
 };
 
 export default defineComponent(() => {

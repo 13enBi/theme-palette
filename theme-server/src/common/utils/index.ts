@@ -1,5 +1,7 @@
 export * from './fs';
 
+export const isDev = process.env.NODE_ENV === 'development';
+
 export const combineURLs = (baseURL: string, relativeURL?: string) => {
 	return relativeURL
 		? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')

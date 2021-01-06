@@ -1,6 +1,6 @@
 import { defineComponent, PropType, computed } from 'vue';
 import { scrollInView, headerText } from '../../common/utils';
-import { ThemeTypes, THEME_TYPES_TEXT } from '../../config';
+import { ThemeTypes } from '../../config';
 import useColorStyle from '../../common/hooks/useColorStyle';
 import './style/FoundList.less';
 import useFoundMap, { FoundPayLoad } from '../../common/hooks/useFoundMap';

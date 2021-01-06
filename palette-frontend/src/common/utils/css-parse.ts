@@ -179,5 +179,4 @@ export const merge = (form: ThemeForm, parsed: ParseResult): ParseResult => {
 	return parsed;
 };
 
-
-//TODO: patch remove 
+//TODO: patch remove

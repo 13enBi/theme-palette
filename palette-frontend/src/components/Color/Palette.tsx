@@ -18,13 +18,9 @@ export default defineComponent({
 					<header>{header.value}</header>
 					<main>
 						<ul>
-							{Object.values(props.palette || {}).map((item) => {
-								return (
-									<>
-										<Item key={item.name} item={item}></Item>
-									</>
-								);
-							})}
+							{Object.values(props.palette || {}).map((item) => (
+								<Item key={item.name} item={item}></Item>
+							))}
 						</ul>
 					</main>
 				</div>

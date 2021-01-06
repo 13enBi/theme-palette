@@ -9,13 +9,11 @@ export default defineComponent(() => {
 	const { Modal, hide } = useModal();
 	const { Form, submit } = useForm();
 	const { now } = useState(['now']);
-	const { setNowTheme } = useMutations(['setNowTheme']);
 
 	const handleOk = async () => {
 		const form = await submit();
-		const result = merge(form, now.value);
+		merge(form, now.value);
 		hide();
-		//	setNowTheme(result);
 	};
 
 	return () => (

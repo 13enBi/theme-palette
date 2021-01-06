@@ -22,13 +22,11 @@ export default defineComponent({
 			<>
 				<div class="class-btn">
 					{props.uses &&
-						[...props.uses].map((use) => {
-							return (
-								<Button key={use} onClick={() => handleCopy(use)}>
-									{use}
-								</Button>
-							);
-						})}
+						[...props.uses].map((use) => (
+							<Button key={use} onClick={() => handleCopy(use)}>
+								{use}
+							</Button>
+						))}
 				</div>
 			</>
 		);

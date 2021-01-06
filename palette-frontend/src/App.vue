@@ -20,9 +20,9 @@ export default {
 
 	setup() {
 		onMounted(async () => {
-			const { setAllTheme } = useMutations(['setAllTheme']);
+			const { setThemeMap } = useMutations(['setThemeMap']);
 
-			setAllTheme();
+			setThemeMap();
 		});
 	},
 };

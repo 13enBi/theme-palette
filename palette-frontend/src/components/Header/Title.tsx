@@ -4,19 +4,12 @@ import useHash from '../../common/hooks/useHash';
 import { FileResult } from '../../common/utils';
 import './style/Title.less';
 import { useFoundReset } from '../../common/hooks/useFoundMap';
+import { THemeMap } from 'src/store/state';
 
 export default defineComponent(() => {
 	const [show, toggle] = useBoolean(false);
-	const { title, allTheme } = useState(['title', 'allTheme']);
-	const { setNowThemeByFile } = useMutations(['setNowThemeByFile']);
-
-	type ThemeMap = Record<string, FileResult>;
-	const themeMap = computed<ThemeMap>(() => {
-		return allTheme.value.reduce((map: ThemeMap, res: FileResult) => {
-			map[res.fileName] = res;
-			return map;
-		}, {});
-	});
+	const { title, themeMap } = useState(['title', 'themeMap']);
+	const { setNowTheme } = useMutations(['setNowTheme']);
 
 	const handleChange = (res: FileResult) => {
 		useFoundReset();
@@ -28,7 +21,7 @@ export default defineComponent(() => {
 	watch(hash, () => {
 		const now = themeMap.value[hash.value];
 
-		now && requestAnimationFrame(() => setNowThemeByFile(now));
+		now && requestAnimationFrame(() => setNowTheme(now));
 	});
 
 	const showStyle = computed(() => {
@@ -37,6 +30,8 @@ export default defineComponent(() => {
 		};
 	});
 
+	const themeList = computed(() => Object.values(themeMap.value as THemeMap));
+
 	return () => (
 		<>
 			<div class="theme-title dropdown">
@@ -44,11 +39,13 @@ export default defineComponent(() => {
 					<header>{title.value}</header>
 				</div>
 				<ul class="theme-list dropdown-menu" style={showStyle.value}>
-					{(allTheme.value as FileResult[]).map((item) => (
-						<li class="dropdown-item" key={item.fileName} onClick={() => handleChange(item)}>
-							{item.fileName}
-						</li>
-					))}
+					{themeList.value.map((item) => {
+						return (
+							<li class="dropdown-item" key={item.fileName} onClick={() => handleChange(item)}>
+								{item.fileName}
+							</li>
+						);
+					})}
 				</ul>
 			</div>
 		</>

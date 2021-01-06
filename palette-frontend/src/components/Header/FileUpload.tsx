@@ -17,18 +17,11 @@ const useConfirm = (): Promise<boolean> => {
 };
 
 const useThemeAction = () => {
-	const { setNowThemeByFile, uploadTheme, addThemeByFile } = useMutations([
-		'setNowThemeByFile',
-		'uploadTheme',
-		'addThemeByFile',
-	]);
+	const { setNowTheme, uploadTheme } = useMutations(['setNowTheme', 'uploadTheme']);
 
 	return (file: FileResult, upload = false) => {
 		if (upload) uploadTheme(file);
-		else {
-			setNowThemeByFile(file);
-			addThemeByFile(file);
-		}
+		else setNowTheme(file);
 	};
 };
 

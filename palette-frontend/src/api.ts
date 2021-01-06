@@ -21,8 +21,12 @@ const request = useRequest.create((axios) => {
 	};
 });
 
-export const requestAllTheme = (): Promise<FileResult[]> =>
-	request('/theme', { cacheKey: 'theme', cacheTime: 60 * 10 * 1000 });
+export type FileMap = Record<string, FileResult>;
+export const requestAllTheme = async () => {
+	const res = (await request('/theme', { cacheKey: 'theme', cacheTime: 60 * 10 * 1000 /* 10min */ })) as FileResult[];
+
+	return res.reduce((mapped, file) => ((mapped[file.fileName] = file), mapped), {} as FileMap);
+};
 
 export const uploadTheme = (file: FileResult) =>
 	request({

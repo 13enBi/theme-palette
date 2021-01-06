@@ -1,17 +1,20 @@
 import { FileResult, ParseResult } from '../common/utils';
 
+export type ThemeItem = FileResult & { parsed?: ParseResult };
+export type THemeMap = Record<string, ThemeItem>;
+
 export interface State {
 	searchWord: string;
-	nowTheme: ParseResult | null | {};
+	now: ParseResult | {};
 	title: string;
-	allTheme: FileResult[];
+	themeMap: THemeMap;
 }
 
 const state: State = {
 	searchWord: '',
-	nowTheme: null,
+	now: {},
 	title: '',
-	allTheme: [],
+	themeMap: {},
 };
 
 export default state;

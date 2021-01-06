@@ -1,3 +1,6 @@
+//Format: [ThemeTypes]-[UsesTypes]-[name]
+//e.g: primary-bg-tip, sub-text-desc
+
 export enum THEME_TYPES {
 	primary,
 	sub,

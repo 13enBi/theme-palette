@@ -8,14 +8,14 @@ import './style/New.less';
 export default defineComponent(() => {
 	const { Modal, hide } = useModal();
 	const { Form, submit } = useForm();
-	const { theme } = useState({ theme: 'nowTheme' });
+	const { now } = useState(['now']);
 	const { setNowTheme } = useMutations(['setNowTheme']);
 
 	const handleOk = async () => {
 		const form = await submit();
-		const result = merge(form, theme.value);
+		const result = merge(form, now.value);
 		hide();
-	//	setNowTheme(result);
+		//	setNowTheme(result);
 	};
 
 	return () => (

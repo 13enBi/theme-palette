@@ -9,7 +9,6 @@ export default (defaultVal: string | Ref<string> = '') => {
 		copyValue.value = (await clipboardRead()) || unref(defaultVal);
 	};
 
-	handleClipRead();
 	useEventListener('focus', handleClipRead, { target: window });
 
 	return copyValue;

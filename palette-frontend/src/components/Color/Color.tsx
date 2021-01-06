@@ -6,23 +6,15 @@ import { ParsePalette } from '../../common/utils/css-parse';
 import './style/Color.less';
 
 export default defineComponent(() => {
-	const { nowTheme } = useState(['nowTheme']);
+	const { now } = useState(['now']);
 
 	return () => (
 		<>
 			<div class="color-warp">
 				<div class="color">
-					{Object.entries(nowTheme.value || {}).map(([type, palette]) => {
-						return (
-							<>
-								<Palette
-									key={type}
-									type={type as ThemeTypes}
-									palette={palette as ParsePalette}
-								></Palette>
-							</>
-						);
-					})}
+					{Object.entries(now.value || {}).map(([type, palette]) => (
+						<Palette key={type} type={type as ThemeTypes} palette={palette as ParsePalette}></Palette>
+					))}
 				</div>
 			</div>
 		</>

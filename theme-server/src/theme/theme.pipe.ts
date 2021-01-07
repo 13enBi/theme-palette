@@ -8,19 +8,18 @@ import {
 import { ApiException } from 'src/common/exception/api.exception';
 import { isFileExists } from 'src/common/utils';
 import { THEME_PATH } from './const';
-import { UpfileDto } from './dto/upfile.dto';
+import { UpfileDTO } from './DTO/upfile.dto';
 
 @Injectable()
 export class ThemePathCombine implements PipeTransform {
-	transform(value: UpfileDto, meta: ArgumentMetadata) {
+	transform(value: UpfileDTO, { type }: ArgumentMetadata) {
 		if (
-			meta.type === 'body' &&
+			(type === 'body' || type === 'query') &&
 			isObject(value) &&
 			isString(value.fileName)
 		) {
 			value.fileName = resolve(THEME_PATH, value.fileName);
 		}
-		value.fileName = resolve(THEME_PATH, value.fileName);
 
 		return value;
 	}
@@ -30,9 +29,7 @@ export class ThemePathCombine implements PipeTransform {
 export class ThemeExistsValidate implements PipeTransform {
 	constructor(private readonly shouldExist = true) {}
 
-	async transform(value: UpfileDto) {
-		console.log(value.fileName);
-
+	async transform(value: UpfileDTO) {
 		const { shouldExist } = this;
 		const isExists = await isFileExists(value.fileName);
 

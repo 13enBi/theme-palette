@@ -8,49 +8,52 @@ import {
 	UsePipes,
 	CacheInterceptor,
 	UseInterceptors,
+	Query,
+	CacheTTL,
 } from '@nestjs/common';
 import { ThemeService } from './theme.service';
-import { UpfileDto } from './dto/upfile.dto';
+import { FileNameDTO, UpfileDTO } from './DTO/upfile.dto';
 import { ThemePathCombine, ThemeExistsValidate } from './theme.pipe';
-import { EnvService } from 'src/env.service';
 
 @Controller('theme')
+@UsePipes(new ThemePathCombine())
 @UseInterceptors(CacheInterceptor)
 export class ThemeController {
-	constructor(
-		private readonly themeService: ThemeService,
-		private readonly envService: EnvService,
-	) {}
+	constructor(private readonly themeService: ThemeService) {}
+
+	@Get('/all')
+	@CacheTTL(1)
+	getAllTheme() {
+		return this.themeService.getAllThemesName();
+	}
 
 	@Get('/')
-	feachAll() {
-		return this.themeService.feachAll();
+	featchTheme(
+		@Query(new ThemeExistsValidate(true))
+		{ fileName }: FileNameDTO,
+	) {
+		return this.themeService.readTheme(fileName);
 	}
 
 	@Post('/')
-	@UsePipes(new ThemePathCombine())
 	async saveTheme(
-		@Body(new ThemeExistsValidate(false)) { fileData, fileName }: UpfileDto,
+		@Body(new ThemeExistsValidate(false)) { fileData, fileName }: UpfileDTO,
 	) {
 		this.themeService.writeTheme(fileName, fileData);
 	}
 
 	@Patch('/')
-	@UsePipes(new ThemePathCombine())
 	async updateTheme(
-		@Body(new ThemeExistsValidate(true)) { fileData, fileName }: UpfileDto,
+		@Body(new ThemeExistsValidate(true)) { fileData, fileName }: UpfileDTO,
 	) {
 		this.themeService.writeTheme(fileName, fileData);
 	}
 
 	@Delete('/')
-	@UsePipes(new ThemePathCombine())
 	async deleteTheme(
 		@Body(new ThemeExistsValidate(true))
-		{ fileName }: Pick<UpfileDto, 'fileName'>,
+		{ fileName }: FileNameDTO,
 	) {
-		console.log(fileName);
-
 		return this.themeService.deleteTheme(fileName);
 	}
 }

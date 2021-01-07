@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { combineURLs } from 'src/common/utils';
 import { THEME_PATH } from './const';
 import { promises } from 'fs';
-import { basename } from 'path';
+import { basename, resolve } from 'path';
 
 const { readdir, readFile, writeFile, unlink } = promises;
 
@@ -11,14 +10,16 @@ export class ThemeService {
 	private themes: Map<string, string>;
 
 	constructor() {
+		console.time();
 		this.initThemes();
+		console.timeEnd();
 	}
 
 	private async initThemes() {
 		this.themes = new Map();
 
 		for (const fileName of await readdir(THEME_PATH)) {
-			const fileUrl = combineURLs(THEME_PATH, fileName);
+			const fileUrl = resolve(THEME_PATH, fileName);
 
 			this.themes.set(fileUrl, await readFile(fileUrl, 'utf-8'));
 		}

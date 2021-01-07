@@ -12,15 +12,15 @@ const useFoundAction = (item: Ref<ParseItem>, { el, isFind }: { el: Ref<HTMLElem
 		const { uses, name, type, color } = item.value;
 
 		//use reactive to unwrap ref
-		return reactive({
+		return {
 			uses,
 			name,
 			type,
 			color,
 
-			isFind,
-			el,
-		});
+			isFind: isFind.value,
+			el: el.value,
+		};
 	});
 
 	useFoundUpdate(payload);

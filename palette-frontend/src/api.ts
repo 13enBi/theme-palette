@@ -3,7 +3,7 @@ import { message } from 'ant-design-vue';
 import { FileResult, isDev } from './common/utils';
 
 const request = useRequest.create((axios) => {
-	axios!.defaults.baseURL = isDev ? '//localhost:3001/' : './';
+	axios!.defaults.baseURL = isDev ? '//localhost:80/api' : './api';
 
 	return {
 		onError(err) {
@@ -21,10 +21,21 @@ const request = useRequest.create((axios) => {
 
 export type FileMap = Record<string, FileResult>;
 export const requestAllTheme = async () => {
-	const res = (await request('/theme', { cacheKey: 'theme', cacheTime: 60 * 10 * 1000 /* 10min */ })) as FileResult[];
+	try {
+		const res = (await request('/theme', {
+			cacheKey: 'theme',
+			cacheTime: 60 * 10 * 1000 /* 10min */,
+		})) as FileResult[];
 
-	return res.reduce((mapped, file) => ((mapped[file.fileName] = file), mapped), {} as FileMap);
+		console.log(res);
+
+		return res.reduce((mapped, file) => ((mapped[file.fileName] = file), mapped), {} as FileMap);
+	} catch (error) {
+		console.log(error);
+	}
 };
+
+window.a = requestAllTheme;
 
 export const uploadTheme = (file: FileResult) =>
 	request({

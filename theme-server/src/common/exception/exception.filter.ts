@@ -5,11 +5,10 @@ import {
 	HttpException,
 	HttpStatus,
 } from '@nestjs/common';
-import { ExecException } from 'child_process';
 
 @Catch(HttpException)
 export class ExceptionsFilter implements ExceptionFilter {
-	async catch(exception: ExecException, host: ArgumentsHost) {
+	async catch(exception: HttpException, host: ArgumentsHost) {
 		const ctx = host.switchToHttp();
 		const response = ctx.getResponse();
 		const { message = '服务器拉跨了' } = exception;

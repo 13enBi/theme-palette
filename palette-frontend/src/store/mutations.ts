@@ -10,16 +10,24 @@ const mutations: MutationsTree<State> = {
 	},
 
 	async setNowTheme({ state, dispatch }, themeItem: ThemeItem) {
-		if (!themeItem.parsed) {
-			//themeItem is readonly
-			toRaw(themeItem).parsed = await parse(themeItem.fileData);
+		if (!themeItem.fileData) {
+			toRaw(themeItem).fileData = await api.requestTheme(themeItem.fileName);
 		}
 
-		dispatch('addThemeByFile', themeItem);
+		if (!themeItem.parsed) {
+			//themeItem is readonly
+			toRaw(themeItem).parsed = await parse(themeItem.fileData!);
+		}
+
+		dispatch('addTheme', themeItem);
 
 		state.title = themeItem.fileName;
 		state.now = themeItem.parsed!;
-	},
+    },
+    
+     mergeTheme() {
+
+    },
 
 	async setThemeMap({ state, dispatch }) {
 		const map = await api.requestAllTheme();
@@ -32,11 +40,11 @@ const mutations: MutationsTree<State> = {
 
 	async uploadTheme({ dispatch }, file: FileResult) {
 		await api.uploadTheme(file);
-		dispatch('addThemeByFile', file);
+		dispatch('addTheme', file);
 		dispatch('setNowTheme', file);
 	},
 
-	async addThemeByFile({ state: { themeMap } }, file: FileResult) {
+	async addTheme({ state: { themeMap } }, file: FileResult) {
 		if (!themeMap[file.fileName]) {
 			themeMap[file.fileName] = file;
 		}

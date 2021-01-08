@@ -1,6 +1,6 @@
 import { FileResult, ParseResult } from '../common/utils';
 
-export type ThemeItem = FileResult & { parsed?: ParseResult };
+export type ThemeItem = Omit<FileResult, 'fileData'> & { parsed?: ParseResult; fileData?: string };
 export type THemeMap = Record<string, ThemeItem>;
 
 export interface State {

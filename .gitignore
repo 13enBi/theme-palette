@@ -1,4 +1,5 @@
 **/node_modules
 **/dist
 theme-server/public
+theme-server/statics
 yarn-error.log

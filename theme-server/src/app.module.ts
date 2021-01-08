@@ -10,19 +10,20 @@ import { ExceptionsFilter } from './common/exception/exception.filter';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule } from '@nestjs/config';
 import { resolve } from 'path';
+import { TimeoutInterceptor } from './common/interceptor/timeout.interceptor';
 
 @Module({
 	imports: [
-        //env config
+		//env config
 		ConfigModule.forRoot({
 			envFilePath: [resolve(__dirname, '../config/env/.env.dev')],
-        }),
-        // static 
+		}),
+		// static
 		ServeStaticModule.forRoot({
 			rootPath: resolve(__dirname, '../public'),
 			exclude: ['/api/*'],
-        }),
-        
+		}),
+
 		ThemeModule,
 	],
 	controllers: [AppController],
@@ -31,6 +32,10 @@ import { resolve } from 'path';
 		{
 			provide: APP_INTERCEPTOR,
 			useClass: ResponseInterceptor,
+		},
+		{
+			provide: APP_INTERCEPTOR,
+			useClass: TimeoutInterceptor,
 		},
 		{
 			provide: APP_FILTER,

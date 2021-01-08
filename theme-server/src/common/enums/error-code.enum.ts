@@ -6,6 +6,7 @@ export enum ApiErrorCode {
 
 export enum ApiErrorMessage {
 	SUCCESS = 'success',
+	TIMEOUT = '请求超时',
 	INVALID_FILE_FORMAT = '文件格式不正确',
 	INVALID_FILE_DATA = '文件内容不正确',
 	VALIDATE_FAIL = '参数校验失败',

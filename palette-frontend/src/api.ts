@@ -19,23 +19,20 @@ const request = useRequest.create((axios) => {
 	};
 });
 
-export type FileMap = Record<string, Omit<FileResult, 'fileData'>>;
 export const requestAllTheme = async () => {
-	const res = (await request('/theme/all')) as string[];
+	const res = (await request('/theme/all', {})) as string[];
 
-	return res.reduce((mapped, fileName) => ((mapped[fileName] = { fileName }), mapped), {} as FileMap);
+	return res.reduce(
+		(mapped, fileName) => ((mapped[fileName] = { fileName }), mapped),
+		{} as Record<string, { fileName: string }>,
+	);
 };
 
 export const requestTheme = (fileName: string) => {
-	return request(
-		{
-			url: '/theme',
-			params: {
-				fileName,
-			},
-		},
-		{ cacheKey: fileName, cacheTime: 60 * 10 * 1000 /* 10min */ },
-	);
+	return request({
+		url: '/theme',
+		params: { fileName },
+	});
 };
 
 export const uploadTheme = (file: FileResult) =>

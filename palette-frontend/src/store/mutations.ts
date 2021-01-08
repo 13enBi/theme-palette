@@ -11,11 +11,11 @@ const mutations: MutationsTree<State> = {
 
 	async setNowTheme({ state, dispatch }, themeItem: ThemeItem) {
 		if (!themeItem.fileData) {
-			//themeItem is readonly
 			toRaw(themeItem).fileData = await api.requestTheme(themeItem.fileName);
 		}
 
 		if (!themeItem.parsed) {
+			//themeItem is readonly
 			toRaw(themeItem).parsed = await parse(themeItem.fileData!);
 		}
 
@@ -23,7 +23,11 @@ const mutations: MutationsTree<State> = {
 
 		state.title = themeItem.fileName;
 		state.now = themeItem.parsed!;
-	},
+    },
+    
+     mergeTheme() {
+
+    },
 
 	async setThemeMap({ state, dispatch }) {
 		const map = await api.requestAllTheme();

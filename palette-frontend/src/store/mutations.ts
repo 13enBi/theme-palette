@@ -1,5 +1,5 @@
 import { MutationsTree } from '@13enbi/vhooks';
-import { FileResult, parse } from '../common/utils';
+import { FileResult, merge, parse, ThemeForm } from '../common/utils';
 import { State, ThemeItem } from './state';
 import * as api from '../api';
 import { toRaw } from 'vue';
@@ -23,11 +23,11 @@ const mutations: MutationsTree<State> = {
 
 		state.title = themeItem.fileName;
 		state.now = themeItem.parsed!;
-    },
-    
-     mergeTheme() {
+	},
 
-    },
+	async mergeTheme({ state }, form: ThemeForm) {
+		state.now = merge(form, state.now);
+	},
 
 	async setThemeMap({ state, dispatch }) {
 		const map = await api.requestAllTheme();

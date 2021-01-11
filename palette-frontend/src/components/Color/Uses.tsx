@@ -5,7 +5,7 @@ import { message, Button } from 'ant-design-vue';
 
 export default defineComponent({
 	props: {
-		uses: Set as PropType<Set<UsesTypes>>,
+		uses: {type:Set as PropType<Set<UsesTypes>>, required: true},
 		type: { type: String as PropType<ThemeTypes>, default: 'other' },
 		name: { type: String, default: '' },
 	},

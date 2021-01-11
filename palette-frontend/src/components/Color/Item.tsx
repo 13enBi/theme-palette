@@ -11,7 +11,6 @@ const useFoundAction = (item: Ref<ParseItem>, { el, isFind }: { el: Ref<HTMLElem
 	const payload = computed<FoundPayLoad>(() => {
 		const { uses, name, type, color } = item.value;
 
-		//use reactive to unwrap ref
 		return {
 			uses,
 			name,

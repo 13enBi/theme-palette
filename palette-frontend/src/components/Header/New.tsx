@@ -1,6 +1,5 @@
 import { defineComponent } from 'vue';
-import { merge } from '../../common/utils/css-parse';
-import { useMutations, useState } from '@13enbi/vhooks';
+import { useMutations } from '@13enbi/vhooks';
 import useForm from '../Common/Form';
 import useModal from '../Common/Modal';
 import './style/New.less';
@@ -8,11 +7,11 @@ import './style/New.less';
 export default defineComponent(() => {
 	const { Modal, hide } = useModal();
 	const { Form, submit } = useForm();
-	const { now } = useState(['now']);
+	const { mergeTheme } = useMutations(['mergeTheme']);
 
 	const handleOk = async () => {
 		const form = await submit();
-		merge(form, now.value);
+		mergeTheme(form);
 		hide();
 	};
 

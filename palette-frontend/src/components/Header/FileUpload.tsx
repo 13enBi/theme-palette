@@ -1,4 +1,4 @@
-import { ref, defineComponent, nextTick } from 'vue';
+import { ref, defineComponent } from 'vue';
 import { fileListReader, FileResult } from '../../common/utils';
 import { useMutations } from '@13enbi/vhooks';
 import { Button, Modal } from 'ant-design-vue';

@@ -4,14 +4,14 @@ import useHash from '../../common/hooks/useHash';
 import { FileResult } from '../../common/utils';
 import './style/Title.less';
 import { useFoundReset } from '../../common/hooks/useFoundMap';
-import { THemeMap } from 'src/store/state';
+import { ThemeItem, THemeMap } from 'src/store/state';
 
 export default defineComponent(() => {
 	const [show, toggle] = useBoolean(false);
 	const { title, themeMap } = useState(['title', 'themeMap']);
 	const { setNowTheme } = useMutations(['setNowTheme']);
 
-	const handleChange = (res: FileResult) => {
+	const handleChange = (res: ThemeItem) => {
 		useFoundReset();
 		hash.value = res.fileName;
 	};

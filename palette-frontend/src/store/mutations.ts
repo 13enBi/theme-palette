@@ -2,10 +2,10 @@ import { MutationsTree } from '@13enbi/vhooks';
 import { FileResult, merge, parse, ThemeForm } from '../common/utils';
 import { State, ThemeItem } from './state';
 import * as api from '../api';
-import { toRaw } from 'vue';
+import { nextTick, toRaw } from 'vue';
 
 const mutations: MutationsTree<State> = {
-	setSearchWord({ state }, word) {
+	setSearchWord({ state }, word: string) {
 		state.searchWord = word;
 	},
 
@@ -22,6 +22,8 @@ const mutations: MutationsTree<State> = {
 		dispatch('addTheme', themeItem);
 
 		state.title = themeItem.fileName;
+		state.now = {} as any;
+		await nextTick();
 		state.now = themeItem.parsed!;
 	},
 

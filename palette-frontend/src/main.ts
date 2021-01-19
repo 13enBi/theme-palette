@@ -5,6 +5,7 @@ import store from './store';
 
 const app = createApp(App);
 
+
 //ignore warn
 app.config.warnHandler = () => null;
 

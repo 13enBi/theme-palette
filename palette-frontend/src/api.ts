@@ -19,13 +19,8 @@ const request = useRequest.create((axios) => {
 	};
 });
 
-export const requestAllTheme = async () => {
-	const res = (await request('/theme/all', {})) as string[];
-
-	return res.reduce(
-		(mapped, fileName) => ((mapped[fileName] = { fileName }), mapped),
-		{} as Record<string, { fileName: string }>,
-	);
+export const requestAllTheme = (): Promise<string[]> => {
+	return request('/theme/all', {});
 };
 
 export const requestTheme = (fileName: string) => {

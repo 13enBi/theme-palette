@@ -1,12 +1,10 @@
 import { Singleton } from 'src/common/inject-helper/helper';
-import { ParseResult, parse } from 'src/common/utils';
+import { ThemeItem } from './theme.item';
 
+@Singleton()
 export class ThemeService {
-	parsed: null | ParseResult = null;
+    readonly now?: ThemeItem;
+    
 
-	constructor(public readonly fileName: string, public readonly fileData: string) {}
-
-	async parseTheme() {
-		return (this.parsed = await parse(this.fileData));
-	}
+    
 }

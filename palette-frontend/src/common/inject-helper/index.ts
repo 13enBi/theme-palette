@@ -1,16 +1,20 @@
 import { App, inject } from 'vue';
 
-let app: App<Element> | null = null;
 const tokenKey = Symbol('token');
 
-export default ($app: App) => (app = $app);
+const providers = new Set<any>();
+
+export default (app: App) => {
+	providers.forEach((provide) => {
+		const token = provide[tokenKey];
+		app.provide(token, provide);
+	});
+};
 
 export const Provide = (): ClassDecorator => {
-	if (!app) throw Error();
-
 	return (source) => {
-		const token = ((source as any)[tokenKey] = Symbol());
-		app!.provide(token, source);
+		(source as any)[tokenKey] = Symbol();
+		providers.add(source);
 	};
 };
 

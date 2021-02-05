@@ -1,4 +1,4 @@
-import { defineComponent, reactive, toRaw } from 'vue';
+import { defineComponent, reactive, toRaw, watch } from 'vue';
 import { Form as AntdForm, Input, Radio, Tag } from 'ant-design-vue';
 import { useForm as useAntdForm } from '@ant-design-vue/use';
 import { THEME_TYPES } from '../../config';
@@ -56,6 +56,8 @@ const rules = {
 		},
 	],
 };
+
+
 
 export default (param?: ThemeForm) => {
 	const initForm = { type: THEME_TYPES[0], name: '', color: '', nightColor: '' };

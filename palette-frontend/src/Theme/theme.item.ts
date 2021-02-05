@@ -2,7 +2,7 @@ import { ParseResult, parse } from 'src/common/utils';
 import * as api from '../api';
 
 export class ThemeItem {
-	parsed?: undefined | ParseResult = undefined;
+	parsed: null | ParseResult = null;
 	fileData?: string;
 
 	constructor(public readonly fileName: string) {}

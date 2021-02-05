@@ -4,7 +4,7 @@ import { ThemeItem } from './theme.item';
 
 @Singleton()
 export class ThemeMap {
-	mapping: Record<string, ThemeItem> = {};
+	mapper: Record<string, ThemeItem> = {};
 
 	constructor() {
 		this.requestThemeMap();
@@ -12,15 +12,25 @@ export class ThemeMap {
 
 	async requestThemeMap() {
 		(await api.requestAllTheme()).forEach((name) => {
-			this.mapping[name] = new ThemeItem(name);
+			this.mapper[name] = new ThemeItem(name);
 		});
 	}
 
+	getItem(name: string) {
+		const item = this.mapper[name];
+
+		if (!item) {
+			throw Error(`theme:${name} is empty`);
+		}
+
+		return item;
+	}
+
 	getFirstItem() {
-		return Object.values(this.mapping)[0];
+		return Object.values(this.mapper)[0];
 	}
 
 	addItem(item: ThemeItem) {
-		this.mapping[item.fileName] = item;
+		this.mapper[item.fileName] = item;
 	}
 }

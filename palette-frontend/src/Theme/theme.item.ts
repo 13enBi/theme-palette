@@ -8,6 +8,8 @@ export class ThemeItem {
 	constructor(public readonly fileName: string) {}
 
 	async parseTheme() {
+		if (this.parsed) return this.parsed;
+
 		if (!this.fileData) {
 			this.requestTheme();
 		}

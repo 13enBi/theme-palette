@@ -32,7 +32,7 @@ const mutations: MutationsTree<State> = {
 	},
 
 	async setThemeMap({ state, dispatch }) {
-		const map = await api.requestAllTheme();
+		const map = await api.requestAllTheme2();
 		state.themeMap = map;
 
 		const now = Object.values(map)[0];

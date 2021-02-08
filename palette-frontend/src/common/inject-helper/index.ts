@@ -1,4 +1,5 @@
 import { App, inject } from 'vue';
+import './test';
 
 const tokenKey = Symbol('token');
 
@@ -27,3 +28,7 @@ export const Inject = <F extends Function>(source: F): PropertyDecorator => {
 
 	return (target, key) => Reflect.set(target, key, value);
 };
+
+
+
+

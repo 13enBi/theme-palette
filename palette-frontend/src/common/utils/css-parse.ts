@@ -23,6 +23,8 @@ export type ParsePalette = Record<string, ParseItem>;
 
 export type ParseResult = Record<string, ParsePalette> & { root: RootNode };
 
+export const EMPTY_PARSE = {} as ParseResult;
+
 const parseCache = useCache();
 export const parse = async (input: string): Promise<ParseResult> => {
 	try {

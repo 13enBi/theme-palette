@@ -106,3 +106,6 @@ export const validateColor = (color: string) => {
 export const headerText = (type: ThemeTypes) => {
 	return `${type}/${THEME_TYPES_TEXT[type || 'other']}`;
 };
+
+export const isString = (val: unknown): val is string => typeof val === 'string';
+export const isFunction = (val: unknown): val is Function => typeof val === 'function';

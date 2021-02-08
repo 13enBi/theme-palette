@@ -1,19 +1,21 @@
-import { Singleton } from 'src/common/inject-helper/helper';
+import { Singleton } from '../common/inject-helper/helper';
 import * as api from '../api';
 import { ThemeItem } from './theme.item';
+import { ref } from 'vue';
 
 @Singleton()
 export class ThemeMap {
 	mapper: Record<string, ThemeItem> = {};
-
-	constructor() {
-		this.requestThemeMap();
-	}
+	list = ref<string[]>([]);
 
 	async requestThemeMap() {
 		(await api.requestAllTheme()).forEach((name) => {
 			this.mapper[name] = new ThemeItem(name);
 		});
+	}
+
+	protected updateList() {
+		this.list.value = Object.keys(this.mapper);
 	}
 
 	getItem(name: string) {
@@ -27,10 +29,12 @@ export class ThemeMap {
 	}
 
 	getFirstItem() {
-		return Object.values(this.mapper)[0];
+		return this.getItem(Object.keys(this.mapper)[0]);
 	}
 
 	addItem(item: ThemeItem) {
 		this.mapper[item.fileName] = item;
 	}
 }
+
+export default () => new ThemeMap();

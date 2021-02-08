@@ -9,21 +9,11 @@
 <script lang="ts">
 import Color from './components/Color/Color';
 import AppHeader from './components/Header/Header';
-import { onMounted } from 'vue';
-import { useMutations } from '@13enbi/vhooks';
 
 export default {
 	components: {
 		Color,
 		AppHeader,
-	},
-
-	setup() {
-		onMounted(async () => {
-			const { setThemeMap } = useMutations(['setThemeMap']);
-
-			setThemeMap();
-		});
 	},
 };
 </script>

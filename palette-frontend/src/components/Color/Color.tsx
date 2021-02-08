@@ -4,9 +4,12 @@ import { defineComponent } from 'vue';
 import { ThemeTypes } from '../../config';
 import { ParsePalette } from '../../common/utils/css-parse';
 import './style/Color.less';
+import themeService from '../../Theme/theme.service';
 
 export default defineComponent(() => {
-	const { now } = useState(['now']);
+    const { now } = themeService();
+    
+    
 
 	return () => (
 		<>

@@ -1,15 +1,15 @@
 import { defineComponent, watch, computed } from 'vue';
 import { useState, useMutations, useBoolean } from '@13enbi/vhooks';
 import useHash from '../../common/hooks/useHash';
-import { FileResult } from '../../common/utils';
 import './style/Title.less';
 import { useFoundReset } from '../../common/hooks/useFoundMap';
-import { ThemeItem, THemeMap } from 'src/store/state';
+import { ThemeItem, THemeMap } from '../../store/state';
+import themeService from '../../Theme/theme.service';
 
 export default defineComponent(() => {
 	const [show, toggle] = useBoolean(false);
-	const { title, themeMap } = useState(['title', 'themeMap']);
-	const { setNowTheme } = useMutations(['setNowTheme']);
+	const service = themeService();
+	const { title } = useState(['title', 'themeMap']);
 
 	const handleChange = (res: ThemeItem) => {
 		useFoundReset();
@@ -18,10 +18,10 @@ export default defineComponent(() => {
 
 	const hash = useHash();
 
-	watch(hash, () => {
-		const now = themeMap.value[hash.value];
-
-		now && requestAnimationFrame(() => setNowTheme(now));
+	watch(hash, (val) => {
+		requestAnimationFrame(() => {
+			service.setNow(val);
+		});
 	});
 
 	const showStyle = computed(() => {
@@ -30,7 +30,9 @@ export default defineComponent(() => {
 		};
 	});
 
-	const themeList = computed(() => Object.values(themeMap.value as THemeMap));
+	const themeList = computed(() => Object.values(service.themeMap));
+
+	console.log(JSON.stringify(themeList.value));
 
 	return () => (
 		<>

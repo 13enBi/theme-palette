@@ -1,9 +1,10 @@
-import { Singleton } from '../common/inject-helper/helper';
+import { MethodsBind, Singleton } from '../common/inject-helper/helper';
 import * as api from '../api';
 import { ThemeItem } from './theme.item';
 import { ref } from 'vue';
 
 @Singleton()
+@MethodsBind
 export class ThemeMap {
 	mapper: Record<string, ThemeItem> = {};
 	list = ref<string[]>([]);
@@ -18,7 +19,7 @@ export class ThemeMap {
 		this.list.value = Object.keys(this.mapper);
 	}
 
-	getItem(name: string) {
+	getItem(name: string = Object.keys(this.mapper)[0]) {
 		const item = this.mapper[name];
 
 		if (!item) {
@@ -26,10 +27,6 @@ export class ThemeMap {
 		}
 
 		return item;
-	}
-
-	getFirstItem() {
-		return this.getItem(Object.keys(this.mapper)[0]);
 	}
 
 	addItem(item: ThemeItem) {

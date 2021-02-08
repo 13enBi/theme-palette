@@ -8,7 +8,7 @@ import themeService from '../../Theme/theme.service';
 
 export default defineComponent(() => {
 	const [show, toggle] = useBoolean(false);
-	const service = themeService();
+	const { setNow, themeMap } = themeService();
 	const { title } = useState(['title', 'themeMap']);
 
 	const handleChange = (res: ThemeItem) => {
@@ -20,7 +20,7 @@ export default defineComponent(() => {
 
 	watch(hash, (val) => {
 		requestAnimationFrame(() => {
-			service.setNow(val);
+			setNow(val);
 		});
 	});
 
@@ -30,9 +30,7 @@ export default defineComponent(() => {
 		};
 	});
 
-	const themeList = computed(() => Object.values(service.themeMap));
-
-	console.log(JSON.stringify(themeList.value));
+	const themeList = computed(() => Object.values(themeMap));
 
 	return () => (
 		<>

@@ -1,17 +1,25 @@
-import { isFunction } from '../utils';
+export * from './methods-bind';
+import { inject, provide } from 'vue';
+
+interface Constructor<T extends object = any, A extends any[] = any[]> {
+	new (...args: A): T;
+}
+
+type Infer<T> = T extends Constructor<infer P> ? P : never;
 
 export const Singleton = (): ClassDecorator => {
 	let instance: any = null;
 
-	return function (source) {
-		return new Proxy(source, {
+	return (source) =>
+		new Proxy(source, {
 			construct(target, ...args) {
 				if (instance) return instance;
 				return (instance = Reflect.construct(target, ...args));
 			},
 		});
-	};
 };
+
+Reflect.deleteProperty
 
 const TOKEN_SYMBOL = Symbol('_service_token_');
 export const Token = (token: PropertyKey = Symbol()): ClassDecorator => {
@@ -21,20 +29,19 @@ export const Token = (token: PropertyKey = Symbol()): ClassDecorator => {
 	};
 };
 
-const mapBind = <T extends object>(source: T): T => {
-	return new Proxy(source, {
-		get(target, key) {
-			const prop = Reflect.get(target, key);
-
-			return isFunction(prop) ? prop.bind(target) : prop;
-		},
-	});
+const getToken = <T extends Constructor>(service: T) => {
+	const token = Reflect.get(service, TOKEN_SYMBOL);
+	if (!token) throw new Error('token');
+	return token;
 };
-export const MethodsBind: ClassDecorator = (source) => {
-	return new Proxy(source, {
-		construct(target, ...args) {
-			const instance = Reflect.construct(target, ...args);
-			return mapBind(instance);
-		},
-	});
+
+export const provideService = <T extends Constructor>(service: T, ...args: any[]) => {
+	provide(getToken(service), Reflect.construct(service, args));
+};
+
+export const injectService = <T extends Constructor>(service: T): Infer<T> => {
+	const val = inject<any>(getToken(service));
+	if (!val) throw new Error('without inject');
+
+	return val;
 };

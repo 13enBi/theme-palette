@@ -1,15 +1,13 @@
-import { useState } from '@13enbi/vhooks';
 import Palette from './Palette';
+import './style/Color.less';
 import { defineComponent } from 'vue';
 import { ThemeTypes } from '../../config';
 import { ParsePalette } from '../../common/utils/css-parse';
-import './style/Color.less';
-import themeService from '../../Theme/theme.service';
+import { ThemeService } from '../../Theme/theme.service';
+import { injectService } from '../../common/inject-helper/helper';
 
 export default defineComponent(() => {
-    const { now } = themeService();
-    
-    
+	const { now } = injectService(ThemeService);
 
 	return () => (
 		<>

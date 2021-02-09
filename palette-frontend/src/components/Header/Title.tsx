@@ -1,19 +1,19 @@
 import { defineComponent, watch, computed } from 'vue';
-import { useState, useMutations, useBoolean } from '@13enbi/vhooks';
+import { useBoolean } from '@13enbi/vhooks';
 import useHash from '../../common/hooks/useHash';
 import './style/Title.less';
 import { useFoundReset } from '../../common/hooks/useFoundMap';
-import { ThemeItem, THemeMap } from '../../store/state';
-import themeService from '../../Theme/theme.service';
+import { ThemeService } from '../../Theme/theme.service';
+import { injectService } from '../../common/inject-helper/helper';
 
 export default defineComponent(() => {
 	const [show, toggle] = useBoolean(false);
-	const { setNow, themeMap } = themeService();
-	const { title } = useState(['title', 'themeMap']);
+	const { setNow, title, themeList } = injectService(ThemeService);
 
-	const handleChange = (res: ThemeItem) => {
+	const handleChange = (name: string) => {
 		useFoundReset();
-		hash.value = res.fileName;
+		setNow(name);
+		hash.value = name;
 	};
 
 	const hash = useHash();
@@ -30,8 +30,6 @@ export default defineComponent(() => {
 		};
 	});
 
-	const themeList = computed(() => Object.values(themeMap));
-
 	return () => (
 		<>
 			<div class="theme-title dropdown">
@@ -41,8 +39,8 @@ export default defineComponent(() => {
 				<ul class="theme-list dropdown-menu" style={showStyle.value}>
 					{themeList.value.map((item) => {
 						return (
-							<li class="dropdown-item" key={item.fileName} onClick={() => handleChange(item)}>
-								{item.fileName}
+							<li class="dropdown-item" key={item} onClick={() => handleChange(item)}>
+								{item}
 							</li>
 						);
 					})}

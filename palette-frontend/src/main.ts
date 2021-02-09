@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import App from './App.vue';
+import App from './App';
 import mixin from './mixin';
 import store from './store';
 

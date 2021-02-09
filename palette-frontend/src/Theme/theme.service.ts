@@ -5,12 +5,13 @@ import { ThemeItem } from './theme.item';
 import { ThemeMap } from './theme.map';
 
 @Token(Symbol('ThemeService'))
-@Singleton()
 @MethodsBind
+@Singleton()
 export class ThemeService {
 	protected nowItem?: ThemeItem;
-	public readonly themeMap: ThemeMap;
-	now = ref<ThemeItem['parsed'] | undefined>();
+	protected readonly themeMap: ThemeMap;
+	readonly now = ref<ThemeItem['parsed'] | undefined>();
+	readonly title = ref('');
 
 	constructor() {
 		const map = (this.themeMap = new ThemeMap());
@@ -19,19 +20,20 @@ export class ThemeService {
 		});
 	}
 
+	get themeList() {
+		return this.themeMap.list;
+	}
+
 	async setNow(item: ThemeItem): Promise<void>;
 	async setNow(name: string): Promise<void>;
 	async setNow(param: unknown) {
-		console.log(this);
-
 		this.nowItem = isString(param) ? this.themeMap.getItem(param) : (param as ThemeItem);
 
 		this.now.value = EMPTY_PARSE;
 		await nextTick();
 		this.now.value = await this.nowItem.parseTheme();
+		this.title.value = this.nowItem.fileName;
 	}
 
 	upload() {}
 }
-
-export default () => new ThemeService();

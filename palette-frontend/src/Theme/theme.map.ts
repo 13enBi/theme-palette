@@ -13,6 +13,7 @@ export class ThemeMap {
 		(await api.requestAllTheme()).forEach((name) => {
 			this.mapper[name] = new ThemeItem(name);
 		});
+		this.updateList();
 	}
 
 	protected updateList() {

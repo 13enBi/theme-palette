@@ -19,10 +19,8 @@ export const Singleton = (): ClassDecorator => {
 		});
 };
 
-Reflect.deleteProperty
-
 const TOKEN_SYMBOL = Symbol('_service_token_');
-export const Token = (token: PropertyKey = Symbol()): ClassDecorator => {
+export const Provider = (token: PropertyKey = Symbol()): ClassDecorator => {
 	return function (source) {
 		(source as any)[TOKEN_SYMBOL] = token;
 		return source;
@@ -41,7 +39,7 @@ export const provideService = <T extends Constructor>(service: T, ...args: any[]
 
 export const injectService = <T extends Constructor>(service: T): Infer<T> => {
 	const val = inject<any>(getToken(service));
-	if (!val) throw new Error('without inject');
+	if (!val) throw new Error('without provide');
 
 	return val;
 };

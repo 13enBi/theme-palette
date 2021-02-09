@@ -1,10 +1,10 @@
 import { EMPTY_PARSE, isString } from '../common/utils';
-import { MethodsBind, Singleton, Token } from '../common/inject-helper/helper';
+import { MethodsBind, Singleton, Provider } from '../common/inject-helper/helper';
 import { nextTick, ref } from 'vue';
 import { ThemeItem } from './theme.item';
 import { ThemeMap } from './theme.map';
 
-@Token(Symbol('ThemeService'))
+@Provider()
 @MethodsBind
 @Singleton()
 export class ThemeService {

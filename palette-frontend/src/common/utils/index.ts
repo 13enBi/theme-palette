@@ -5,6 +5,8 @@ export * from './css-parse';
 export const isDev = process.env.NODE_ENV === 'development';
 export const isArray = Array.isArray;
 export const isObject = (val: unknown): val is object => val !== null && !isArray(val) && typeof val === 'object';
+export const isString = (val: unknown): val is string => typeof val === 'string';
+export const isFunction = (val: unknown): val is Function => typeof val === 'function';
 
 export function isMoreThanDDD(color: string): boolean {
 	const colorArr = Array.from(color);
@@ -106,6 +108,3 @@ export const validateColor = (color: string) => {
 export const headerText = (type: ThemeTypes) => {
 	return `${type}/${THEME_TYPES_TEXT[type || 'other']}`;
 };
-
-export const isString = (val: unknown): val is string => typeof val === 'string';
-export const isFunction = (val: unknown): val is Function => typeof val === 'function';

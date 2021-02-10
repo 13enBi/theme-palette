@@ -13,7 +13,7 @@ export default defineComponent(() => {
 		<>
 			<div class="color-warp">
 				<div class="color">
-					{Object.entries(now.value || {}).map(([type, palette]) => (
+					{Object.entries(now.value).map(([type, palette]) => (
 						<Palette key={type} type={type as ThemeTypes} palette={palette as ParsePalette}></Palette>
 					))}
 				</div>

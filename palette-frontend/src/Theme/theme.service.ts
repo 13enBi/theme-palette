@@ -1,4 +1,4 @@
-import { EMPTY_PARSE, isString } from '../common/utils';
+import { EMPTY_PARSE, fileListReader, isString } from '../common/utils';
 import { MethodsBind, Singleton, Provider } from '../common/inject-helper/helper';
 import { nextTick, ref } from 'vue';
 import { ThemeItem } from './theme.item';
@@ -9,8 +9,8 @@ import { ThemeMap } from './theme.map';
 @Singleton()
 export class ThemeService {
 	protected nowItem?: ThemeItem;
-	protected readonly themeMap: ThemeMap;
-	readonly now = ref<ThemeItem['parsed'] | undefined>();
+	protected themeMap: ThemeMap;
+	readonly now = ref(EMPTY_PARSE);
 	readonly title = ref('');
 
 	constructor() {
@@ -35,5 +35,9 @@ export class ThemeService {
 		this.title.value = this.nowItem.fileName;
 	}
 
-	upload() {}
+	async upload(files: FileList, isUpload = false) {
+		const fileRes = await fileListReader(files);
+
+        
+	}
 }

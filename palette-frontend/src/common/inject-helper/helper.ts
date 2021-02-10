@@ -1,4 +1,5 @@
 export * from './methods-bind';
+import 'reflect-metadata';
 import { inject, provide } from 'vue';
 
 interface Constructor<T extends object = any, A extends any[] = any[]> {
@@ -19,17 +20,17 @@ export const Singleton = (): ClassDecorator => {
 		});
 };
 
-const TOKEN_SYMBOL = Symbol('_service_token_');
+const PROVIDER_SYMBOL = Symbol('_service_token_');
 export const Provider = (token: PropertyKey = Symbol()): ClassDecorator => {
-	return function (source) {
-		(source as any)[TOKEN_SYMBOL] = token;
-		return source;
+	return (source) => {
+		Reflect.defineMetadata(PROVIDER_SYMBOL, token, source);
 	};
 };
 
 const getToken = <T extends Constructor>(service: T) => {
-	const token = Reflect.get(service, TOKEN_SYMBOL);
+	const token = Reflect.getMetadata(PROVIDER_SYMBOL, service);
 	if (!token) throw new Error('token');
+
 	return token;
 };
 

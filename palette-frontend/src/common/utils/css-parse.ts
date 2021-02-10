@@ -41,7 +41,7 @@ export const parse = async (input: string): Promise<ParseResult> => {
 	} catch (error) {
 		message.error(`样式解析报错,详情见控制台： ${error}, `);
 		console.error(error);
-		return {} as any;
+		return EMPTY_PARSE;
 	}
 };
 

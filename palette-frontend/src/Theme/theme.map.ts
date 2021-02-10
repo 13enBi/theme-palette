@@ -1,26 +1,22 @@
 import { MethodsBind, Singleton } from '../common/inject-helper/helper';
 import * as api from '../api';
 import { ThemeItem } from './theme.item';
-import { ref } from 'vue';
+import { computed, shallowReactive } from 'vue';
+import { isString } from '../common/utils';
 
 @Singleton()
 @MethodsBind
 export class ThemeMap {
-	mapper: Record<string, ThemeItem> = {};
-	list = ref<string[]>([]);
+	protected mapper: Record<string, ThemeItem> = shallowReactive({});
+	readonly list = computed(() => Object.keys(this.mapper));
 
 	async requestThemeMap() {
 		(await api.requestAllTheme()).forEach((name) => {
 			this.mapper[name] = new ThemeItem(name);
 		});
-		this.updateList();
 	}
 
-	protected updateList() {
-		this.list.value = Object.keys(this.mapper);
-	}
-
-	getItem(name: string = Object.keys(this.mapper)[0]) {
+	getItem(name: string = this.list.value[0]) {
 		const item = this.mapper[name];
 
 		if (!item) {
@@ -30,9 +26,15 @@ export class ThemeMap {
 		return item;
 	}
 
-	addItem(item: ThemeItem) {
-		this.mapper[item.fileName] = item;
+	addItem(name: string, data?: string): void;
+	addItem(item: ThemeItem): void;
+	addItem(...args: any[]) {
+		if (isString(args[0])) {
+			const [name, data] = args;
+			this.mapper[name] = new ThemeItem(name, data);
+		} else {
+			const item = args[0];
+			this.mapper[item.fileName] = item;
+		}
 	}
 }
-
-export default () => new ThemeMap();

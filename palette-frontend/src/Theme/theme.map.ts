@@ -2,7 +2,7 @@ import { MethodsBind, Singleton } from '../common/inject-helper/helper';
 import * as api from '../api';
 import { ThemeItem } from './theme.item';
 import { computed, shallowReactive } from 'vue';
-import { isString } from '../common/utils';
+import { FileResult, isString } from '../common/utils';
 
 @Singleton()
 @MethodsBind
@@ -26,15 +26,14 @@ export class ThemeMap {
 		return item;
 	}
 
-	addItem(name: string, data?: string): void;
-	addItem(item: ThemeItem): void;
-	addItem(...args: any[]) {
-		if (isString(args[0])) {
-			const [name, data] = args;
-			this.mapper[name] = new ThemeItem(name, data);
+	addItem(fileRes: FileResult): ThemeItem;
+	addItem(item: ThemeItem): ThemeItem;
+	addItem(arg: any) {
+		if (arg instanceof ThemeItem) {
+			return (this.mapper[arg.fileName] = arg);
 		} else {
-			const item = args[0];
-			this.mapper[item.fileName] = item;
+			const { fileName, fileData } = arg;
+			return (this.mapper[fileName] = new ThemeItem(fileName, fileData));
 		}
 	}
 }

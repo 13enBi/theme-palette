@@ -1,8 +1,8 @@
-import { ref, defineComponent } from 'vue';
-import { fileListReader, FileResult } from '../../common/utils';
-import { useMutations } from '@13enbi/vhooks';
-import { Button, Modal } from 'ant-design-vue';
 import './style/FileUpload.less';
+import { ref, defineComponent } from 'vue';
+import { Button, Modal } from 'ant-design-vue';
+import { injectService } from '../../common/inject-helper/helper';
+import { ThemeService } from '../../Theme/theme.service';
 
 const useConfirm = (): Promise<boolean> => {
 	return new Promise((resolve) => {
@@ -16,17 +16,11 @@ const useConfirm = (): Promise<boolean> => {
 	});
 };
 
-const useThemeAction = () => {
-	const { setNowTheme, uploadTheme } = useMutations(['setNowTheme', 'uploadTheme']);
-
-	return (file: FileResult, upload = false) => (upload ? uploadTheme(file) : setNowTheme(file));
-};
-
 export default defineComponent(() => {
+	const { upload } = injectService(ThemeService);
+
 	const key = ref(0);
 	const fileRef = ref<null | HTMLInputElement>(null);
-
-	const setTheme = useThemeAction();
 
 	const resetInputFile = () => key.value++;
 
@@ -35,14 +29,11 @@ export default defineComponent(() => {
 	};
 
 	const handleFileChange = async (e: Event) => {
-		const files = (e.target as HTMLInputElement).files;
+		const { files } = e.target as HTMLInputElement;
 		if (!files || files.length === 0) return;
 
-		const file = await fileListReader(files);
-
 		resetInputFile();
-
-		setTheme(file, await useConfirm());
+		upload(files, await useConfirm());
 	};
 
 	return () => (

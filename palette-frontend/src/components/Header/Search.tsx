@@ -1,16 +1,17 @@
 import useClipboard from '../../common/hooks/useClipboard';
-import { useMutations, useState } from '@13enbi/vhooks';
+
 import { Input } from 'ant-design-vue';
 import { defineComponent, watch } from 'vue';
+import { injectService } from '../../common/inject-helper/helper';
+import { SearchService } from '../../Search/search.service';
 
 export default defineComponent(() => {
-	const { searchWord } = useState(['searchWord']);
-	const { setSearchWord } = useMutations(['setSearchWord']);
+	const { setWord, searchWord } = injectService(SearchService);
 
-	const handleInput = ({ target }: Event) => setSearchWord((target as HTMLInputElement).value);
+	const handleInput = ({ target }: Event) => setWord((target as HTMLInputElement).value);
 
 	const copyVal = useClipboard(searchWord);
-	watch(copyVal, (val) => setSearchWord(val));
+	watch(copyVal, (val) => setWord(val));
 
 	return () => (
 		<>

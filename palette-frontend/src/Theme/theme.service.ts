@@ -3,6 +3,7 @@ import { MethodsBind, Singleton, Provider } from '../common/inject-helper/helper
 import { nextTick, ref } from 'vue';
 import { ThemeItem } from './theme.item';
 import { ThemeMap } from './theme.map';
+import * as api from '../api';
 
 @Provider()
 @MethodsBind
@@ -38,6 +39,11 @@ export class ThemeService {
 	async upload(files: FileList, isUpload = false) {
 		const fileRes = await fileListReader(files);
 
-        
+		const item = this.themeMap.addItem(fileRes);
+		this.setNow(item);
+
+		isUpload && api.uploadTheme(fileRes);
 	}
+
+	mergeTheme(f: any) {}
 }

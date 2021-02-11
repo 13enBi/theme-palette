@@ -1,11 +1,12 @@
 import { defineComponent, PropType, toRef, watch, Ref, onMounted, toRefs, reactive } from 'vue';
 import { ParseItem } from '../../common/utils';
 import { ref, computed } from 'vue';
-import { useState } from '@13enbi/vhooks';
 import './style/Item.less';
 import useColorStyle from '../../common/hooks/useColorStyle';
 import { FoundPayLoad, useFoundUpdate } from '../../common/hooks/useFoundMap';
 import Uses from './Uses';
+import { injectService } from '../../common/inject-helper/helper';
+import { SearchService } from '../../Search/search.service';
 
 const useFoundAction = (item: Ref<ParseItem>, { el, isFind }: { el: Ref<HTMLElement>; isFind: Ref<boolean> }) => {
 	const payload = computed<FoundPayLoad>(() => {
@@ -26,7 +27,7 @@ const useFoundAction = (item: Ref<ParseItem>, { el, isFind }: { el: Ref<HTMLElem
 };
 
 const useIsFind = (item: Ref<ParseItem>) => {
-	const { searchWord } = useState(['searchWord']);
+	const { searchWord } = injectService(SearchService);
 
 	const isFind = computed(() => {
 		const { source } = item.value,

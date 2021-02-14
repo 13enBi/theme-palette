@@ -1,5 +1,5 @@
 import { EMPTY_PARSE, fileListReader, isString } from '../common/utils';
-import { MethodsBind, Singleton, Provider } from '../common/inject-helper/helper';
+import { MethodsBind, Singleton, Provider } from '../inject-helper';
 import { nextTick, ref } from 'vue';
 import { ThemeItem } from './theme.item';
 import { ThemeMap } from './theme.map';

@@ -1,9 +1,9 @@
-import { isFunction } from '../utils';
+import { isFunction } from '../../common/utils';
 
-const bindCache = new WeakMap();
+const boundCache = new WeakMap();
 
 const mapBind = <T extends object>(source: T): T => {
-	const cached = bindCache.get(source);
+	const cached = boundCache.get(source);
 	if (cached) return cached;
 
 	const bound = new Proxy(source, {
@@ -13,7 +13,7 @@ const mapBind = <T extends object>(source: T): T => {
 			return isFunction(prop) ? prop.bind(target) : prop;
 		},
 	});
-	bindCache.set(source, bound);
+	boundCache.set(source, bound);
 
 	return bound;
 };

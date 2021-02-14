@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { MethodsBind, Provider, Singleton } from '../common/inject-helper/helper';
+import { MethodsBind, Provider, Singleton } from '../inject-helper';
 
 @Provider()
 @MethodsBind

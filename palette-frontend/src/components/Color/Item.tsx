@@ -5,7 +5,7 @@ import './style/Item.less';
 import useColorStyle from '../../common/hooks/useColorStyle';
 import { FoundPayLoad, useFoundUpdate } from '../../common/hooks/useFoundMap';
 import Uses from './Uses';
-import { injectService } from '../../common/inject-helper/helper';
+import { injectService } from '../../inject-helper';
 import { SearchService } from '../../Search/search.service';
 
 const useFoundAction = (item: Ref<ParseItem>, { el, isFind }: { el: Ref<HTMLElement>; isFind: Ref<boolean> }) => {

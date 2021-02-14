@@ -4,7 +4,7 @@ import { defineComponent } from 'vue';
 import { ThemeTypes } from '../../config';
 import { ParsePalette } from '../../common/utils/css-parse';
 import { ThemeService } from '../../Theme/theme.service';
-import { injectService } from '../../common/inject-helper/helper';
+import { injectService } from '../../inject-helper';
 
 export default defineComponent(() => {
 	const { now } = injectService(ThemeService);

@@ -4,7 +4,7 @@ import useHash from '../../common/hooks/useHash';
 import './style/Title.less';
 import { useFoundReset } from '../../common/hooks/useFoundMap';
 import { ThemeService } from '../../Theme/theme.service';
-import { injectService } from '../../common/inject-helper/helper';
+import { injectService } from '../../inject-helper';
 
 export default defineComponent(() => {
 	const [show, toggle] = useBoolean(false);

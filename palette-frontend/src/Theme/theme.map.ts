@@ -1,4 +1,4 @@
-import { MethodsBind, Singleton } from '../common/inject-helper/helper';
+import { MethodsBind, Singleton } from '../inject-helper';
 import * as api from '../api';
 import { ThemeItem } from './theme.item';
 import { computed, shallowReactive } from 'vue';

@@ -3,7 +3,7 @@ import { useMutations } from '@13enbi/vhooks';
 import useForm from '../Common/Form';
 import useModal from '../Common/Modal';
 import './style/New.less';
-import { injectService } from '../../common/inject-helper/helper';
+import { injectService } from '../../inject-helper';
 import { ThemeService } from '../../Theme/theme.service';
 
 export default defineComponent(() => {

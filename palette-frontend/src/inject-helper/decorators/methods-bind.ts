@@ -2,7 +2,7 @@ import { isFunction } from '../../common/utils';
 
 const boundCache = new WeakMap();
 
-const mapBind = <T extends object>(source: T): T => {
+export const mapBind = <T extends object>(source: T): T => {
 	const cached = boundCache.get(source);
 	if (cached) return cached;
 

@@ -2,7 +2,7 @@ import { MethodsBind, Singleton } from '../inject-helper';
 import * as api from '../api';
 import { ThemeItem } from './theme.item';
 import { computed, shallowReactive } from 'vue';
-import { FileResult, isString } from '../common/utils';
+import { FileResult } from '../common/utils';
 
 @Singleton()
 @MethodsBind

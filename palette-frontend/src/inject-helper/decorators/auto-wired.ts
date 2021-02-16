@@ -9,7 +9,6 @@ import { initService } from '../injector';
 // 	});
 // };
 
-//TODO: Models; ts metadata
 export const AutoWired = <T extends Constructor>(service: T): PropertyDecorator => (target, key) => {
 	Reflect.defineProperty(target, key, {
 		value: initService(service),

@@ -12,6 +12,6 @@ export class SearchService {
 	}
 
 	setWord(word: string) {
-		this.word.value = word;
+		this.word.value = word.trim();
 	}
 }

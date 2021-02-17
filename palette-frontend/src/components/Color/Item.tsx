@@ -1,12 +1,12 @@
-import { defineComponent, PropType, toRef, watch, Ref, onMounted, toRefs, reactive } from 'vue';
+import './style/Item.less';
+import { defineComponent, PropType, toRef, Ref, toRefs } from 'vue';
 import { ParseItem } from '../../common/utils';
 import { ref, computed } from 'vue';
-import './style/Item.less';
 import useColorStyle from '../../common/hooks/useColorStyle';
 import { FoundPayLoad, useFoundUpdate } from '../../common/hooks/useFoundMap';
 import Uses from './Uses';
 import { injectService } from '../../inject-helper';
-import { SearchService } from '../../Search/search.service';
+import { FoundService } from '../../Found/foud.service';
 
 const useFoundAction = (item: Ref<ParseItem>, { el, isFind }: { el: Ref<HTMLElement>; isFind: Ref<boolean> }) => {
 	const payload = computed<FoundPayLoad>(() => {
@@ -26,21 +26,6 @@ const useFoundAction = (item: Ref<ParseItem>, { el, isFind }: { el: Ref<HTMLElem
 	useFoundUpdate(payload);
 };
 
-const useIsFind = (item: Ref<ParseItem>) => {
-	const { searchWord } = injectService(SearchService);
-
-	const isFind = computed(() => {
-		const { source } = item.value,
-			word = searchWord.value;
-
-		if (word === '') return false;
-
-		return source?.toLowerCase().includes(word?.toLowerCase());
-	});
-
-	return isFind;
-};
-
 const useBgStyle = (item: Ref<ParseItem>) => {
 	const bgStyle = useColorStyle(toRef(item.value, 'color')),
 		nightBgStyle = useColorStyle(toRef(item.value, 'nightColor'));
@@ -54,10 +39,11 @@ export default defineComponent({
 	},
 
 	setup(props) {
+		const { getIsFind } = injectService(FoundService);
+
 		const el = ref();
 		const { item } = toRefs(props);
-
-		const isFind = useIsFind(item);
+		const isFind = getIsFind(item);
 		const { bgStyle, nightBgStyle } = useBgStyle(item);
 
 		useFoundAction(item, { isFind, el });

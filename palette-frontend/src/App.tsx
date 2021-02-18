@@ -7,15 +7,15 @@ import { ThemeService } from './Theme/theme.service';
 import { SearchService } from './Search/search.service';
 import { FoundService } from './Found/foud.service';
 
-export default defineComponent(() => {
-	provideService(ThemeService);
-	provideService(SearchService);
-	provideService(FoundService);
+export default defineComponent({
+	setup: () => {
+		provideService(ThemeService, SearchService, FoundService);
 
-	return () => (
-		<div id="app">
-			<AppHeader />
-			<Color />
-		</div>
-	);
+		return () => (
+			<div id="app">
+				<AppHeader />
+				<Color />
+			</div>
+		);
+	},
 });

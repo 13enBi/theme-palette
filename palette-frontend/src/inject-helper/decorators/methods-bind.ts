@@ -17,6 +17,7 @@ export const mapBind = <T extends object>(source: T): T => {
 
 	return bound;
 };
+
 export const MethodsBind: ClassDecorator = (source) => {
 	return new Proxy(source, {
 		construct: (...args) => mapBind(Reflect.construct(...args)),

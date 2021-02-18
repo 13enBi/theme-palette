@@ -1,5 +1,5 @@
-import { inject, provide } from 'vue';
-import { PARAMTYPES_METADATA, PROVIDER_SYMBOL } from './constants';
+import { getCurrentInstance, inject, provide } from 'vue';
+import { PROVIDER_SYMBOL } from './constants';
 import { Constructor, Infer } from './helper';
 
 const getToken = <T extends Constructor>(service: T) => {
@@ -9,22 +9,18 @@ const getToken = <T extends Constructor>(service: T) => {
 	return token;
 };
 
-export const initService = <T extends Constructor>(target: T): Infer<T> => {
-	/**
-	 * 吐了🤮，esbuild不提供metadata,直接tsc有metadata
-	 * see:https://esbuild.github.io/content-types/#typescript
-	 */
-	const params = Reflect.getMetadata(PARAMTYPES_METADATA, target) || [];
-
-	return Reflect.construct(target, params.map(initService));
-};
-
-export const provideService = <T extends Constructor>(service: T) => {
-	provide(getToken(service), initService(service));
+export const provideService = (...ctors: Constructor[]) => {
+	ctors.forEach((service) => provide(getToken(service), new service()));
 };
 
 export const injectService = <T extends Constructor>(service: T): Infer<T> => {
-	const val = inject<any>(getToken(service));
+	const instance = getCurrentInstance();
+	if (!instance) throw new Error('instance');
+
+	const token = getToken(service);
+	const provides = (instance as any).provides;
+
+	const val = provides[token] || inject<any>(token);
 	if (!val) throw new Error('without provide');
 
 	return val;

@@ -1,16 +1,13 @@
 import { Constructor } from '../helper';
 import { injectService } from '../injector';
-
-// export const AutoWired: PropertyDecorator = (target, key) => {
-// 	const service = Reflect.getMetadata(TYPE_METADATA, target,key);
-
-// 	Reflect.defineProperty(target, key, {
-// 		value: initService(service),
-// 	});
-// };
+import { defineAutoWired } from '../scanner';
 
 export const AutoWired = <T extends Constructor>(service: T): PropertyDecorator => (target, key) => {
+	let instance: any = null;
+
+	defineAutoWired(target, service);
+
 	Reflect.defineProperty(target, key, {
-		get: () => injectService(service),
+		get: () => instance || (instance = injectService(service)),
 	});
 };

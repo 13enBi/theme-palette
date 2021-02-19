@@ -4,10 +4,12 @@ import { nextTick, ref } from 'vue';
 import { ThemeItem } from './theme.item';
 import { ThemeMap } from './theme.map';
 import * as api from '../api';
+import { AutoWired } from '../inject-helper/decorators/auto-wired';
+import { FoundService } from '../Found/foud.service';
 
 @Provider()
 @MethodsBind
-@Singleton()
+//@Singleton()
 export class ThemeService {
 	protected nowItem?: ThemeItem;
 	protected themeMap: ThemeMap;

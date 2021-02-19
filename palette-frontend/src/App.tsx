@@ -9,7 +9,7 @@ import { FoundService } from './Found/foud.service';
 
 export default defineComponent({
 	setup: () => {
-		provideService(ThemeService, SearchService, FoundService);
+		provideService(FoundService, ThemeService, SearchService);
 
 		return () => (
 			<div id="app">

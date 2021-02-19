@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { THEME_PATH } from './const';
 import { promises } from 'fs';
-import { TTT } from './theme2';
+import { ThemeService } from './theme.service';
 
 const { readdir, readFile, writeFile, unlink } = promises;
 
 @Injectable()
-export class ThemeService {
-	constructor() {
-		console.log(1)
+export class TTT {
+	constructor(t:ThemeService) {
+		console.log(t);
 	}
 
 	async readTheme(fileName: string) {

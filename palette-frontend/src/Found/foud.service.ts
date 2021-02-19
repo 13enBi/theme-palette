@@ -21,7 +21,9 @@ export class FoundService {
 		return this.themeService.now;
 	}
 
-	constructor() {}
+	constructor() {
+		console.log(this.searchService, this.themeService);
+	}
 
 	private resetMap() {}
 

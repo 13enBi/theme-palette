@@ -1,27 +1,38 @@
-import { getCurrentInstance, inject, provide } from 'vue';
-import { PROVIDER_SYMBOL } from './constants';
-import { Constructor, Infer } from './helper';
+import { inject, provide } from 'vue';
+import { Constructor, error, Infer } from './helper';
+import {
+	defineHostProviders,
+	getHost,
+	reflectAutoWired,
+	reflectHostProviders,
+	reflectProviderInstances,
+	reflectProviderToken,
+	defineProviderInstances,
+} from './scanner';
 
-const getToken = <T extends Constructor>(service: T) => {
-	const token = Reflect.getMetadata(PROVIDER_SYMBOL, service.prototype);
-	if (!token) throw new Error('token');
+const initProvider = (provider: Constructor) => {
+	const hostProviders = reflectHostProviders();
 
-	return token;
+	const isIn = (dep: Constructor) => hostProviders.includes(dep);
+
+	reflectAutoWired(provider)?.filter(isIn).forEach(initProvider);
+
+	if (!reflectProviderInstances(provider)) {
+		defineProviderInstances(provider);
+	}
 };
 
-export const provideService = (...ctors: Constructor[]) => {
-	ctors.forEach((service) => provide(getToken(service), new service()));
+export const provideService = (...providers: Constructor[]) => {
+	defineHostProviders(providers);
+	providers.forEach(initProvider);
 };
 
 export const injectService = <T extends Constructor>(service: T): Infer<T> => {
-	const instance = getCurrentInstance();
-	if (!instance) throw new Error('instance');
+	const token = reflectProviderToken(service);
+	const host = getHost();
 
-	const token = getToken(service);
-	const provides = (instance as any).provides;
-
-	const val = provides[token] || inject<any>(token);
-	if (!val) throw new Error('without provide');
+	const val = host[token] || inject<any>(token);
+	if (!val) error('without provide');
 
 	return val;
 };

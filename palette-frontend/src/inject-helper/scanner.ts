@@ -1,67 +1,87 @@
 import { getCurrentInstance } from 'vue';
 import { isFunction } from '../common/utils';
-import { AUTO_WIRED_SYMBOL, HOST_PROVIDERS, HOST_PROVIDERS_INSTANCES, PROVIDER_SYMBOL } from './constants';
-import { Constructor, error } from './helper';
+import { INJECTOR_SYMBOL, HOST_PROVIDERS, HOST_INSTANCE_MAP, PROVIDER_SYMBOL } from './constants';
+import { Constructor, error, hasOwn } from './helper';
 
-type HostProvides = Record<symbol | string, any>;
+type Scope = Record<symbol | string, any>;
 
-export const getHost = (instance = getCurrentInstance()): HostProvides => {
-	if (!instance) error('not inside setup()');
+export const getScope = (instance: any = getCurrentInstance()): Scope => {
+	//instance.provides is internal
+	if (!instance) error('should  inside setup()');
 
-	return (instance as any).provides;
+	const scope = instance.provides;
+	const parent = instance.parent && instance.parent.provides;
+
+	return parent === scope ? (instance.provides = Object.create(parent)) : scope;
 };
 
-export const reflectProviderToken = (service: Constructor) => {
+export const defineProviderToken = (service: Function) => {
+	const token = Symbol(service.name);
+	Reflect.defineMetadata(PROVIDER_SYMBOL, token, service.prototype);
+};
+
+export const reflectProviderToken = (service: Function) => {
 	const token = Reflect.getMetadata(PROVIDER_SYMBOL, service.prototype);
-	if (!token) error('token');
+	if (!token) error(`${service.name} token `);
 
 	return token;
 };
 
-export function reflectAutoWired<T extends Object>(target: T): Constructor[] | undefined;
-export function reflectAutoWired<T extends Constructor>(service: T): Constructor[] | undefined;
-export function reflectAutoWired(arg: unknown) {
+export function reflectInjector<T extends Object>(target: T): Constructor[] | undefined;
+export function reflectInjector<T extends Constructor>(service: T): Constructor[] | undefined;
+export function reflectInjector(arg: unknown) {
 	const target = isFunction(arg) ? (arg as Constructor).prototype : (arg as Object);
 
-	return Reflect.getMetadata(AUTO_WIRED_SYMBOL, target);
+	return Reflect.getMetadata(INJECTOR_SYMBOL, target);
 }
 
-export const defineAutoWired = <T extends Object>(target: T, service: Constructor) => {
-	const deps = reflectAutoWired(target) || [];
+export const defineInjector = <T extends Object>(target: T, service: Constructor) => {
+	const injectors = reflectInjector(target) || [];
 
-	deps.push(service);
+	injectors.push(service);
 
-	Reflect.defineMetadata(AUTO_WIRED_SYMBOL, deps, target);
+	Reflect.defineMetadata(INJECTOR_SYMBOL, injectors, target);
 };
 
-export const defineHostProviders = (providers: Constructor[]) => {
-	const host = getHost();
+type ScopeProvides = Set<Constructor>;
 
-	const hostProviders = reflectHostProviders(host);
-	Reflect.set(host, HOST_PROVIDERS, hostProviders.concat(providers));
+export const defineScopeProviders = (providers: Constructor[]) => {
+	const scope = getScope();
+
+	const scopeProviders = reflectScopeProviders(scope);
+
+	//will cover proto
+	Reflect.set(scope, HOST_PROVIDERS, new Set([...scopeProviders, ...providers]));
 };
 
-export const reflectHostProviders = (host = getHost()): Constructor[] => {
+export const reflectScopeProviders = (scope = getScope()): ScopeProvides => {
 	// ts 不支持Symbol为索引
-	//host[HOST_PROVIDERS]
-	return Reflect.get(host, HOST_PROVIDERS) || [];
+	//scope[HOST_PROVIDERS]
+	return Reflect.get(scope, HOST_PROVIDERS) || new Set();
 };
 
-type HostInstances<T = Record<PropertyKey, any>> = WeakMap<Constructor, T>;
+type ScopeInstancesMap<T = Record<PropertyKey, any>> = Map<Constructor, T>;
 
-export const defineProviderInstances = <P extends Constructor>(provider: P) => {
-	const host = getHost();
+const getScopeInstanceMap = (scope: Scope) => {
+	const mapper: ScopeInstancesMap = Reflect.get(scope, HOST_INSTANCE_MAP) || new Map();
 
-	const instances: HostInstances = Reflect.get(host, HOST_PROVIDERS_INSTANCES) || new WeakMap();
+	return hasOwn(scope, HOST_INSTANCE_MAP) ? mapper : new Map(mapper.entries());
+};
+
+export const defineInstanceMap = <P extends Constructor>(provider: P) => {
+	const scope = getScope();
+
+	const mapper: ScopeInstancesMap = getScopeInstanceMap(scope);
 
 	const instance = new provider();
 
-	Reflect.set(host, HOST_PROVIDERS_INSTANCES, instances.set(provider, instance));
-	Reflect.set(host, reflectProviderToken(provider), instance);
+	//will cover proto
+	Reflect.set(scope, HOST_INSTANCE_MAP, mapper.set(provider, instance));
+	Reflect.set(scope, reflectProviderToken(provider), instance);
 };
 
-export const reflectProviderInstances = (provider: Constructor, host = getHost()) => {
-	const instances = Reflect.get(host, HOST_PROVIDERS_INSTANCES) as HostInstances | undefined;
+export const reflectInstanceMap = (provider: Constructor, scope = getScope()) => {
+	const mapper: ScopeInstancesMap | undefined = Reflect.get(scope, HOST_INSTANCE_MAP);
 
-	return instances?.get(provider);
+	return mapper?.get(provider);
 };

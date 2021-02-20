@@ -1,18 +1,17 @@
 import { computed, Ref, shallowReactive } from 'vue';
 import { ParseItem } from '../common/utils';
-import { MethodsBind, Provider, Singleton } from '../inject-helper';
-import { AutoWired } from '../inject-helper/decorators/auto-wired';
+import { MethodsBind, Injectable } from '../inject-helper';
+import { Injector } from '../inject-helper/decorators/injector';
 import { SearchService } from '../Search/search.service';
 import { ThemeService } from '../Theme/theme.service';
 
-@Provider()
-@Singleton()
+@Injectable()
 @MethodsBind
 export class FoundService {
-	@AutoWired(SearchService)
+	@Injector(SearchService)
 	private readonly searchService!: SearchService;
 
-	@AutoWired(ThemeService)
+	@Injector(ThemeService)
 	private readonly themeService!: ThemeService;
 
 	private foundMap = shallowReactive({});

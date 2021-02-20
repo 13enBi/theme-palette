@@ -1,7 +1,7 @@
 import { ref } from 'vue';
-import { MethodsBind, Provider } from '../inject-helper';
+import { MethodsBind, Injectable } from '../inject-helper';
 
-@Provider()
+@Injectable()
 @MethodsBind
 export class SearchService {
 	private word = ref('');

@@ -1,13 +1,11 @@
 import { EMPTY_PARSE, fileListReader, isString } from '../common/utils';
-import { MethodsBind, Singleton, Provider } from '../inject-helper';
+import { MethodsBind, Injectable } from '../inject-helper';
 import { nextTick, ref } from 'vue';
 import { ThemeItem } from './theme.item';
 import { ThemeMap } from './theme.map';
 import * as api from '../api';
-import { AutoWired } from '../inject-helper/decorators/auto-wired';
-import { FoundService } from '../Found/foud.service';
 
-@Provider()
+@Injectable()
 @MethodsBind
 //@Singleton()
 export class ThemeService {

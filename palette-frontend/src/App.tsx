@@ -5,11 +5,10 @@ import AppHeader from './components/Header/Header';
 import { provideService } from './inject-helper';
 import { ThemeService } from './Theme/theme.service';
 import { SearchService } from './Search/search.service';
-import { FoundService } from './Found/foud.service';
 
 export default defineComponent({
 	setup: () => {
-		provideService(FoundService, ThemeService, SearchService);
+		provideService(ThemeService, SearchService);
 
 		return () => (
 			<div id="app">

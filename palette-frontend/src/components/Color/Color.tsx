@@ -4,9 +4,11 @@ import { defineComponent } from 'vue';
 import { ThemeTypes } from '../../config';
 import { ParsePalette } from '../../common/utils/css-parse';
 import { ThemeService } from '../../Theme/theme.service';
-import { injectService } from '../../inject-helper';
+import { injectService, provideService } from '../../inject-helper';
+import { FoundService } from '../../Found/foud.service';
 
 export default defineComponent(() => {
+	provideService(FoundService);
 	const { now } = injectService(ThemeService);
 
 	return () => (

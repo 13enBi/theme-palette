@@ -1,16 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { THEME_PATH } from './const';
 import { promises } from 'fs';
-import { TTT } from './theme2';
 
 const { readdir, readFile, writeFile, unlink } = promises;
 
 @Injectable()
 export class ThemeService {
-	constructor() {
-		console.log(1)
-	}
-
 	async readTheme(fileName: string) {
 		return await readFile(fileName, 'utf-8');
 	}

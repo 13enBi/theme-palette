@@ -1,37 +1,15 @@
-import { inject } from 'vue';
-import { Constructor, error, Infer } from './helper';
-import {
-	defineScopeProviders,
-	getScope,
-	reflectInjector,
-	reflectScopeProviders,
-	reflectInstanceMap,
-	reflectProviderToken,
-	defineInstanceMap,
-} from './scanner';
+import { Infer, Provider } from './helper';
+import { defineScopeProviders, getScope, initProvider, reflectProviderToken, defineProviderToken } from './scanner';
 
-const initProvider = (provider: Constructor) => {
-	const scopeProviders = reflectScopeProviders();
-
-	const has = (injector: Constructor) => scopeProviders.has(injector);
-	reflectInjector(provider)?.filter(has).forEach(initProvider);
-
-	if (!reflectInstanceMap(provider)) {
-		defineInstanceMap(provider);
-	}
-};
-
-export const provideService = (...providers: Constructor[]) => {
+export const provideService = (...providers: Provider[]) => {
 	defineScopeProviders(providers);
+	providers.forEach(defineProviderToken);
 	providers.forEach(initProvider);
 };
 
-export const injectService = <T extends Constructor>(service: T): Infer<T> => {
+export const injectService = <T extends Provider>(service: T): Infer<T> => {
 	const token = reflectProviderToken(service);
-	const scope = getScope();
+	const scope = getScope(false);
 
-	const val = scope[token] || inject<any>(token);
-	if (!val) error(`${service.name} without provide`);
-
-	return val;
+	return scope[token] || initProvider(service);
 };

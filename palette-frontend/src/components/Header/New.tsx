@@ -1,5 +1,4 @@
 import { defineComponent } from 'vue';
-import { useMutations } from '@13enbi/vhooks';
 import useForm from '../Common/Form';
 import useModal from '../Common/Modal';
 import './style/New.less';

@@ -1,6 +1,6 @@
 import {
 	Catch,
-	ArgumentsScope,
+	//ArgumentsScope,
 	ExceptionFilter,
 	HttpException,
 	HttpStatus,
@@ -8,7 +8,7 @@ import {
 
 @Catch(HttpException)
 export class ExceptionsFilter implements ExceptionFilter {
-	async catch(exception: HttpException, scope: ArgumentsScope) {
+	async catch(exception: HttpException, scope: any) {
 		const ctx = scope.switchToHttp();
 		const response = ctx.getResponse();
 		const { message = '服务器拉跨了' } = exception;

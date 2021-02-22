@@ -3,13 +3,12 @@ import { defineScopeProviders, getScope, initProvider, reflectProviderToken, def
 
 export const provideService = (...providers: Provider[]) => {
 	defineScopeProviders(providers);
-	providers.forEach(defineProviderToken);
-	providers.forEach(initProvider);
+	return providers.map(defineProviderToken).map(initProvider);
 };
 
 export const injectService = <T extends Provider>(service: T): Infer<T> => {
 	const token = reflectProviderToken(service);
 	const scope = getScope(false);
 
-	return scope[token] || initProvider(service);
+	return scope[token as any] || initProvider(service);
 };

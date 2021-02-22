@@ -8,7 +8,9 @@ import { SearchService } from './Search/search.service';
 
 export default defineComponent({
 	setup: () => {
-		provideService(ThemeService, SearchService);
+		const p = provideService(ThemeService, SearchService);
+
+        console.log(p)
 
 		return () => (
 			<div id="app">

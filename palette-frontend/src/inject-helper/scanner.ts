@@ -1,8 +1,12 @@
 import { getCurrentInstance } from 'vue';
 import { HOST_PROVIDERS, HOST_INSTANCE_MAP, PROVIDER_SYMBOL, PROVIDER_CONSTRUCTOR } from './constants';
-import { Constructor, error, hasOwn, Provider } from './helper';
+import { Constructor, error, hasOwn, Infer, Provider } from './helper';
 
-type Scope = Record<symbol | string, any>;
+type ScopeToken = {
+	[HOST_PROVIDERS]?: ScopeProvides;
+	[HOST_INSTANCE_MAP]?: ScopeInstancesMap;
+};
+type Scope = ScopeToken & Record<any, any>;
 
 export const getScope = (cover = true): Scope => {
 	//instance.provides is internal
@@ -20,48 +24,45 @@ export const getScope = (cover = true): Scope => {
 };
 
 export const defineProviderToken = (provider: Provider) => {
-	Reflect.set(provider, PROVIDER_SYMBOL, Symbol(provider.name));
+	provider[PROVIDER_SYMBOL] = Symbol(provider.name);
+	return provider;
 };
 
-export const reflectProviderToken = (provider: Provider) => {
-	const token = Reflect.get(provider, PROVIDER_SYMBOL);
+export const reflectProviderToken = (provider: Provider): symbol => {
+	const token = provider[PROVIDER_SYMBOL];
 	if (!token) error(`${provider.name} without provide `);
 
-	return token;
+	return token!;
 };
 
 export const reflectIsConstructor = (provider: Provider): provider is Constructor => {
-	return Reflect.get(provider, PROVIDER_CONSTRUCTOR);
+	return !!provider[PROVIDER_CONSTRUCTOR];
 };
 
 type ScopeProvides = Set<Provider>;
 
-export const defineScopeProviders = (providers: Provider[]) => {
+export const defineScopeProviders = (providers: Provider[]): ScopeProvides => {
 	const scope = getScope();
 
 	const scopeProviders = reflectScopeProviders(scope);
 
 	//will cover proto
-	Reflect.set(scope, HOST_PROVIDERS, new Set([...scopeProviders, ...providers]));
+	return (scope[HOST_PROVIDERS] = new Set([...scopeProviders, ...providers]));
 };
 
-export const reflectScopeProviders = (scope = getScope()): ScopeProvides => {
-	// ts 不支持Symbol为索引
-	//scope[HOST_PROVIDERS]
-	return Reflect.get(scope, HOST_PROVIDERS) || new Set();
-};
+export const reflectScopeProviders = (scope = getScope()): ScopeProvides => scope[HOST_PROVIDERS] || new Set();
 
-type ScopeInstancesMap<T = Record<PropertyKey, any>> = Map<Provider, T>;
+type ScopeInstancesMap = Map<Provider, Infer<Provider>>;
 
 const initInstance = (provider: Provider) => (reflectIsConstructor(provider) ? new provider() : provider());
 
 const getScopeInstanceMap = (scope: Scope) => {
-	const mapper: ScopeInstancesMap = Reflect.get(scope, HOST_INSTANCE_MAP) || new Map();
+	const mapper: ScopeInstancesMap = scope[HOST_INSTANCE_MAP] || new Map();
 
 	return hasOwn(scope, HOST_INSTANCE_MAP) ? mapper : new Map([...mapper]);
 };
 
-export const defineScopeInstance = <P extends Provider>(provider: P) => {
+export const defineScopeInstance = <P extends Provider>(provider: P): Infer<P> => {
 	const scope = getScope();
 
 	const instance = initInstance(provider);
@@ -72,24 +73,23 @@ export const defineScopeInstance = <P extends Provider>(provider: P) => {
 	 */
 	const mapper: ScopeInstancesMap = getScopeInstanceMap(scope);
 
+	const token: any = reflectProviderToken(provider);
 	//will cover proto
-	Reflect.set(scope, HOST_INSTANCE_MAP, mapper.set(provider, instance));
-	Reflect.set(scope, reflectProviderToken(provider), instance);
+	scope[token] = instance;
+	scope[HOST_INSTANCE_MAP] = mapper.set(provider, instance);
 
 	return instance;
 };
 
-export const reflectIScopenstance = (provider: Provider, scope = getScope()) => {
-	const mapper: ScopeInstancesMap | undefined = Reflect.get(scope, HOST_INSTANCE_MAP);
+export const reflectIScopenstance = <P extends Provider>(provider: P, scope = getScope()): Infer<P> | undefined => {
+	const mapper: ScopeInstancesMap | undefined = scope[HOST_INSTANCE_MAP];
 
 	return mapper?.get(provider);
 };
 
-export const initProvider = (provider: Provider) => {
-	const scopeProviders = reflectScopeProviders();
+export const initProvider = <P extends Provider>(provider: P) => {
+	const has = reflectScopeProviders().has(provider);
+	if (!has) error(`${provider.name} without provide`);
 
-	const has = (injector: Provider) => scopeProviders.has(injector);
-	if (!has(provider)) error(`${provider.name} without provide`);
-
-	return reflectIScopenstance(provider) || defineScopeInstance(provider);
+	return reflectIScopenstance<P>(provider) || defineScopeInstance<P>(provider);
 };

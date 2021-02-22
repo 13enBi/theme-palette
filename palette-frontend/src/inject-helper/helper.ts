@@ -2,7 +2,7 @@ import { PROVIDER_SYMBOL, PROVIDER_CONSTRUCTOR } from './constants';
 
 interface Token {
 	[PROVIDER_SYMBOL]?: symbol;
-	[PROVIDER_CONSTRUCTOR]?: symbol;
+	[PROVIDER_CONSTRUCTOR]?: boolean;
 }
 
 export interface Constructor<T extends object = any> {

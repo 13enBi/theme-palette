@@ -3,7 +3,8 @@ import { scrollInView, headerText } from '../../common/utils';
 import { ThemeTypes } from '../../config';
 import useColorStyle from '../../common/hooks/useColorStyle';
 import './style/FoundList.less';
-import useFoundMap, { FoundPayLoad } from '../../common/hooks/useFoundMap';
+import { injectService } from 'vue-injector';
+import { FoundPayLoad, FoundService } from '../../Found/foud.service';
 
 const FoudItem = defineComponent({
 	props: {
@@ -41,7 +42,7 @@ const FoudItem = defineComponent({
 });
 
 export default defineComponent(() => {
-	const foundMap = useFoundMap();
+	const { foundMap } = injectService(FoundService);
 
 	return () => (
 		<>

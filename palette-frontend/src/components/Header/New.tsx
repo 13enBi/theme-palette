@@ -2,7 +2,7 @@ import { defineComponent } from 'vue';
 import useForm from '../Common/Form';
 import useModal from '../Common/Modal';
 import './style/New.less';
-import { injectService } from '../../inject-helper';
+import { injectService } from 'vue-injector';
 import { ThemeService } from '../../Theme/theme.service';
 
 export default defineComponent(() => {

@@ -2053,11 +2053,6 @@ readdirp@~3.5.0:
   dependencies:
     picomatch "^2.2.1"
 
-reflect-metadata@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
-  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
-
 regenerator-runtime@^0.13.4:
   version "0.13.7"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.7.tgz#cac2dacc8a1ea675feaabaeb8ae833898ae46f55"
@@ -2448,6 +2443,11 @@ vite@^1.0.0-rc.13:
     source-map "^0.7.3"
     vue "^3.0.3"
     ws "^7.3.1"
+
+vue-injector@^0.0.1-beta.1:
+  version "0.0.1-beta.1"
+  resolved "https://registry.npmjs.org/vue-injector/-/vue-injector-0.0.1-beta.1.tgz#7e133f612d2900706367acb44dd22ae142b45721"
+  integrity sha512-VeXNQtECwX3tcDeblLq8b8/QjnQp2OQLnREB6SRZ13S2XTMTv1izM3JhzGSKQq7yZO4FB2njvy2Ggm9KjxsPcg==
 
 vue-types@^3.0.0:
   version "3.0.1"

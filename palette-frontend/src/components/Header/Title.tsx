@@ -1,28 +1,18 @@
-import { defineComponent, watch, computed } from 'vue';
-import { useBoolean } from '@13enbi/vhooks';
-import useHash from '../../common/hooks/useHash';
 import './style/Title.less';
-import { useFoundReset } from '../../common/hooks/useFoundMap';
+import { defineComponent, computed } from 'vue';
+import { useBoolean } from '@13enbi/vhooks';
 import { ThemeService } from '../../Theme/theme.service';
-import { injectService } from '../../inject-helper';
+import { injectService } from 'vue-injector';
+import { hashService } from '../../Hash/hash.service';
 
 export default defineComponent(() => {
 	const [show, toggle] = useBoolean(false);
-	const { setNow, title, themeList } = injectService(ThemeService);
+	const { title, themeList } = injectService(ThemeService);
+	const { hash } = injectService(hashService);
 
 	const handleChange = (name: string) => {
-		useFoundReset();
-		setNow(name);
 		hash.value = name;
 	};
-
-	const hash = useHash();
-
-	watch(hash, (val) => {
-		requestAnimationFrame(() => {
-			setNow(val);
-		});
-	});
 
 	const showStyle = computed(() => {
 		return {

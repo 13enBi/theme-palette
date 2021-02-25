@@ -1,28 +1,42 @@
 import { EMPTY_PARSE, fileListReader, isString } from '../common/utils';
-import { MethodsBind, Injectable } from '../inject-helper';
+import { MethodsBind, Injectable, Injector } from 'vue-injector';
 import { nextTick, ref } from 'vue';
 import { ThemeItem } from './theme.item';
 import { ThemeMap } from './theme.map';
 import * as api from '../api';
+import { hashService, HashService } from '../Hash/hash.service';
 
 @Injectable()
 @MethodsBind
-//@Singleton()
 export class ThemeService {
 	protected nowItem?: ThemeItem;
-	protected themeMap: ThemeMap;
+	protected themeMap!: ThemeMap;
 	readonly now = ref(EMPTY_PARSE);
 	readonly title = ref('');
 
+	@Injector(hashService)
+	protected hashService!: HashService;
+
 	constructor() {
+		this.initMap();
+		this.initHashListener();
+	}
+
+	get themeList() {
+		return this.themeMap.list;
+	}
+
+	protected initMap() {
 		const map = (this.themeMap = new ThemeMap());
 		map.requestThemeMap().then(() => {
 			this.setNow(map.getItem());
 		});
 	}
 
-	get themeList() {
-		return this.themeMap.list;
+	protected initHashListener() {
+		this.hashService.addHashListener((hash) => {
+			this.setNow(hash);
+		});
 	}
 
 	async setNow(item: ThemeItem): Promise<void>;

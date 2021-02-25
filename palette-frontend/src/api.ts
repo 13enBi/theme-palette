@@ -20,16 +20,7 @@ const request = useRequest.create((axios) => {
 });
 
 export const requestAllTheme = (): Promise<string[]> => {
-	return request('/theme/all', {});
-};
-
-export const requestAllTheme2 = (): Promise<any> => {
-	return request('/theme/all', {}).then((themes) => {
-		return themes.reduce((total: any, name: any) => {
-			total[name] = name;
-			return total;
-		}, {});
-	});
+	return request('/theme/all');
 };
 
 export const requestTheme = (fileName: string) => {

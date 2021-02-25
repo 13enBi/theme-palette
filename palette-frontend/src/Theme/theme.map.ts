@@ -1,10 +1,9 @@
-import { MethodsBind, Singleton } from '../inject-helper';
+import { MethodsBind } from 'vue-injector';
 import * as api from '../api';
 import { ThemeItem } from './theme.item';
 import { computed, shallowReactive } from 'vue';
 import { FileResult } from '../common/utils';
 
-@Singleton()
 @MethodsBind
 export class ThemeMap {
 	protected mapper: Record<string, ThemeItem> = shallowReactive({});

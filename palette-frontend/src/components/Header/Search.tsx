@@ -2,7 +2,7 @@ import useClipboard from '../../common/hooks/useClipboard';
 
 import { Input } from 'ant-design-vue';
 import { defineComponent, watch } from 'vue';
-import { injectService } from '../../inject-helper';
+import { injectService } from 'vue-injector';
 import { SearchService } from '../../Search/search.service';
 
 export default defineComponent(() => {

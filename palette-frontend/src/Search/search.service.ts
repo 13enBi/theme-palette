@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { MethodsBind, Injectable } from '../inject-helper';
+import { MethodsBind, Injectable } from 'vue-injector';
 
 @Injectable()
 @MethodsBind

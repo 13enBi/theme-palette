@@ -11,7 +11,8 @@
 		"@13enbi/vhooks": "^0.0.3-beta.3",
 		"@ant-design-vue/use": "^0.0.1-alpha.8",
 		"ant-design-vue": "^2.0.0-rc.5",
-		"vue": "^3.0.4"
+		"vue": "^3.0.4",
+		"vue-injector": "^0.0.1-beta.1"
 	},
 	"devDependencies": {
 		"@types/less": "^3.0.1",

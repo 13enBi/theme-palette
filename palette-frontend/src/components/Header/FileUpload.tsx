@@ -1,7 +1,7 @@
 import './style/FileUpload.less';
 import { ref, defineComponent } from 'vue';
 import { Button, Modal } from 'ant-design-vue';
-import { injectService } from '../../inject-helper';
+import { injectService } from 'vue-injector';
 import { ThemeService } from '../../Theme/theme.service';
 
 const useConfirm = (): Promise<boolean> => {

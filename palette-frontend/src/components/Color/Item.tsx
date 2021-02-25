@@ -1,30 +1,11 @@
 import './style/Item.less';
 import { defineComponent, PropType, toRef, Ref, toRefs } from 'vue';
 import { ParseItem } from '../../common/utils';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import useColorStyle from '../../common/hooks/useColorStyle';
-import { FoundPayLoad, useFoundUpdate } from '../../common/hooks/useFoundMap';
 import Uses from './Uses';
-import { injectService } from '../../inject-helper';
+import { injectService } from 'vue-injector';
 import { FoundService } from '../../Found/foud.service';
-
-const useFoundAction = (item: Ref<ParseItem>, { el, isFind }: { el: Ref<HTMLElement>; isFind: Ref<boolean> }) => {
-	const payload = computed<FoundPayLoad>(() => {
-		const { uses, name, type, color } = item.value;
-
-		return {
-			uses,
-			name,
-			type,
-			color,
-
-			isFind: isFind.value,
-			el: el.value,
-		};
-	});
-
-	useFoundUpdate(payload);
-};
 
 const useBgStyle = (item: Ref<ParseItem>) => {
 	const bgStyle = useColorStyle(toRef(item.value, 'color')),
@@ -39,14 +20,14 @@ export default defineComponent({
 	},
 
 	setup(props) {
-		const { getIsFind } = injectService(FoundService);
+		const { getIsFind, insertFound } = injectService(FoundService);
 
 		const el = ref();
 		const { item } = toRefs(props);
 		const isFind = getIsFind(item);
 		const { bgStyle, nightBgStyle } = useBgStyle(item);
 
-		useFoundAction(item, { isFind, el });
+		insertFound(item, el, isFind);
 
 		return () => {
 			const value = item.value;

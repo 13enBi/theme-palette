@@ -1,9 +1,18 @@
-import { computed, Ref, shallowReactive } from 'vue';
+import { computed, nextTick, reactive, Ref, shallowReactive, watch } from 'vue';
 import { ParseItem } from '../common/utils';
-import { MethodsBind, Injectable } from '../inject-helper';
-import { Injector } from '../inject-helper/decorators/injector';
+import { MethodsBind, Injectable } from 'vue-injector';
+import { Injector } from 'vue-injector';
 import { SearchService } from '../Search/search.service';
-import { ThemeService } from '../Theme/theme.service';
+import { THEMES, ThemeTypes } from '../config';
+import { useMounted } from '@13enbi/vhooks';
+import { HashService, hashService } from '../Hash/hash.service';
+
+export interface FoundPayLoad extends Pick<ParseItem, 'uses' | 'name' | 'type' | 'color'> {
+	el: HTMLElement;
+	isFind: boolean;
+}
+
+export type FoundMap = Record<ThemeTypes, Set<FoundPayLoad>>;
 
 @Injectable()
 @MethodsBind
@@ -11,20 +20,78 @@ export class FoundService {
 	@Injector(SearchService)
 	private readonly searchService!: SearchService;
 
-	@Injector(ThemeService)
-	private readonly themeService!: ThemeService;
+	@Injector(hashService)
+	private readonly hasService!: HashService;
 
-	private foundMap = shallowReactive({});
+	private _foundMap: FoundMap = reactive(this.getInitMap());
 
-	private get now() {
-		return this.themeService.now;
+	get foundMap() {
+		return this._foundMap;
 	}
 
 	constructor() {
-		console.log(this.searchService, this.themeService);
+		this.initResetListener();
 	}
 
-	private resetMap() {}
+	protected getInitMap(): FoundMap {
+		return THEMES.reduce((map, type) => {
+			map[type] = new Set([]);
+			return map;
+		}, {} as any);
+	}
+
+	protected initResetListener() {
+		const reset = () => Object.assign(this._foundMap, this.getInitMap());
+
+		this.hasService.addHashListener(reset);
+	}
+
+	protected getSetByPayload(payload?: FoundPayLoad) {
+		return payload ? this._foundMap[payload.type] : void 0;
+	}
+
+	protected emitAddFound(payload?: FoundPayLoad) {
+		const set = this.getSetByPayload(payload);
+		set!?.add(payload!);
+	}
+
+	protected emitDeleteFound(payload?: FoundPayLoad) {
+		const set = this.getSetByPayload(payload);
+		set!?.delete(payload!);
+	}
+
+	protected createPayLoad(item: Ref<ParseItem>, el: Ref<HTMLElement>, isFind: Ref<boolean>) {
+		const payload = computed<FoundPayLoad>(() => {
+			const { uses, name, type, color } = item.value;
+
+			return {
+				uses,
+				name,
+				type,
+				color,
+
+				isFind: isFind.value,
+				el: el.value,
+			};
+		});
+
+		return payload;
+	}
+
+	insertFound(item: Ref<ParseItem>, el: Ref<HTMLElement>, isFind = this.getIsFind(item)) {
+		const payload = this.createPayLoad(item, el, isFind);
+
+		useMounted(() => {
+			watch(
+				payload,
+				(val, oldVal) => {
+					this.emitDeleteFound(oldVal);
+					this.emitAddFound(val);
+				},
+				{ immediate: true },
+			);
+		});
+	}
 
 	getIsFind(item: Ref<ParseItem>) {
 		return computed(() => {

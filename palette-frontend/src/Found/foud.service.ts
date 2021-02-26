@@ -1,7 +1,6 @@
-import { computed, nextTick, reactive, Ref, shallowReactive, watch } from 'vue';
+import { computed, reactive, Ref, watch } from 'vue';
 import { ParseItem } from '../common/utils';
-import { MethodsBind, Injectable } from 'vue-injector';
-import { Injector } from 'vue-injector';
+import { MethodsBind, Injectable, Injector } from 'vue-injector';
 import { SearchService } from '../Search/search.service';
 import { THEMES, ThemeTypes } from '../config';
 import { useMounted } from '@13enbi/vhooks';
@@ -34,10 +33,9 @@ export class FoundService {
 	}
 
 	protected getInitMap(): FoundMap {
-		return THEMES.reduce((map, type) => {
-			map[type] = new Set([]);
-			return map;
-		}, {} as any);
+		const entires = THEMES.map((type) => [type, new Set()]);
+
+		return Object.fromEntries(entires);
 	}
 
 	protected initResetListener() {
@@ -84,10 +82,12 @@ export class FoundService {
 		useMounted(() => {
 			watch(
 				payload,
+
 				(val, oldVal) => {
 					this.emitDeleteFound(oldVal);
 					this.emitAddFound(val);
 				},
+
 				{ immediate: true },
 			);
 		});

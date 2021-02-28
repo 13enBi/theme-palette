@@ -4,6 +4,7 @@ import useModal from '../Common/Modal';
 import './style/New.less';
 import { injectService } from 'vue-injector';
 import { ThemeService } from '../../Theme/theme.service';
+import Form2 from '../Common/Form2';
 
 export default defineComponent(() => {
 	const { Modal, hide } = useModal();
@@ -19,7 +20,8 @@ export default defineComponent(() => {
 	return () => (
 		<>
 			<Modal onOk={handleOk}>
-				<Form></Form>
+				<Form2></Form2>
+				{/* <Form></Form> */}
 			</Modal>
 		</>
 	);

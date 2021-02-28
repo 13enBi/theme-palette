@@ -1,12 +1,9 @@
+import vueJsx from '@vitejs/plugin-vue-jsx';
+
 export default {
-	// jsx: {
-	// 	factory: 'h',
-	// 	fragment: 'Fragment',
-	// },
-	//enableEsbuild: false,
-	//2.x:
-	//esbuild:false
-	optimizeDeps: {
-		include: ['tinycolor2/tinycolor', '@ant-design/icons-vue/PlusOutlined'],
-	},
+	plugins: [
+		vueJsx({
+			// options are passed on to @vue/babel-plugin-jsx
+		}),
+	],
 };

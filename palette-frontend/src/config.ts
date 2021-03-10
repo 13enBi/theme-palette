@@ -14,7 +14,7 @@ export enum THEME_TYPES_TEXT {
 	mid = '中性色',
 	other = '其他色',
 }
-export const THEMES = ['primary', 'sub', 'mid', 'other'];
+export const THEMES = ['primary', 'sub', 'mid', 'other'] as const;
 
 export enum USES_TYPES {
 	text,
@@ -27,7 +27,7 @@ export enum USES_TYPE_PROP {
 	bg = 'background-color',
 }
 export type UsesTypes = 'text' | 'bg' | 'bd';
-export const USES: UsesTypes[] = ['text', 'bg', 'bd'];
+export const USES = ['text', 'bg', 'bd'] as const;
 
 export const NIGHT_PREFIX = `[theme-mode='black']`;
 export const NIGHT_REGEXP = /(\.black |\.night |\[theme-mode=("|')(black|night)("|')\])/g;

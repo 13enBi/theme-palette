@@ -1,7 +1,7 @@
 import { defineComponent, PropType } from 'vue';
 import { UsesTypes, ThemeTypes } from '../../config';
 import { clipboardWrite } from '../../common/utils';
-import { message, Button } from 'ant-design-vue';
+import { ElMessage as  message, ElButton } from 'element-plus';
 
 export default defineComponent({
 	props: {
@@ -23,9 +23,9 @@ export default defineComponent({
 				<div class="class-btn">
 					{props.uses &&
 						[...props.uses].map((use) => (
-							<Button key={use} onClick={() => handleCopy(use)}>
+							<ElButton key={use} onClick={() => handleCopy(use)}>
 								{use}
-							</Button>
+							</ElButton>
 						))}
 				</div>
 			</>

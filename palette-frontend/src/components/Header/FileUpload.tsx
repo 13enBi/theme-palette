@@ -1,23 +1,14 @@
 import './style/FileUpload.less';
 import { ref, defineComponent } from 'vue';
-import { Button, Modal } from 'ant-design-vue';
-import { injectService } from 'vue-injector';
-import { ThemeService } from '../../Theme/theme.service';
+import { ElButton, ElMessageBox } from 'element-plus';
+import injectThemeService from '../../Theme/theme.service';
 
 const useConfirm = (): Promise<boolean> => {
-	return new Promise((resolve) => {
-		Modal.confirm({
-			content: '是否上传此样式文件？',
-			okText: 'YES',
-			cancelText: 'NO',
-			onOk: () => resolve(true),
-			onCancel: () => resolve(false),
-		});
-	});
+	return ElMessageBox.confirm('是否上传此样式文件？').then(({ action }) => action == 'confirm');
 };
 
 export default defineComponent(() => {
-	const { upload } = injectService(ThemeService);
+	const { upload } = injectThemeService();
 
 	const key = ref(0);
 	const fileRef = ref<null | HTMLInputElement>(null);
@@ -47,9 +38,9 @@ export default defineComponent(() => {
 					ref={fileRef}
 					onInput={handleFileChange}
 				/>
-				<Button type="primary" onClick={handleUpload}>
+				<ElButton type="primary" onClick={handleUpload}>
 					上传Less
-				</Button>
+				</ElButton>
 			</div>
 		</>
 	);

@@ -3,11 +3,10 @@ import './style/Color.less';
 import { defineComponent } from 'vue';
 import { ThemeTypes } from '../../config';
 import { ParsePalette } from '../../common/utils/css-parse';
-import { ThemeService } from '../../Theme/theme.service';
-import { injectService } from 'vue-injector';
+import injectThemeService from '../../Theme/theme.service';
 
 export default defineComponent(() => {
-	const { now } = injectService(ThemeService);
+	const { now } = injectThemeService();
 
 	return () => (
 		<>

@@ -1,33 +1,71 @@
-import { defineComponent, reactive } from 'vue';
-import { ElForm, ElFormItem, ElRadio } from 'element-plus';
-import { THEME_TYPES } from '../config';
+import { reactive, ComponentPublicInstance, render, createVNode } from 'vue';
+import Form, { FormType } from './Form';
 
-export class ThemeFormService {
-	protected _form = reactive({ type: THEME_TYPES[0], name: '', color: '', nightColor: '' });
+type State = {
+	visible: boolean;
+	onClose(): void;
+	onSubmit(form: FormType): void;
+};
 
-	component = defineComponent({
-		setup: () => {
-			const t = this;
+const initInstace = (state: State) => {
+	const div = document.createElement('div');
+	document.body.appendChild(div);
 
-			return () => (
-				<>
-					<ElForm></ElForm>
-				</>
-			);
+	const vnode = createVNode({
+		render() {
+			return <Form {...state}></Form>;
 		},
 	});
-}
 
-export default defineComponent({
-	setup() {
-		const form = reactive({ type: THEME_TYPES[0], name: '', color: '', nightColor: '' });
+	render(vnode, div);
 
-		return () => (
-			<ElForm>
-				<ElFormItem>
-					<ElRadio></ElRadio>
-				</ElFormItem>
-			</ElForm>
-		);
-	},
-});
+	return vnode.component!.proxy;
+};
+
+let callback: (arg?: any) => any = () => {};
+
+const initState = (): State => {
+	const state = reactive({
+		visible: false,
+	});
+
+	const onClose = () => {
+		callback({
+			action: 'cancel',
+		});
+
+		state.visible = false;
+	};
+
+	const onSubmit = (form: FormType) => {
+		callback({
+			action: 'confirm',
+			form,
+		});
+
+		state.visible = false;
+	};
+
+	return Object.assign(state, {
+		onClose,
+		onSubmit,
+	});
+};
+
+const state = initState();
+
+let instance: ComponentPublicInstance<any>;
+
+type Payload = { action: 'cancel' } | { action: 'confirm'; form: FormType };
+
+export default (): Promise<Payload> => {
+	!instance && (instance = initInstace(state));
+
+	return new Promise((resolve, reject) => {
+		if (state.visible) reject();
+
+		callback = resolve;
+
+		state.visible = true;
+	});
+};

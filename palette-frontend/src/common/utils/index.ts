@@ -1,6 +1,7 @@
 import { nextTick } from 'vue';
 import { ThemeTypes, THEME_TYPES_TEXT } from '../../config';
-export * from './css-parse';
+
+declare const process: any;
 
 export const isDev = process.env.NODE_ENV === 'development';
 export const isArray = Array.isArray;

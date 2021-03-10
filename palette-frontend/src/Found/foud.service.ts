@@ -1,10 +1,10 @@
 import { computed, reactive, Ref, watch } from 'vue';
-import { ParseItem } from '../common/utils';
-import { MethodsBind, Injectable, Injector } from 'vue-injector';
-import { SearchService } from '../Search/search.service';
+import { ParseItem } from '../common/utils/css-parse';
+import { MethodsBind, Injectable } from 'vue-injector';
+import injectSearchService from '../Search/search.service';
 import { THEMES, ThemeTypes } from '../config';
 import { useMounted } from '@13enbi/vhooks';
-import { HashService, hashService } from '../Hash/hash.service';
+import injectHashService from '../Hash/hash.service';
 
 export interface FoundPayLoad extends Pick<ParseItem, 'uses' | 'name' | 'type' | 'color'> {
 	el: HTMLElement;
@@ -16,11 +16,9 @@ export type FoundMap = Record<ThemeTypes, Set<FoundPayLoad>>;
 @Injectable()
 @MethodsBind
 export class FoundService {
-	@Injector(SearchService)
-	private readonly searchService!: SearchService;
+	private readonly searchService = injectSearchService();
 
-	@Injector(hashService)
-	private readonly hasService!: HashService;
+	private readonly hasService = injectHashService();
 
 	private _foundMap: FoundMap = reactive(this.getInitMap());
 

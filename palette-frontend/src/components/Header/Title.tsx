@@ -1,14 +1,13 @@
 import './style/Title.less';
 import { defineComponent, computed } from 'vue';
 import { useBoolean } from '@13enbi/vhooks';
-import { ThemeService } from '../../Theme/theme.service';
-import { injectService } from 'vue-injector';
-import { hashService } from '../../Hash/hash.service';
+import injectThemeService from '../../Theme/theme.service';
+import injectHashService from '../../Hash/hash.service';
 
 export default defineComponent(() => {
 	const [show, toggle] = useBoolean(false);
-	const { title, themeList } = injectService(ThemeService);
-	const { hash } = injectService(hashService);
+	const { title, themeList } = injectThemeService();
+	const { hash } = injectHashService();
 
 	const handleChange = (name: string) => {
 		hash.value = name;

@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue';
-import { MethodsBind, Injectable } from 'vue-injector';
+import { MethodsBind, Injectable, injectService } from 'vue-injector';
 import useClipboard from '../common/hooks/useClipboard';
 
 @Injectable()
@@ -24,3 +24,5 @@ export class SearchService {
 		watch(copyVal, (val) => this.setWord(val));
 	}
 }
+
+export default () => injectService(SearchService);

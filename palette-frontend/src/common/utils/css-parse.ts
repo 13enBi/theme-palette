@@ -1,7 +1,7 @@
 import { NIGHT_PREFIX, NIGHT_REGEXP, ThemeTypes, THEME_TYPES, USES, UsesTypes, USES_TYPE_PROP } from '../../config';
 import { parse as __parse, ParseFlag, RootNode, RuleNode, stringify as __stringify } from '@13enbi/css-parse';
 import { useCache } from '@13enbi/vhooks';
-import { message } from 'ant-design-vue';
+import { ElMessage as message } from 'element-plus';
 
 const less = (window as any).less;
 
@@ -166,10 +166,12 @@ const createNode = ({ type, name, color, nightColor }: ThemeForm) => {
 		return str + createCss(uses) + '\n' + createCss(uses, true);
 	}, '');
 
+	console.log(css);
+
 	return cssParse(css);
 };
 
-export const merge = (form: ThemeForm, parsed: ParseResult): ParseResult => {
+export const mergeParsed = (form: ThemeForm, parsed: ParseResult): ParseResult => {
 	const node = createNode(form);
 
 	Object.entries(node).forEach(([k, v]) => {

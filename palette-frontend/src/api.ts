@@ -1,5 +1,5 @@
 import { useRequest } from '@13enbi/vhooks';
-import { message } from 'ant-design-vue';
+import { ElMessage as message } from 'element-plus';
 import { FileResult, isDev } from './common/utils';
 
 const request = useRequest.create((axios) => {

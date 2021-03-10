@@ -1,5 +1,6 @@
 import { useEventHub, useEventListener } from '@13enbi/vhooks';
 import { customRef, watch } from 'vue';
+import { injectService } from 'vue-injector';
 
 const getHash = () => location.hash.slice(1);
 
@@ -49,3 +50,5 @@ export const hashService = () => {
 };
 
 export type HashService = ReturnType<typeof hashService>;
+
+export default () => injectService(hashService);

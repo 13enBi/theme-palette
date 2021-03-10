@@ -1,21 +1,20 @@
-import { Input } from 'ant-design-vue';
+import { ElInput } from 'element-plus';
 import { defineComponent } from 'vue';
-import { injectService } from 'vue-injector';
-import { SearchService } from '../../Search/search.service';
+import injectSearchService from '../../Search/search.service';
 
 export default defineComponent(() => {
-	const { setWord, searchWord } = injectService(SearchService);
+	const { setWord, searchWord } = injectSearchService();
 
-	const handleInput = ({ target }: Event) => setWord((target as HTMLInputElement).value);
+	const handleInput = (value: any) => setWord(value);
 
 	return () => (
 		<>
-			<Input.Search
-				value={searchWord.value}
+			<ElInput
+				modelValue={searchWord.value}
 				onInput={handleInput}
 				placeholder="输入类名/颜色值"
 				enter-button
-			></Input.Search>
+			></ElInput>
 		</>
 	);
 });

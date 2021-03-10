@@ -1,10 +1,12 @@
-import { EMPTY_PARSE, fileListReader, isString } from '../common/utils';
-import { MethodsBind, Injectable, Injector } from 'vue-injector';
+import { fileListReader, isString } from '../common/utils';
+import { EMPTY_PARSE, ParseResult } from '../common/utils/css-parse';
+import { MethodsBind, Injectable, injectService } from 'vue-injector';
 import { nextTick, ref } from 'vue';
 import { ThemeItem } from './theme.item';
 import { ThemeMap } from './theme.map';
 import * as api from '../api';
-import { hashService, HashService } from '../Hash/hash.service';
+import injectHashService from '../Hash/hash.service';
+import showForm from './theme.form';
 
 @Injectable()
 @MethodsBind
@@ -14,8 +16,7 @@ export class ThemeService {
 	readonly now = ref(EMPTY_PARSE);
 	readonly title = ref('');
 
-	@Injector(hashService)
-	protected hashService!: HashService;
+	protected hashService = injectHashService();
 
 	constructor() {
 		this.initMap();
@@ -24,6 +25,16 @@ export class ThemeService {
 
 	get themeList() {
 		return this.themeMap.list;
+	}
+
+	protected async forceUpdateNow(parse?: ParseResult) {
+		const { now } = this;
+
+		const val = parse || now.value;
+
+		now.value = EMPTY_PARSE;
+		await nextTick();
+		now.value = val;
 	}
 
 	protected initMap() {
@@ -44,9 +55,8 @@ export class ThemeService {
 	async setNow(param: unknown) {
 		this.nowItem = isString(param) ? this.themeMap.getItem(param) : (param as ThemeItem);
 
-		this.now.value = EMPTY_PARSE;
-		await nextTick();
-		this.now.value = await this.nowItem.parseTheme();
+		const parase = await this.nowItem.parseTheme();
+		this.forceUpdateNow(parase);
 		this.title.value = this.nowItem.fileName;
 	}
 
@@ -59,5 +69,15 @@ export class ThemeService {
 		isUpload && api.uploadTheme(fileRes);
 	}
 
-	mergeTheme(f: any) {}
+	async addPalette() {
+		showForm().then((payload) => {
+			if (payload.action === 'confirm') {
+				const parse = this.nowItem!.mergeParsed(payload.form);
+
+				this.forceUpdateNow(parse);
+			}
+		});
+	}
 }
+
+export default () => injectService(ThemeService);
